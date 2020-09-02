@@ -36,3 +36,17 @@ Login Service Api List
         "phone_number": "08982227972"
     }
 }
+
+/account/register/user
+
+{
+    "username": "sapi",
+    "password": "admin",
+    "profile": {
+        "firstname": "Sapi",
+        "lastname": "Besar",
+        "gender": "L",
+        "email":"testing@gmail.com",
+        "phone_number": "089812332123"
+    }
+}
