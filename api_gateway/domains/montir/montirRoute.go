@@ -13,6 +13,8 @@ func InitMontirRoute(mainRoute string, r *mux.Router) {
 	subRouter := r.PathPrefix(mainRoute).Subrouter()
 	montirControllerApi := NewLoginControllerApi(connectToServiceMontir())
 	subRouter.HandleFunc("/profile/detail/{id}", montirControllerApi.HandleGetMontirProfileByID()).Methods("GET")
+	subRouter.HandleFunc("/profile/image/upload/{id}", montirControllerApi.HandleUpdateMontirProfilePicture()).Methods("POST")
+	subRouter.HandleFunc("/file/image/{namaFile}", montirControllerApi.HandleServeMontirFile()).Methods("GET")
 }
 
 // Untuk Connect ke Service-Montir

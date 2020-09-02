@@ -13,6 +13,8 @@ func InitUserRoute(mainRoute string, r *mux.Router) {
 	subRouter := r.PathPrefix(mainRoute).Subrouter()
 	userControllerApi := NewLoginControllerApi(connectToServiceUser())
 	subRouter.HandleFunc("/profile/detail/{id}", userControllerApi.HandleGetUserProfileByID()).Methods("GET")
+	subRouter.HandleFunc("/profile/image/upload/{id}", userControllerApi.HandleUpdateUserProfilePicture()).Methods("POST")
+	subRouter.HandleFunc("/file/image/{namaFile}", userControllerApi.HandleServeUserFile()).Methods("GET")
 }
 
 // Untuk Connect ke Service-User
