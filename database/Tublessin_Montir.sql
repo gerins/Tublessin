@@ -135,7 +135,9 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO master_status_activity(status) VALUE('Standby'),('On Going'),('Working');
 
-INSERT INTO montir_account(username,password) VALUE('gerin','admin'),('vio','admin');
+INSERT INTO montir_account(username,password) VALUE
+('gerin','$2a$10$fmWS.ALzAB4RTi66KkyDTOxSmHZOODW11TRI6jnBKZ.aL/m.UsWV2'),
+('vio','$2a$10$fmWS.ALzAB4RTi66KkyDTOxSmHZOODW11TRI6jnBKZ.aL/m.UsWV2');
 
 INSERT INTO montir_profile(montir_account_id, firstname, lastname, born_date, gender, ktp, address, city, phone_number, email) VALUE
 (1,'Gerin','Prakoso','1990-01-24','L','123456789','Kec. Rawalumbu','Bekasi','08982279019','gerin@google.com'),

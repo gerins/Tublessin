@@ -37,4 +37,9 @@ taskkill /im api_gateway.exe /f
 taskkill /im login_service.exe /f
 taskkill /im montir_service.exe /f
 taskkill /im user_service.exe /f
-PAUSE
+echo.
+ECHO Press any key for Restarting all server...
+PAUSE >nul
+cd ..
+cd ..
+START autoRunServer.bat
