@@ -3,6 +3,7 @@ package domain
 import (
 	"context"
 	"database/sql"
+	"strconv"
 	"tublessin/common/model"
 )
 
@@ -33,11 +34,17 @@ func (c UserServer) RegisterNewUser(ctx context.Context, param *model.UserAccoun
 	return userResponeMessage, nil
 }
 
+func (c UserServer) GetUserProfileById(ctx context.Context, param *model.UserAccount) (*model.UserResponeMessage, error) {
+	userId := strconv.Itoa(int(param.Id))
+	userResponeMessage, err := c.UserUsecase.GetUserProfileById(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	return userResponeMessage, nil
+}
+
 func (c UserServer) UpdateUserProfileById(ctx context.Context, param *model.UserAccount) (*model.UserResponeMessage, error) {
 	return &model.UserResponeMessage{Response: ""}, nil
 
-}
-
-func (c UserServer) GetUserProfileById(ctx context.Context, param *model.UserAccount) (*model.UserResponeMessage, error) {
-	return &model.UserResponeMessage{Response: ""}, nil
 }

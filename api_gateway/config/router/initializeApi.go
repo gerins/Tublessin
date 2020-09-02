@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"tublessin/api_gateway/domains/login"
 	"tublessin/api_gateway/domains/montir"
+	"tublessin/api_gateway/domains/user"
 
 	"github.com/gorilla/mux"
 )
@@ -17,6 +18,7 @@ type ConfigRouter struct {
 func (ar *ConfigRouter) InitRouter() {
 	login.InitLoginRoute(LOGIN_MAIN_ROUTE, ar.Router)
 	montir.InitMontirRoute(MONTIR_MAIN_ROUTE, ar.Router)
+	user.InitUserRoute(USER_MAIN_ROUTE, ar.Router)
 	ar.Router.NotFoundHandler = http.HandlerFunc(notFound)
 }
 

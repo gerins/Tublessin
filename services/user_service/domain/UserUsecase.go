@@ -13,6 +13,7 @@ type UserUsecase struct {
 type UserUsecaseInterface interface {
 	Login(UserAccount *model.UserAccount) (*model.UserAccount, error)
 	RegisterNewUser(UserAccount *model.UserAccount) (*model.UserResponeMessage, error)
+	GetUserProfileById(userId string) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecase(db *sql.DB) UserUsecaseInterface {
@@ -39,5 +40,13 @@ func (s UserUsecase) RegisterNewUser(UserAccount *model.UserAccount) (*model.Use
 		return nil, err
 	}
 
+	return userResponeMessage, nil
+}
+
+func (s UserUsecase) GetUserProfileById(userId string) (*model.UserResponeMessage, error) {
+	userResponeMessage, err := s.UserRepository.GetUserProfileById(userId)
+	if err != nil {
+		return nil, err
+	}
 	return userResponeMessage, nil
 }

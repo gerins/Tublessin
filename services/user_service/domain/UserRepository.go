@@ -2,6 +2,7 @@ package domain
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 	"tublessin/common/model"
 )
@@ -13,6 +14,7 @@ type UserRepository struct {
 type UserRepositoryInterface interface {
 	Login(username string) (*model.UserAccount, error)
 	RegisterNewUser(m *model.UserAccount) (*model.UserResponeMessage, error)
+	GetUserProfileById(userId string) (*model.UserResponeMessage, error)
 }
 
 func NewUserRepository(db *sql.DB) UserRepositoryInterface {
@@ -66,4 +68,32 @@ func (r UserRepository) RegisterNewUser(m *model.UserAccount) (*model.UserRespon
 
 	tx.Commit()
 	return &model.UserResponeMessage{Response: "Inserting New User Success", Code: "200", Result: m}, nil
+}
+
+func (r UserRepository) GetUserProfileById(userId string) (*model.UserResponeMessage, error) {
+	var userAccount model.UserAccount
+
+	result := r.db.QueryRow("SELECT * FROM user_account WHERE id=?", userId)
+	err := result.Scan(&userAccount.Id, &userAccount.Username, &userAccount.Password, &userAccount.DateCreated)
+	if err != nil {
+		return nil, errors.New("user ID Not Found")
+	}
+
+	var mp model.UserProfile
+	result2 := r.db.QueryRow("SELECT * FROM user_profile WHERE user_account_id=?", userId)
+	err = result2.Scan(&mp.Id, &mp.Firstname, &mp.Lastname, &mp.Gender, &mp.PhoneNumber, &mp.Email, &mp.ImageURL, &mp.DateUpdated)
+	if err != nil {
+		log.Println(err)
+	}
+	userAccount.Profile = &mp
+
+	var ml model.UserLocation
+	result3 := r.db.QueryRow("SELECT * FROM user_location WHERE user_account_id=? ", userId)
+	err = result3.Scan(&mp.Id, &ml.Latitude, &ml.Longitude, &ml.DateUpdated)
+	if err != nil {
+		log.Println(err)
+	}
+	userAccount.Profile.Location = &ml
+
+	return &model.UserResponeMessage{Response: "Get user Profile Success", Code: "200", Result: &userAccount}, nil
 }
