@@ -8,7 +8,7 @@ Cara Menjalankan Backend
 2. Jalankan Api Gateway
 - go run api_gateway.go
 
-Login Service Api List
+Login & Register Service Api List
 
 /account/login/montir
 {
@@ -38,7 +38,6 @@ Login Service Api List
 }
 
 /account/register/user
-
 {
     "username": "sapi",
     "password": "admin",
@@ -50,3 +49,9 @@ Login Service Api List
         "phone_number": "089812332123"
     }
 }
+
+USER API LIST
+/user/profile/detail (GET)
+
+MONTIR API LIST
+/montir/profile/detail (GET)
