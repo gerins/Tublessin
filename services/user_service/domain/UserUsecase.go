@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"tublessin/common/model"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserUsecase struct {
@@ -34,6 +36,12 @@ func (s UserUsecase) RegisterNewUser(UserAccount *model.UserAccount) (*model.Use
 	if UserAccount == nil || UserAccount.Profile == nil {
 		return nil, errors.New("Body Cannot Empty")
 	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(UserAccount.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+	UserAccount.Password = string(hash)
 
 	userResponeMessage, err := s.UserRepository.RegisterNewUser(UserAccount)
 	if err != nil {

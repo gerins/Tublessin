@@ -30,7 +30,11 @@ func (c LoginControllerApi) HandleLoginMontir() func(w http.ResponseWriter, r *h
 		result, err := c.LoginUsecaseApi.HandleLoginMontir(&montirAccount)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(result)
+			json.NewEncoder(w).Encode(&model.LoginResponeMessage{
+				Message: "Username atau Password Salah",
+				Token:   "0",
+				Account: nil,
+			})
 			return
 		}
 
@@ -52,7 +56,11 @@ func (c LoginControllerApi) HandleLoginUser() func(w http.ResponseWriter, r *htt
 		result, err := c.LoginUsecaseApi.HandleLoginUser(&userAccount)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(result)
+			json.NewEncoder(w).Encode(&model.LoginResponeMessage{
+				Message: "Username atau Password Salah",
+				Token:   "0",
+				Account: nil,
+			})
 			return
 		}
 

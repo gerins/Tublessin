@@ -28,11 +28,7 @@ func (s LoginUsecaseApi) HandleLoginMontir(montirAccount *model.MontirLoginForm)
 	result, err := s.LoginService.MontirLogin(context.Background(), montirAccount)
 	if err != nil {
 		log.Println(err.Error())
-		return &model.LoginResponeMessage{
-			Message: "Username atau Password Salah",
-			Token:   "0",
-			Account: nil,
-		}, err
+		return nil, err
 	}
 
 	return result, nil
@@ -42,11 +38,7 @@ func (s LoginUsecaseApi) HandleLoginUser(userAccount *model.UserLoginForm) (*mod
 	result, err := s.LoginService.UserLogin(context.Background(), userAccount)
 	if err != nil {
 		log.Println(err.Error())
-		return &model.LoginResponeMessage{
-			Message: "Username atau Password Salah",
-			Token:   "0",
-			Account: nil,
-		}, err
+		return nil, err
 	}
 
 	return result, nil

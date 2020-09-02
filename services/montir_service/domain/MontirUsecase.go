@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"tublessin/common/model"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type MontirUsecase struct {
@@ -34,6 +36,12 @@ func (s MontirUsecase) RegisterNewMontir(montirAccount *model.MontirAccount) (*m
 	if montirAccount == nil || montirAccount.Profile == nil {
 		return nil, errors.New("Body Cannot Empty")
 	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(montirAccount.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+	montirAccount.Password = string(hash)
 
 	result, err := s.MontirRepository.RegisterNewMontir(montirAccount)
 	if err != nil {
