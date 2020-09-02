@@ -1,5 +1,10 @@
 # Tublessin
 
+Microservice Architecture, Clean Code Architecture, Kodingan karikatur.
+
+setiap service terdiri dari 3 layer Controller -> Usecase -> Repository 
+
+
 Cara Menjalankan Backend
 1. Jalankan Microservice
 - go run login_service.go
@@ -8,7 +13,7 @@ Cara Menjalankan Backend
 2. Jalankan Api Gateway
 - go run api_gateway.go
 
-Login Service Api List
+Login & Register Service Api List
 
 /account/login/montir
 {
@@ -50,3 +55,9 @@ Login Service Api List
         "phone_number": "089812332123"
     }
 }
+
+USER API LIST
+/user/profile/detail (GET)
+
+MONTIR API LIST
+/montir/profile/detail (GET)
