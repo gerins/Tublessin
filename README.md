@@ -1,5 +1,9 @@
 # Tublessin
 
+Microservice Architecture, Clean Code Architecture, Kodingan karikatur
+setiap service terdiri dari 3 layer Controller -> Usecase -> Repository 
+
+
 Cara Menjalankan Backend
 1. Jalankan Microservice
 - go run login_service.go
