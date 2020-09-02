@@ -38,6 +38,7 @@ Login & Register Service Api List
 }
 
 /account/register/user
+
 {
     "username": "sapi",
     "password": "admin",
