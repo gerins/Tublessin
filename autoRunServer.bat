@@ -43,3 +43,4 @@ PAUSE >nul
 cd ..
 cd ..
 START autoRunServer.bat
+EXIT
