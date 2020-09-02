@@ -1,0 +1,4 @@
+services/login_service/login_service.exe
+services/montir_service/montir_service.exe
+services/user_service/user_service.exe
+api_gateway/api_gateway.exe

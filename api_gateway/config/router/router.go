@@ -33,4 +33,7 @@ func printRouteList() {
 	log.Println("http://"+serverHost+":"+serverPort+LOGIN_MAIN_ROUTE+"/login/montir", "(POST)")
 	log.Println("http://"+serverHost+":"+serverPort+LOGIN_MAIN_ROUTE+"/login/user", "(POST)")
 	log.Println("http://"+serverHost+":"+serverPort+LOGIN_MAIN_ROUTE+"/register/montir", "(POST)")
+	log.Println("http://"+serverHost+":"+serverPort+LOGIN_MAIN_ROUTE+"/register/user", "(POST)")
+	log.Println("http://"+serverHost+":"+serverPort+MONTIR_MAIN_ROUTE+"/profile/detail/{id}", "(GET)")
+	log.Println("http://"+serverHost+":"+serverPort+USER_MAIN_ROUTE+"/profile/detail/{id}", "(GET)")
 }
