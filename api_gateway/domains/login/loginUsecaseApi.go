@@ -27,7 +27,7 @@ func NewLoginUsecaseApi(loginService model.LoginClient, montirService model.Mont
 func (s LoginUsecaseApi) HandleLoginMontir(montirAccount *model.MontirLoginForm) (*model.LoginResponeMessage, error) {
 	result, err := s.LoginService.MontirLogin(context.Background(), montirAccount)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		return &model.LoginResponeMessage{
 			Message: "Username atau Password Salah",
 			Token:   "0",
@@ -41,7 +41,7 @@ func (s LoginUsecaseApi) HandleLoginMontir(montirAccount *model.MontirLoginForm)
 func (s LoginUsecaseApi) HandleLoginUser(userAccount *model.UserLoginForm) (*model.LoginResponeMessage, error) {
 	result, err := s.LoginService.UserLogin(context.Background(), userAccount)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		return &model.LoginResponeMessage{
 			Message: "Username atau Password Salah",
 			Token:   "0",
@@ -55,7 +55,7 @@ func (s LoginUsecaseApi) HandleLoginUser(userAccount *model.UserLoginForm) (*mod
 func (s LoginUsecaseApi) HandleRegisterNewMontir(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error) {
 	result, err := s.MontirService.RegisterNewMontir(context.Background(), montirAccount)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		return nil, err
 	}
 	return result, nil
@@ -64,7 +64,7 @@ func (s LoginUsecaseApi) HandleRegisterNewMontir(montirAccount *model.MontirAcco
 func (s LoginUsecaseApi) HandleRegisterNewUser(userAccount *model.UserAccount) (*model.UserResponeMessage, error) {
 	result, err := s.UserService.RegisterNewUser(context.Background(), userAccount)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		return nil, err
 	}
 	return result, nil

@@ -13,6 +13,7 @@ type MontirUsecase struct {
 type MontirUsecaseInterface interface {
 	Login(montirAccount *model.MontirAccount) (*model.MontirAccount, error)
 	RegisterNewMontir(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
+	GetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirUsecase(db *sql.DB) MontirUsecaseInterface {
@@ -39,4 +40,12 @@ func (s MontirUsecase) RegisterNewMontir(montirAccount *model.MontirAccount) (*m
 		return nil, err
 	}
 	return result, nil
+}
+
+func (s MontirUsecase) GetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := s.MontirRepository.GetMontirProfileByID(montirId, "A")
+	if err != nil {
+		return nil, err
+	}
+	return montirResponeMessage, nil
 }

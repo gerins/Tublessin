@@ -39,7 +39,7 @@ message MontirProfile {
     string date_updated = 13;
     string date_created = 14;
     MontirStatus status = 15;
-    MontirRating rating = 16;
+   repeated MontirRating rating_list = 16;
     MontirLocation location = 17;
 }
 

@@ -24,7 +24,7 @@ func NewLoginUsecase(clientMontir model.MontirClient, clientUser model.UserClien
 func (s LoginUsecase) MontirLogin(montirAccount *model.MontirAccount) (*model.MontirAccount, error) {
 	result, err := s.MontirService.Login(context.Background(), montirAccount)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		return nil, err
 	}
 
@@ -34,7 +34,7 @@ func (s LoginUsecase) MontirLogin(montirAccount *model.MontirAccount) (*model.Mo
 func (s LoginUsecase) UserLogin(userAccount *model.UserAccount) (*model.UserAccount, error) {
 	result, err := s.UserService.Login(context.Background(), userAccount)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		return nil, err
 	}
 

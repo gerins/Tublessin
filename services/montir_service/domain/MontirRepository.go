@@ -2,6 +2,7 @@ package domain
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 	"tublessin/common/model"
 )
@@ -13,6 +14,7 @@ type MontirRepository struct {
 type MontirRepositoryInterface interface {
 	Login(username, status string) (*model.MontirAccount, error)
 	RegisterNewMontir(m *model.MontirAccount) (*model.MontirResponeMessage, error)
+	GetMontirProfileByID(montirId, statusAccount string) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirRepository(db *sql.DB) MontirRepositoryInterface {
@@ -73,4 +75,57 @@ func (r MontirRepository) RegisterNewMontir(m *model.MontirAccount) (*model.Mont
 	tx.Commit()
 
 	return &model.MontirResponeMessage{Response: "Inserting New Montir Success", Code: "200", Result: m}, nil
+}
+
+func (r MontirRepository) GetMontirProfileByID(montirId, statusAccount string) (*model.MontirResponeMessage, error) {
+	var montirAccount model.MontirAccount
+
+	result := r.db.QueryRow("SELECT * FROM montir_account WHERE id=? AND status_account=?", montirId, statusAccount)
+	err := result.Scan(&montirAccount.Id, &montirAccount.Username, &montirAccount.Password, &montirAccount.StatusAccount)
+	if err != nil {
+		return nil, errors.New("Montir ID Not Found")
+	}
+
+	var mp model.MontirProfile
+	result2 := r.db.QueryRow("SELECT * FROM montir_profile WHERE montir_account_id=?", montirId)
+	err = result2.Scan(&mp.Id, &mp.Firstname, &mp.Lastname, &mp.BornDate, &mp.Gender, &mp.Ktp, &mp.Address, &mp.City, &mp.Email, &mp.PhoneNumber, &mp.ImageURL, &mp.VerifiedAccount, &mp.DateUpdated, &mp.DateCreated)
+	if err != nil {
+		log.Println(err)
+	}
+	montirAccount.Profile = &mp
+
+	var ml model.MontirLocation
+	result3 := r.db.QueryRow("SELECT * FROM montir_location WHERE montir_account_id=? ", montirId)
+	err = result3.Scan(&mp.Id, &ml.Latitude, &ml.Longitude, &ml.DateUpdated)
+	if err != nil {
+		log.Println(err)
+	}
+	montirAccount.Profile.Location = &ml
+
+	var ms model.MontirStatus
+	result4 := r.db.QueryRow(`SELECT ms.status_operational, msa.status, ms.date_updated
+	FROM montir_status ms JOIN master_status_activity msa ON ms.status_activity_id = msa.id
+	WHERE ms.montir_account_id = ?`, montirId)
+	err = result4.Scan(&ms.StatusOperational, &ms.StatusActivity, &ms.DateUpdated)
+	if err != nil {
+		log.Println(err)
+	}
+	montirAccount.Profile.Status = &ms
+
+	result5, err := r.db.Query("SELECT * FROM montir_rating WHERE montir_account_id=?", montirId)
+	if err != nil {
+		log.Println(err)
+	}
+
+	for result5.Next() {
+		var rating model.MontirRating
+		err := result5.Scan(&mp.Id, &rating.Rating, &rating.RaterId, &rating.Review, &rating.DateCreated)
+		if err != nil {
+			log.Println(err)
+			break
+		}
+		montirAccount.Profile.RatingList = append(montirAccount.Profile.RatingList, &rating)
+	}
+
+	return &model.MontirResponeMessage{Response: "Get Montir Profile Success", Code: "200", Result: &montirAccount}, nil
 }
