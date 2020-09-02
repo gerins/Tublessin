@@ -24,7 +24,7 @@ func (c MontirControllerApi) HandleGetMontirProfileByID() func(w http.ResponseWr
 		result, err := c.MontirUsecaseApi.HandleGetMontirProfileByID(montirId)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Id Not Found", Code: "400"})
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Montir Id Not Found", Code: "400"})
 			return
 		}
 

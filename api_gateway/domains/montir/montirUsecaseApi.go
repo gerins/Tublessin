@@ -25,7 +25,6 @@ func (s MontirUsecaseApi) HandleGetMontirProfileByID(montirId string) (*model.Mo
 
 	montirResponeMessage, err := s.MontirService.GetMontirProfileByID(context.Background(), montirAccountWithId)
 	if err != nil {
-		log.Println(montirResponeMessage)
 		log.Println(err.Error())
 		return nil, err
 	}

@@ -78,8 +78,12 @@ func (c LoginControllerApi) HandleRegisterNewMontir() func(w http.ResponseWriter
 			} else if strings.Contains(err.Error(), "phone_number_UNIQUE") {
 				json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Nomor Telefon Sudah Digunakan", Code: "800"})
 				return
+			} else if strings.Contains(err.Error(), "email_UNIQUE") {
+				json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Email Sudah Digunakan", Code: "700"})
+				return
 			}
 			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
+			return
 		}
 
 		w.WriteHeader(http.StatusOK)
