@@ -2,12 +2,10 @@ package montir
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"tublessin/api_gateway/utils"
 	"tublessin/common/model"
 
@@ -43,18 +41,23 @@ func (c MontirControllerApi) HandleUpdateMontirProfilePicture() func(w http.Resp
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		fileName, err := utils.SaveFileToStorage(r, mux.Vars(r)["id"], "montir")
+		getId := mux.Vars(r)["id"]
+		fileName, err := utils.SaveFileToStorage(r, getId, "montir")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Uploading Image Failed", Code: "500"})
 			return
 		}
 
-		fmt.Println(fileName)
+		result, err := c.MontirUsecaseApi.HandleUpdateMontirProfilePicture(getId, fileName)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Uploading Image Failed", Code: "500"})
+			return
+		}
 
 		w.WriteHeader(http.StatusOK)
-		convertMontirId, _ := strconv.Atoi(mux.Vars(r)["id"])
-		json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Uploading Image Success", Code: "200", Result: &model.MontirAccount{Id: int32(convertMontirId)}})
+		json.NewEncoder(w).Encode(result)
 	}
 }
 

@@ -6,6 +6,7 @@ service Montir {
     rpc RegisterNewMontir(MontirAccount) returns (MontirResponeMessage) {}
     rpc Login(MontirAccount) returns (MontirAccount) {}
     rpc UpdateMontirProfileByID(MontirAccount) returns (MontirResponeMessage) {}
+    rpc UpdateMontirProfilePicture(MontirProfile) returns (MontirResponeMessage){}
     rpc GetMontirProfileByID(MontirAccount) returns (MontirResponeMessage) {}
 }
 

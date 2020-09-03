@@ -15,6 +15,7 @@ type UserRepositoryInterface interface {
 	Login(username string) (*model.UserAccount, error)
 	RegisterNewUser(m *model.UserAccount) (*model.UserResponeMessage, error)
 	GetUserProfileById(userId string) (*model.UserResponeMessage, error)
+	UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 }
 
 func NewUserRepository(db *sql.DB) UserRepositoryInterface {
@@ -96,4 +97,26 @@ func (r UserRepository) GetUserProfileById(userId string) (*model.UserResponeMes
 	userAccount.Profile.Location = &ml
 
 	return &model.UserResponeMessage{Response: "Get user Profile Success", Code: "200", Result: &userAccount}, nil
+}
+
+func (r UserRepository) UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	stmnt1, _ := tx.Prepare("UPDATE user_profile SET imageURL = ? WHERE user_account_id = ?")
+	_, err = stmnt1.Exec(userProfile.ImageURL, userProfile.Id)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return &model.UserResponeMessage{Response: "Updating Profile Picture Success", Code: "200", Result: &model.UserAccount{
+		Profile: &model.UserProfile{Id: userProfile.Id, ImageURL: userProfile.ImageURL},
+	}}, nil
 }

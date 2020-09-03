@@ -13,6 +13,7 @@ type MontirUsecaseApi struct {
 
 type MontirUsecaseApiInterface interface {
 	HandleGetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error)
+	HandleUpdateMontirProfilePicture(MontirId, fileName string) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirUsecaseApi(montirService model.MontirClient) MontirUsecaseApiInterface {
@@ -30,4 +31,15 @@ func (s MontirUsecaseApi) HandleGetMontirProfileByID(montirId string) (*model.Mo
 	}
 
 	return montirResponeMessage, nil
+}
+
+func (s MontirUsecaseApi) HandleUpdateMontirProfilePicture(MontirId, fileName string) (*model.MontirResponeMessage, error) {
+	convertIdToInt, _ := strconv.Atoi(MontirId)
+	MontirResponeMessage, err := s.MontirService.UpdateMontirProfilePicture(context.Background(), &model.MontirProfile{Id: int32(convertIdToInt), ImageURL: fileName})
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return MontirResponeMessage, nil
 }

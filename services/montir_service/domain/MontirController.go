@@ -48,3 +48,12 @@ func (c MontirServer) GetMontirProfileByID(ctx context.Context, param *model.Mon
 func (c MontirServer) UpdateMontirProfileByID(ctx context.Context, param *model.MontirAccount) (*model.MontirResponeMessage, error) {
 	return &model.MontirResponeMessage{Response: ""}, nil
 }
+
+func (c MontirServer) UpdateMontirProfilePicture(ctx context.Context, param *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := c.MontirUsecase.UpdateMontirProfilePicture(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
+}

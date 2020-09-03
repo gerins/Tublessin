@@ -624,7 +624,7 @@ var file_montir_proto_rawDesc = []byte{
 	0x0e, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x41, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x12,
 	0x21, 0x0a, 0x0c, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x18,
 	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x61, 0x74, 0x65, 0x55, 0x70, 0x64, 0x61, 0x74,
-	0x65, 0x64, 0x32, 0xa6, 0x02, 0x0a, 0x06, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x12, 0x48, 0x0a,
+	0x65, 0x64, 0x32, 0xf9, 0x02, 0x0a, 0x06, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x12, 0x48, 0x0a,
 	0x11, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x4e, 0x65, 0x77, 0x4d, 0x6f, 0x6e, 0x74,
 	0x69, 0x72, 0x12, 0x14, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69,
 	0x72, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a, 0x1b, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c,
@@ -637,13 +637,18 @@ var file_montir_proto_rawDesc = []byte{
 	0x6f, 0x66, 0x69, 0x6c, 0x65, 0x42, 0x79, 0x49, 0x44, 0x12, 0x14, 0x2e, 0x6d, 0x6f, 0x64, 0x65,
 	0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a,
 	0x1b, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x12, 0x4b,
-	0x0a, 0x14, 0x47, 0x65, 0x74, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x50, 0x72, 0x6f, 0x66, 0x69,
-	0x6c, 0x65, 0x42, 0x79, 0x49, 0x44, 0x12, 0x14, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d,
-	0x6f, 0x6e, 0x74, 0x69, 0x72, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a, 0x1b, 0x2e, 0x6d,
-	0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x73, 0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x12, 0x51,
+	0x0a, 0x1a, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x50, 0x72,
+	0x6f, 0x66, 0x69, 0x6c, 0x65, 0x50, 0x69, 0x63, 0x74, 0x75, 0x72, 0x65, 0x12, 0x14, 0x2e, 0x6d,
+	0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x50, 0x72, 0x6f, 0x66, 0x69,
+	0x6c, 0x65, 0x1a, 0x1b, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69,
+	0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22,
+	0x00, 0x12, 0x4b, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x50, 0x72,
+	0x6f, 0x66, 0x69, 0x6c, 0x65, 0x42, 0x79, 0x49, 0x44, 0x12, 0x14, 0x2e, 0x6d, 0x6f, 0x64, 0x65,
+	0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a,
+	0x1b, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -668,24 +673,26 @@ var file_montir_proto_goTypes = []interface{}{
 	(*MontirStatus)(nil),         // 5: model.MontirStatus
 }
 var file_montir_proto_depIdxs = []int32{
-	1, // 0: model.MontirResponeMessage.result:type_name -> model.MontirAccount
-	2, // 1: model.MontirAccount.profile:type_name -> model.MontirProfile
-	5, // 2: model.MontirProfile.status:type_name -> model.MontirStatus
-	3, // 3: model.MontirProfile.rating_list:type_name -> model.MontirRating
-	4, // 4: model.MontirProfile.location:type_name -> model.MontirLocation
-	1, // 5: model.Montir.RegisterNewMontir:input_type -> model.MontirAccount
-	1, // 6: model.Montir.Login:input_type -> model.MontirAccount
-	1, // 7: model.Montir.UpdateMontirProfileByID:input_type -> model.MontirAccount
-	1, // 8: model.Montir.GetMontirProfileByID:input_type -> model.MontirAccount
-	0, // 9: model.Montir.RegisterNewMontir:output_type -> model.MontirResponeMessage
-	1, // 10: model.Montir.Login:output_type -> model.MontirAccount
-	0, // 11: model.Montir.UpdateMontirProfileByID:output_type -> model.MontirResponeMessage
-	0, // 12: model.Montir.GetMontirProfileByID:output_type -> model.MontirResponeMessage
-	9, // [9:13] is the sub-list for method output_type
-	5, // [5:9] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1,  // 0: model.MontirResponeMessage.result:type_name -> model.MontirAccount
+	2,  // 1: model.MontirAccount.profile:type_name -> model.MontirProfile
+	5,  // 2: model.MontirProfile.status:type_name -> model.MontirStatus
+	3,  // 3: model.MontirProfile.rating_list:type_name -> model.MontirRating
+	4,  // 4: model.MontirProfile.location:type_name -> model.MontirLocation
+	1,  // 5: model.Montir.RegisterNewMontir:input_type -> model.MontirAccount
+	1,  // 6: model.Montir.Login:input_type -> model.MontirAccount
+	1,  // 7: model.Montir.UpdateMontirProfileByID:input_type -> model.MontirAccount
+	2,  // 8: model.Montir.UpdateMontirProfilePicture:input_type -> model.MontirProfile
+	1,  // 9: model.Montir.GetMontirProfileByID:input_type -> model.MontirAccount
+	0,  // 10: model.Montir.RegisterNewMontir:output_type -> model.MontirResponeMessage
+	1,  // 11: model.Montir.Login:output_type -> model.MontirAccount
+	0,  // 12: model.Montir.UpdateMontirProfileByID:output_type -> model.MontirResponeMessage
+	0,  // 13: model.Montir.UpdateMontirProfilePicture:output_type -> model.MontirResponeMessage
+	0,  // 14: model.Montir.GetMontirProfileByID:output_type -> model.MontirResponeMessage
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_montir_proto_init() }
@@ -802,6 +809,7 @@ type MontirClient interface {
 	RegisterNewMontir(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 	Login(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirAccount, error)
 	UpdateMontirProfileByID(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error)
+	UpdateMontirProfilePicture(ctx context.Context, in *MontirProfile, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 	GetMontirProfileByID(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 }
 
@@ -840,6 +848,15 @@ func (c *montirClient) UpdateMontirProfileByID(ctx context.Context, in *MontirAc
 	return out, nil
 }
 
+func (c *montirClient) UpdateMontirProfilePicture(ctx context.Context, in *MontirProfile, opts ...grpc.CallOption) (*MontirResponeMessage, error) {
+	out := new(MontirResponeMessage)
+	err := c.cc.Invoke(ctx, "/model.Montir/UpdateMontirProfilePicture", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *montirClient) GetMontirProfileByID(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error) {
 	out := new(MontirResponeMessage)
 	err := c.cc.Invoke(ctx, "/model.Montir/GetMontirProfileByID", in, out, opts...)
@@ -854,6 +871,7 @@ type MontirServer interface {
 	RegisterNewMontir(context.Context, *MontirAccount) (*MontirResponeMessage, error)
 	Login(context.Context, *MontirAccount) (*MontirAccount, error)
 	UpdateMontirProfileByID(context.Context, *MontirAccount) (*MontirResponeMessage, error)
+	UpdateMontirProfilePicture(context.Context, *MontirProfile) (*MontirResponeMessage, error)
 	GetMontirProfileByID(context.Context, *MontirAccount) (*MontirResponeMessage, error)
 }
 
@@ -869,6 +887,9 @@ func (*UnimplementedMontirServer) Login(context.Context, *MontirAccount) (*Monti
 }
 func (*UnimplementedMontirServer) UpdateMontirProfileByID(context.Context, *MontirAccount) (*MontirResponeMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMontirProfileByID not implemented")
+}
+func (*UnimplementedMontirServer) UpdateMontirProfilePicture(context.Context, *MontirProfile) (*MontirResponeMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateMontirProfilePicture not implemented")
 }
 func (*UnimplementedMontirServer) GetMontirProfileByID(context.Context, *MontirAccount) (*MontirResponeMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetMontirProfileByID not implemented")
@@ -932,6 +953,24 @@ func _Montir_UpdateMontirProfileByID_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Montir_UpdateMontirProfilePicture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MontirProfile)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MontirServer).UpdateMontirProfilePicture(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/model.Montir/UpdateMontirProfilePicture",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MontirServer).UpdateMontirProfilePicture(ctx, req.(*MontirProfile))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Montir_GetMontirProfileByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(MontirAccount)
 	if err := dec(in); err != nil {
@@ -965,6 +1004,10 @@ var _Montir_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateMontirProfileByID",
 			Handler:    _Montir_UpdateMontirProfileByID_Handler,
+		},
+		{
+			MethodName: "UpdateMontirProfilePicture",
+			Handler:    _Montir_UpdateMontirProfilePicture_Handler,
 		},
 		{
 			MethodName: "GetMontirProfileByID",

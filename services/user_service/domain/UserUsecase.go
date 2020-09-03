@@ -16,6 +16,7 @@ type UserUsecaseInterface interface {
 	Login(UserAccount *model.UserAccount) (*model.UserAccount, error)
 	RegisterNewUser(UserAccount *model.UserAccount) (*model.UserResponeMessage, error)
 	GetUserProfileById(userId string) (*model.UserResponeMessage, error)
+	UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecase(db *sql.DB) UserUsecaseInterface {
@@ -57,4 +58,13 @@ func (s UserUsecase) GetUserProfileById(userId string) (*model.UserResponeMessag
 		return nil, err
 	}
 	return userResponeMessage, nil
+}
+
+func (s UserUsecase) UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+
+	UserResponeMessage, err := s.UserRepository.UpdateUserProfilePicture(userProfile)
+	if err != nil {
+		return nil, err
+	}
+	return UserResponeMessage, nil
 }

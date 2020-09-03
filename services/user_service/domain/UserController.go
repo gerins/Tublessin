@@ -48,3 +48,12 @@ func (c UserServer) UpdateUserProfileById(ctx context.Context, param *model.User
 	return &model.UserResponeMessage{Response: ""}, nil
 
 }
+
+func (c UserServer) UpdateUserProfilePicture(ctx context.Context, param *model.UserProfile) (*model.UserResponeMessage, error) {
+	userResponeMessage, err := c.UserUsecase.UpdateUserProfilePicture(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return userResponeMessage, nil
+}

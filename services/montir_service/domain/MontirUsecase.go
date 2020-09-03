@@ -16,6 +16,7 @@ type MontirUsecaseInterface interface {
 	Login(montirAccount *model.MontirAccount) (*model.MontirAccount, error)
 	RegisterNewMontir(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
 	GetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error)
+	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirUsecase(db *sql.DB) MontirUsecaseInterface {
@@ -52,6 +53,14 @@ func (s MontirUsecase) RegisterNewMontir(montirAccount *model.MontirAccount) (*m
 
 func (s MontirUsecase) GetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error) {
 	montirResponeMessage, err := s.MontirRepository.GetMontirProfileByID(montirId, "A")
+	if err != nil {
+		return nil, err
+	}
+	return montirResponeMessage, nil
+}
+
+func (s MontirUsecase) UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := s.MontirRepository.UpdateMontirProfilePicture(montirProfile)
 	if err != nil {
 		return nil, err
 	}
