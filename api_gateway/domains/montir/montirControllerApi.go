@@ -16,7 +16,7 @@ type MontirControllerApi struct {
 	MontirUsecaseApi MontirUsecaseApiInterface
 }
 
-func NewLoginControllerApi(montirService model.MontirClient) *MontirControllerApi {
+func NewMontirControllerApi(montirService model.MontirClient) *MontirControllerApi {
 	return &MontirControllerApi{MontirUsecaseApi: NewMontirUsecaseApi(montirService)}
 }
 
