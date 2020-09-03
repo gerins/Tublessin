@@ -7,6 +7,7 @@ service User {
     rpc Login(UserAccount) returns (UserAccount) {}
     rpc UpdateUserProfileById(UserProfile) returns (UserResponeMessage) {}
     rpc UpdateUserProfilePicture(UserProfile) returns (UserResponeMessage){}
+    rpc UpdateUserLocation(UserProfile) returns (UserResponeMessage) {}
     rpc GetUserProfileById(UserAccount) returns (UserResponeMessage) {}
 }
 

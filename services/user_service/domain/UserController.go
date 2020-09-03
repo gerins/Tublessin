@@ -44,13 +44,26 @@ func (c UserServer) GetUserProfileById(ctx context.Context, param *model.UserAcc
 	return userResponeMessage, nil
 }
 
-func (c UserServer) UpdateUserProfileById(ctx context.Context, param *model.UserProfile) (*model.UserResponeMessage, error) {
-	return &model.UserResponeMessage{Response: ""}, nil
-
-}
-
 func (c UserServer) UpdateUserProfilePicture(ctx context.Context, param *model.UserProfile) (*model.UserResponeMessage, error) {
 	userResponeMessage, err := c.UserUsecase.UpdateUserProfilePicture(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return userResponeMessage, nil
+}
+
+func (c UserServer) UpdateUserProfileById(ctx context.Context, param *model.UserProfile) (*model.UserResponeMessage, error) {
+	userResponeMessage, err := c.UserUsecase.UpdateUserProfileByID(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return userResponeMessage, nil
+}
+
+func (c UserServer) UpdateUserLocation(ctx context.Context, param *model.UserProfile) (*model.UserResponeMessage, error) {
+	userResponeMessage, err := c.UserUsecase.UpdateUserLocation(param)
 	if err != nil {
 		return nil, err
 	}

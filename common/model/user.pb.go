@@ -391,7 +391,7 @@ var file_user_proto_rawDesc = []byte{
 	0x64, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x01, 0x52, 0x09, 0x6c, 0x6f, 0x6e, 0x67, 0x69, 0x74,
 	0x75, 0x64, 0x65, 0x12, 0x21, 0x0a, 0x0c, 0x64, 0x61, 0x74, 0x65, 0x5f, 0x75, 0x70, 0x64, 0x61,
 	0x74, 0x65, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x61, 0x74, 0x65, 0x55,
-	0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x32, 0xdb, 0x02, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x12,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x64, 0x32, 0xa2, 0x03, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x12,
 	0x42, 0x0a, 0x0f, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x4e, 0x65, 0x77, 0x55, 0x73,
 	0x65, 0x72, 0x12, 0x12, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x41,
 	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a, 0x19, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55,
@@ -409,11 +409,16 @@ var file_user_proto_rawDesc = []byte{
 	0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65,
 	0x1a, 0x19, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73,
 	0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x12, 0x45, 0x0a,
-	0x12, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x42,
-	0x79, 0x49, 0x64, 0x12, 0x12, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72,
-	0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a, 0x19, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e,
+	0x12, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x4c, 0x6f, 0x63, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x12, 0x12, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72,
+	0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x1a, 0x19, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e,
 	0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61,
-	0x67, 0x65, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x67, 0x65, 0x22, 0x00, 0x12, 0x45, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x50,
+	0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x42, 0x79, 0x49, 0x64, 0x12, 0x12, 0x2e, 0x6d, 0x6f, 0x64,
+	0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a, 0x19,
+	0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -443,14 +448,16 @@ var file_user_proto_depIdxs = []int32{
 	1, // 4: model.User.Login:input_type -> model.UserAccount
 	2, // 5: model.User.UpdateUserProfileById:input_type -> model.UserProfile
 	2, // 6: model.User.UpdateUserProfilePicture:input_type -> model.UserProfile
-	1, // 7: model.User.GetUserProfileById:input_type -> model.UserAccount
-	0, // 8: model.User.RegisterNewUser:output_type -> model.UserResponeMessage
-	1, // 9: model.User.Login:output_type -> model.UserAccount
-	0, // 10: model.User.UpdateUserProfileById:output_type -> model.UserResponeMessage
-	0, // 11: model.User.UpdateUserProfilePicture:output_type -> model.UserResponeMessage
-	0, // 12: model.User.GetUserProfileById:output_type -> model.UserResponeMessage
-	8, // [8:13] is the sub-list for method output_type
-	3, // [3:8] is the sub-list for method input_type
+	2, // 7: model.User.UpdateUserLocation:input_type -> model.UserProfile
+	1, // 8: model.User.GetUserProfileById:input_type -> model.UserAccount
+	0, // 9: model.User.RegisterNewUser:output_type -> model.UserResponeMessage
+	1, // 10: model.User.Login:output_type -> model.UserAccount
+	0, // 11: model.User.UpdateUserProfileById:output_type -> model.UserResponeMessage
+	0, // 12: model.User.UpdateUserProfilePicture:output_type -> model.UserResponeMessage
+	0, // 13: model.User.UpdateUserLocation:output_type -> model.UserResponeMessage
+	0, // 14: model.User.GetUserProfileById:output_type -> model.UserResponeMessage
+	9, // [9:15] is the sub-list for method output_type
+	3, // [3:9] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
 	3, // [3:3] is the sub-list for extension extendee
 	0, // [0:3] is the sub-list for field type_name
@@ -547,6 +554,7 @@ type UserClient interface {
 	Login(ctx context.Context, in *UserAccount, opts ...grpc.CallOption) (*UserAccount, error)
 	UpdateUserProfileById(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*UserResponeMessage, error)
 	UpdateUserProfilePicture(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*UserResponeMessage, error)
+	UpdateUserLocation(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*UserResponeMessage, error)
 	GetUserProfileById(ctx context.Context, in *UserAccount, opts ...grpc.CallOption) (*UserResponeMessage, error)
 }
 
@@ -594,6 +602,15 @@ func (c *userClient) UpdateUserProfilePicture(ctx context.Context, in *UserProfi
 	return out, nil
 }
 
+func (c *userClient) UpdateUserLocation(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*UserResponeMessage, error) {
+	out := new(UserResponeMessage)
+	err := c.cc.Invoke(ctx, "/model.User/UpdateUserLocation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) GetUserProfileById(ctx context.Context, in *UserAccount, opts ...grpc.CallOption) (*UserResponeMessage, error) {
 	out := new(UserResponeMessage)
 	err := c.cc.Invoke(ctx, "/model.User/GetUserProfileById", in, out, opts...)
@@ -609,6 +626,7 @@ type UserServer interface {
 	Login(context.Context, *UserAccount) (*UserAccount, error)
 	UpdateUserProfileById(context.Context, *UserProfile) (*UserResponeMessage, error)
 	UpdateUserProfilePicture(context.Context, *UserProfile) (*UserResponeMessage, error)
+	UpdateUserLocation(context.Context, *UserProfile) (*UserResponeMessage, error)
 	GetUserProfileById(context.Context, *UserAccount) (*UserResponeMessage, error)
 }
 
@@ -627,6 +645,9 @@ func (*UnimplementedUserServer) UpdateUserProfileById(context.Context, *UserProf
 }
 func (*UnimplementedUserServer) UpdateUserProfilePicture(context.Context, *UserProfile) (*UserResponeMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserProfilePicture not implemented")
+}
+func (*UnimplementedUserServer) UpdateUserLocation(context.Context, *UserProfile) (*UserResponeMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserLocation not implemented")
 }
 func (*UnimplementedUserServer) GetUserProfileById(context.Context, *UserAccount) (*UserResponeMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserProfileById not implemented")
@@ -708,6 +729,24 @@ func _User_UpdateUserProfilePicture_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UpdateUserLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserProfile)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UpdateUserLocation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/model.User/UpdateUserLocation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UpdateUserLocation(ctx, req.(*UserProfile))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_GetUserProfileById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UserAccount)
 	if err := dec(in); err != nil {
@@ -745,6 +784,10 @@ var _User_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateUserProfilePicture",
 			Handler:    _User_UpdateUserProfilePicture_Handler,
+		},
+		{
+			MethodName: "UpdateUserLocation",
+			Handler:    _User_UpdateUserLocation_Handler,
 		},
 		{
 			MethodName: "GetUserProfileById",

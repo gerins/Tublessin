@@ -14,6 +14,8 @@ type MontirUsecaseApi struct {
 type MontirUsecaseApiInterface interface {
 	HandleGetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error)
 	HandleUpdateMontirProfilePicture(MontirId, fileName string) (*model.MontirResponeMessage, error)
+	HandleUpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
+	HandleUpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirUsecaseApi(montirService model.MontirClient) MontirUsecaseApiInterface {
@@ -36,6 +38,26 @@ func (s MontirUsecaseApi) HandleGetMontirProfileByID(montirId string) (*model.Mo
 func (s MontirUsecaseApi) HandleUpdateMontirProfilePicture(MontirId, fileName string) (*model.MontirResponeMessage, error) {
 	convertIdToInt, _ := strconv.Atoi(MontirId)
 	MontirResponeMessage, err := s.MontirService.UpdateMontirProfilePicture(context.Background(), &model.MontirProfile{Id: int32(convertIdToInt), ImageURL: fileName})
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return MontirResponeMessage, nil
+}
+
+func (s MontirUsecaseApi) HandleUpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	MontirResponeMessage, err := s.MontirService.UpdateMontirProfileByID(context.Background(), montirProfile)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return MontirResponeMessage, nil
+}
+
+func (s MontirUsecaseApi) HandleUpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	MontirResponeMessage, err := s.MontirService.UpdateMontirLocation(context.Background(), montirProfile)
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err

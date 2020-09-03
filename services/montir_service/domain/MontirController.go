@@ -45,12 +45,26 @@ func (c MontirServer) GetMontirProfileByID(ctx context.Context, param *model.Mon
 	return montirResponeMessage, nil
 }
 
-func (c MontirServer) UpdateMontirProfileByID(ctx context.Context, param *model.MontirProfile) (*model.MontirResponeMessage, error) {
-	return &model.MontirResponeMessage{Response: ""}, nil
-}
-
 func (c MontirServer) UpdateMontirProfilePicture(ctx context.Context, param *model.MontirProfile) (*model.MontirResponeMessage, error) {
 	montirResponeMessage, err := c.MontirUsecase.UpdateMontirProfilePicture(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
+}
+
+func (c MontirServer) UpdateMontirProfileByID(ctx context.Context, param *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := c.MontirUsecase.UpdateMontirProfileByID(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
+}
+
+func (c MontirServer) UpdateMontirLocation(ctx context.Context, param *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := c.MontirUsecase.UpdateMontirLocation(param)
 	if err != nil {
 		return nil, err
 	}

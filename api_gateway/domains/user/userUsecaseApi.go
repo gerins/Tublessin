@@ -14,6 +14,8 @@ type UserUsecaseApi struct {
 type UserUsecaseApiInterface interface {
 	HandleGetUserProfileByID(UserId string) (*model.UserResponeMessage, error)
 	HandleUpdateUserProfilePicture(userId, fileName string) (*model.UserResponeMessage, error)
+	HandleUpdateUserProfileByID(UserProfile *model.UserProfile) (*model.UserResponeMessage, error)
+	HandleUpdateUserLocation(UserProfile *model.UserProfile) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecaseApi(UserService model.UserClient) UserUsecaseApiInterface {
@@ -42,4 +44,24 @@ func (s UserUsecaseApi) HandleUpdateUserProfilePicture(userId, fileName string) 
 	}
 
 	return userResponeMessage, nil
+}
+
+func (s UserUsecaseApi) HandleUpdateUserProfileByID(UserProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	UserResponeMessage, err := s.UserService.UpdateUserProfileById(context.Background(), UserProfile)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return UserResponeMessage, nil
+}
+
+func (s UserUsecaseApi) HandleUpdateUserLocation(UserProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	UserResponeMessage, err := s.UserService.UpdateUserLocation(context.Background(), UserProfile)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return UserResponeMessage, nil
 }

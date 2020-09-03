@@ -16,6 +16,8 @@ type MontirRepositoryInterface interface {
 	RegisterNewMontir(m *model.MontirAccount) (*model.MontirResponeMessage, error)
 	GetMontirProfileByID(montirId, statusAccount string) (*model.MontirResponeMessage, error)
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
+	UpdateMontirProfileByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
+	UpdateMontirLocation(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirRepository(db *sql.DB) MontirRepositoryInterface {
@@ -171,6 +173,28 @@ func (r MontirRepository) UpdateMontirProfileByID(mp *model.MontirProfile) (*mod
 	tx.Commit()
 
 	return &model.MontirResponeMessage{Response: "Updating Montir Profile Success", Code: "200", Result: &model.MontirAccount{
+		Profile: mp,
+	}}, nil
+}
+
+func (r MontirRepository) UpdateMontirLocation(mp *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	stmnt1, _ := tx.Prepare("UPDATE montir_location SET latitude=?,longitude=? WHERE montir_account_id = ?")
+	_, err = stmnt1.Exec(mp.Location.Latitude, mp.Location.Longitude, mp.Id)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return &model.MontirResponeMessage{Response: "Updating Montir Location Success", Code: "200", Result: &model.MontirAccount{
 		Profile: mp,
 	}}, nil
 }

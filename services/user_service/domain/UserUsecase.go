@@ -17,6 +17,8 @@ type UserUsecaseInterface interface {
 	RegisterNewUser(UserAccount *model.UserAccount) (*model.UserResponeMessage, error)
 	GetUserProfileById(userId string) (*model.UserResponeMessage, error)
 	UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
+	UpdateUserProfileByID(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
+	UpdateUserLocation(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecase(db *sql.DB) UserUsecaseInterface {
@@ -63,6 +65,26 @@ func (s UserUsecase) GetUserProfileById(userId string) (*model.UserResponeMessag
 func (s UserUsecase) UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error) {
 
 	UserResponeMessage, err := s.UserRepository.UpdateUserProfilePicture(userProfile)
+	if err != nil {
+		return nil, err
+	}
+	return UserResponeMessage, nil
+}
+
+func (s UserUsecase) UpdateUserProfileByID(userProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	UserResponeMessage, err := s.UserRepository.UpdateUserProfileByID(userProfile)
+	if err != nil {
+		return nil, err
+	}
+	return UserResponeMessage, nil
+}
+
+func (s UserUsecase) UpdateUserLocation(userProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	if userProfile.Location == nil || userProfile.Location.Latitude == 0 || userProfile.Location.Longitude == 0 {
+		return nil, errors.New("Body cannot empty")
+	}
+
+	UserResponeMessage, err := s.UserRepository.UpdateUserLocation(userProfile)
 	if err != nil {
 		return nil, err
 	}

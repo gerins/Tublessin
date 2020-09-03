@@ -16,6 +16,8 @@ type UserRepositoryInterface interface {
 	RegisterNewUser(m *model.UserAccount) (*model.UserResponeMessage, error)
 	GetUserProfileById(userId string) (*model.UserResponeMessage, error)
 	UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
+	UpdateUserProfileByID(mp *model.UserProfile) (*model.UserResponeMessage, error)
+	UpdateUserLocation(mp *model.UserProfile) (*model.UserResponeMessage, error)
 }
 
 func NewUserRepository(db *sql.DB) UserRepositoryInterface {
@@ -118,5 +120,49 @@ func (r UserRepository) UpdateUserProfilePicture(userProfile *model.UserProfile)
 
 	return &model.UserResponeMessage{Response: "Updating Profile Picture Success", Code: "200", Result: &model.UserAccount{
 		Profile: &model.UserProfile{Id: userProfile.Id, ImageURL: userProfile.ImageURL},
+	}}, nil
+}
+
+func (r UserRepository) UpdateUserProfileByID(mp *model.UserProfile) (*model.UserResponeMessage, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	stmnt1, _ := tx.Prepare("UPDATE user_profile SET firstname=?,lastname=?,gender=?,phone_number=?,email=? WHERE user_account_id = ?")
+	_, err = stmnt1.Exec(mp.Firstname, mp.Lastname, mp.Gender, mp.PhoneNumber, mp.Email, mp.Id)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return &model.UserResponeMessage{Response: "Updating User Profile Success", Code: "200", Result: &model.UserAccount{
+		Profile: mp,
+	}}, nil
+}
+
+func (r UserRepository) UpdateUserLocation(mp *model.UserProfile) (*model.UserResponeMessage, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	stmnt1, _ := tx.Prepare("UPDATE user_location SET latitude=?,longitude=? WHERE user_account_id = ?")
+	_, err = stmnt1.Exec(mp.Location.Latitude, mp.Location.Longitude, mp.Id)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return &model.UserResponeMessage{Response: "Updating User Location Success", Code: "200", Result: &model.UserAccount{
+		Profile: mp,
 	}}, nil
 }

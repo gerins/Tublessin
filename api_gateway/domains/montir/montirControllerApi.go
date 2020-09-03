@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"tublessin/api_gateway/utils"
 	"tublessin/common/model"
 
@@ -75,5 +76,50 @@ func (s MontirControllerApi) HandleServeMontirFile() func(w http.ResponseWriter,
 
 		w.Header().Set("Content-Type", "image/jpeg")
 		http.ServeFile(w, r, fileLocation)
+	}
+}
+
+func (c MontirControllerApi) HandleUpdateMontirProfileByID() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		var montirProfile model.MontirProfile
+		json.NewDecoder(r.Body).Decode(&montirProfile)
+		convertId, _ := strconv.Atoi(mux.Vars(r)["id"])
+		montirProfile.Id = int32(convertId)
+
+		result, err := c.MontirUsecaseApi.HandleUpdateMontirProfileByID(&montirProfile)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Updating Montir Profile Failed", Code: "400"})
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(result)
+	}
+}
+
+func (c MontirControllerApi) HandleUpdateMontirLocation() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		var montirProfile model.MontirProfile
+		var montirLocation *model.MontirLocation
+		json.NewDecoder(r.Body).Decode(&montirLocation)
+
+		convertId, _ := strconv.Atoi(mux.Vars(r)["id"])
+		montirProfile.Id = int32(convertId)
+		montirProfile.Location = montirLocation
+
+		result, err := c.MontirUsecaseApi.HandleUpdateMontirLocation(&montirProfile)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Updating Montir Location Failed", Code: "400"})
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(result)
 	}
 }

@@ -17,6 +17,8 @@ type MontirUsecaseInterface interface {
 	RegisterNewMontir(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
 	GetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error)
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
+	UpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
+	UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirUsecase(db *sql.DB) MontirUsecaseInterface {
@@ -61,6 +63,26 @@ func (s MontirUsecase) GetMontirProfileByID(montirId string) (*model.MontirRespo
 
 func (s MontirUsecase) UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
 	montirResponeMessage, err := s.MontirRepository.UpdateMontirProfilePicture(montirProfile)
+	if err != nil {
+		return nil, err
+	}
+	return montirResponeMessage, nil
+}
+
+func (s MontirUsecase) UpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := s.MontirRepository.UpdateMontirProfileByID(montirProfile)
+	if err != nil {
+		return nil, err
+	}
+	return montirResponeMessage, nil
+}
+
+func (s MontirUsecase) UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	if montirProfile.Location == nil || montirProfile.Location.Latitude == 0 || montirProfile.Location.Longitude == 0 {
+		return nil, errors.New("Body cannot empty")
+	}
+
+	montirResponeMessage, err := s.MontirRepository.UpdateMontirLocation(montirProfile)
 	if err != nil {
 		return nil, err
 	}

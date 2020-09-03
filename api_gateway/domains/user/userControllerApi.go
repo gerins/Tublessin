@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"tublessin/api_gateway/utils"
 	"tublessin/common/model"
 
@@ -76,5 +77,50 @@ func (s UserControllerApi) HandleServeUserFile() func(w http.ResponseWriter, r *
 
 		w.Header().Set("Content-Type", "image/jpeg")
 		http.ServeFile(w, r, fileLocation)
+	}
+}
+
+func (c UserControllerApi) HandleUpdateUserProfileByID() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		var userProfile model.UserProfile
+		json.NewDecoder(r.Body).Decode(&userProfile)
+		convertId, _ := strconv.Atoi(mux.Vars(r)["id"])
+		userProfile.Id = int32(convertId)
+
+		result, err := c.UserUsecaseApi.HandleUpdateUserProfileByID(&userProfile)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "Updating User Profile Failed", Code: "400"})
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(result)
+	}
+}
+
+func (c UserControllerApi) HandleUpdateUserLocation() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		var userProfile model.UserProfile
+		var userLocation *model.UserLocation
+		json.NewDecoder(r.Body).Decode(&userLocation)
+
+		convertId, _ := strconv.Atoi(mux.Vars(r)["id"])
+		userProfile.Id = int32(convertId)
+		userProfile.Location = userLocation
+
+		result, err := c.UserUsecaseApi.HandleUpdateUserLocation(&userProfile)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "Updating User Location Failed", Code: "400"})
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(result)
 	}
 }
