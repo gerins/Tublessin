@@ -2,6 +2,8 @@
 
 Microservice Architecture, Clean Code Architecture, Kodingan karikatur.
 
+Selain fitur Tublessin-Montir dan Tublessin-User, akan segera hadir Tublessin-Jodoh, app untuk mencari jodoh
+
 setiap service terdiri dari 3 layer Controller -> Usecase -> Repository 
 
 
