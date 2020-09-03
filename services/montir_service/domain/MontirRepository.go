@@ -152,3 +152,25 @@ func (r MontirRepository) UpdateMontirProfilePicture(montirProfile *model.Montir
 		Profile: &model.MontirProfile{Id: montirProfile.Id, ImageURL: montirProfile.ImageURL},
 	}}, nil
 }
+
+func (r MontirRepository) UpdateMontirProfileByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	stmnt1, _ := tx.Prepare("UPDATE montir_profile SET firstname=?,lastname=?,born_date=?,gender=?,ktp=?,address=?,city=?,email=?,phone_number=? WHERE montir_account_id = ?")
+	_, err = stmnt1.Exec(mp.Firstname, mp.Lastname, mp.BornDate, mp.Gender, mp.Ktp, mp.Address, mp.City, mp.Email, mp.PhoneNumber, mp.Id)
+	if err != nil {
+		log.Println(err)
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return &model.MontirResponeMessage{Response: "Updating Montir Profile Success", Code: "200", Result: &model.MontirAccount{
+		Profile: mp,
+	}}, nil
+}

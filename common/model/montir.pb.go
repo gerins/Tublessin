@@ -635,7 +635,7 @@ var file_montir_proto_rawDesc = []byte{
 	0x6f, 0x6e, 0x74, 0x69, 0x72, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x00, 0x12, 0x4e,
 	0x0a, 0x17, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x50, 0x72,
 	0x6f, 0x66, 0x69, 0x6c, 0x65, 0x42, 0x79, 0x49, 0x44, 0x12, 0x14, 0x2e, 0x6d, 0x6f, 0x64, 0x65,
-	0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x1a,
+	0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x1a,
 	0x1b, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x12, 0x51,
 	0x0a, 0x1a, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x50, 0x72,
@@ -680,7 +680,7 @@ var file_montir_proto_depIdxs = []int32{
 	4,  // 4: model.MontirProfile.location:type_name -> model.MontirLocation
 	1,  // 5: model.Montir.RegisterNewMontir:input_type -> model.MontirAccount
 	1,  // 6: model.Montir.Login:input_type -> model.MontirAccount
-	1,  // 7: model.Montir.UpdateMontirProfileByID:input_type -> model.MontirAccount
+	2,  // 7: model.Montir.UpdateMontirProfileByID:input_type -> model.MontirProfile
 	2,  // 8: model.Montir.UpdateMontirProfilePicture:input_type -> model.MontirProfile
 	1,  // 9: model.Montir.GetMontirProfileByID:input_type -> model.MontirAccount
 	0,  // 10: model.Montir.RegisterNewMontir:output_type -> model.MontirResponeMessage
@@ -808,7 +808,7 @@ const _ = grpc.SupportPackageIsVersion6
 type MontirClient interface {
 	RegisterNewMontir(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 	Login(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirAccount, error)
-	UpdateMontirProfileByID(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error)
+	UpdateMontirProfileByID(ctx context.Context, in *MontirProfile, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 	UpdateMontirProfilePicture(ctx context.Context, in *MontirProfile, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 	GetMontirProfileByID(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 }
@@ -839,7 +839,7 @@ func (c *montirClient) Login(ctx context.Context, in *MontirAccount, opts ...grp
 	return out, nil
 }
 
-func (c *montirClient) UpdateMontirProfileByID(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error) {
+func (c *montirClient) UpdateMontirProfileByID(ctx context.Context, in *MontirProfile, opts ...grpc.CallOption) (*MontirResponeMessage, error) {
 	out := new(MontirResponeMessage)
 	err := c.cc.Invoke(ctx, "/model.Montir/UpdateMontirProfileByID", in, out, opts...)
 	if err != nil {
@@ -870,7 +870,7 @@ func (c *montirClient) GetMontirProfileByID(ctx context.Context, in *MontirAccou
 type MontirServer interface {
 	RegisterNewMontir(context.Context, *MontirAccount) (*MontirResponeMessage, error)
 	Login(context.Context, *MontirAccount) (*MontirAccount, error)
-	UpdateMontirProfileByID(context.Context, *MontirAccount) (*MontirResponeMessage, error)
+	UpdateMontirProfileByID(context.Context, *MontirProfile) (*MontirResponeMessage, error)
 	UpdateMontirProfilePicture(context.Context, *MontirProfile) (*MontirResponeMessage, error)
 	GetMontirProfileByID(context.Context, *MontirAccount) (*MontirResponeMessage, error)
 }
@@ -885,7 +885,7 @@ func (*UnimplementedMontirServer) RegisterNewMontir(context.Context, *MontirAcco
 func (*UnimplementedMontirServer) Login(context.Context, *MontirAccount) (*MontirAccount, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (*UnimplementedMontirServer) UpdateMontirProfileByID(context.Context, *MontirAccount) (*MontirResponeMessage, error) {
+func (*UnimplementedMontirServer) UpdateMontirProfileByID(context.Context, *MontirProfile) (*MontirResponeMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMontirProfileByID not implemented")
 }
 func (*UnimplementedMontirServer) UpdateMontirProfilePicture(context.Context, *MontirProfile) (*MontirResponeMessage, error) {
@@ -936,7 +936,7 @@ func _Montir_Login_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _Montir_UpdateMontirProfileByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MontirAccount)
+	in := new(MontirProfile)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -948,7 +948,7 @@ func _Montir_UpdateMontirProfileByID_Handler(srv interface{}, ctx context.Contex
 		FullMethod: "/model.Montir/UpdateMontirProfileByID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MontirServer).UpdateMontirProfileByID(ctx, req.(*MontirAccount))
+		return srv.(MontirServer).UpdateMontirProfileByID(ctx, req.(*MontirProfile))
 	}
 	return interceptor(ctx, in, info, handler)
 }

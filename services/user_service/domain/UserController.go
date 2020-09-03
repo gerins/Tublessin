@@ -44,7 +44,7 @@ func (c UserServer) GetUserProfileById(ctx context.Context, param *model.UserAcc
 	return userResponeMessage, nil
 }
 
-func (c UserServer) UpdateUserProfileById(ctx context.Context, param *model.UserAccount) (*model.UserResponeMessage, error) {
+func (c UserServer) UpdateUserProfileById(ctx context.Context, param *model.UserProfile) (*model.UserResponeMessage, error) {
 	return &model.UserResponeMessage{Response: ""}, nil
 
 }

@@ -401,8 +401,8 @@ var file_user_proto_rawDesc = []byte{
 	0x1a, 0x12, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x41, 0x63, 0x63,
 	0x6f, 0x75, 0x6e, 0x74, 0x22, 0x00, 0x12, 0x48, 0x0a, 0x15, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
 	0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x42, 0x79, 0x49, 0x64, 0x12,
-	0x12, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x41, 0x63, 0x63, 0x6f,
-	0x75, 0x6e, 0x74, 0x1a, 0x19, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72,
+	0x12, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x66,
+	0x69, 0x6c, 0x65, 0x1a, 0x19, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x55, 0x73, 0x65, 0x72,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00,
 	0x12, 0x4b, 0x0a, 0x18, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72,
 	0x6f, 0x66, 0x69, 0x6c, 0x65, 0x50, 0x69, 0x63, 0x74, 0x75, 0x72, 0x65, 0x12, 0x12, 0x2e, 0x6d,
@@ -441,7 +441,7 @@ var file_user_proto_depIdxs = []int32{
 	3, // 2: model.UserProfile.location:type_name -> model.UserLocation
 	1, // 3: model.User.RegisterNewUser:input_type -> model.UserAccount
 	1, // 4: model.User.Login:input_type -> model.UserAccount
-	1, // 5: model.User.UpdateUserProfileById:input_type -> model.UserAccount
+	2, // 5: model.User.UpdateUserProfileById:input_type -> model.UserProfile
 	2, // 6: model.User.UpdateUserProfilePicture:input_type -> model.UserProfile
 	1, // 7: model.User.GetUserProfileById:input_type -> model.UserAccount
 	0, // 8: model.User.RegisterNewUser:output_type -> model.UserResponeMessage
@@ -545,7 +545,7 @@ const _ = grpc.SupportPackageIsVersion6
 type UserClient interface {
 	RegisterNewUser(ctx context.Context, in *UserAccount, opts ...grpc.CallOption) (*UserResponeMessage, error)
 	Login(ctx context.Context, in *UserAccount, opts ...grpc.CallOption) (*UserAccount, error)
-	UpdateUserProfileById(ctx context.Context, in *UserAccount, opts ...grpc.CallOption) (*UserResponeMessage, error)
+	UpdateUserProfileById(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*UserResponeMessage, error)
 	UpdateUserProfilePicture(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*UserResponeMessage, error)
 	GetUserProfileById(ctx context.Context, in *UserAccount, opts ...grpc.CallOption) (*UserResponeMessage, error)
 }
@@ -576,7 +576,7 @@ func (c *userClient) Login(ctx context.Context, in *UserAccount, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *userClient) UpdateUserProfileById(ctx context.Context, in *UserAccount, opts ...grpc.CallOption) (*UserResponeMessage, error) {
+func (c *userClient) UpdateUserProfileById(ctx context.Context, in *UserProfile, opts ...grpc.CallOption) (*UserResponeMessage, error) {
 	out := new(UserResponeMessage)
 	err := c.cc.Invoke(ctx, "/model.User/UpdateUserProfileById", in, out, opts...)
 	if err != nil {
@@ -607,7 +607,7 @@ func (c *userClient) GetUserProfileById(ctx context.Context, in *UserAccount, op
 type UserServer interface {
 	RegisterNewUser(context.Context, *UserAccount) (*UserResponeMessage, error)
 	Login(context.Context, *UserAccount) (*UserAccount, error)
-	UpdateUserProfileById(context.Context, *UserAccount) (*UserResponeMessage, error)
+	UpdateUserProfileById(context.Context, *UserProfile) (*UserResponeMessage, error)
 	UpdateUserProfilePicture(context.Context, *UserProfile) (*UserResponeMessage, error)
 	GetUserProfileById(context.Context, *UserAccount) (*UserResponeMessage, error)
 }
@@ -622,7 +622,7 @@ func (*UnimplementedUserServer) RegisterNewUser(context.Context, *UserAccount) (
 func (*UnimplementedUserServer) Login(context.Context, *UserAccount) (*UserAccount, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (*UnimplementedUserServer) UpdateUserProfileById(context.Context, *UserAccount) (*UserResponeMessage, error) {
+func (*UnimplementedUserServer) UpdateUserProfileById(context.Context, *UserProfile) (*UserResponeMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserProfileById not implemented")
 }
 func (*UnimplementedUserServer) UpdateUserProfilePicture(context.Context, *UserProfile) (*UserResponeMessage, error) {
@@ -673,7 +673,7 @@ func _User_Login_Handler(srv interface{}, ctx context.Context, dec func(interfac
 }
 
 func _User_UpdateUserProfileById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserAccount)
+	in := new(UserProfile)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -685,7 +685,7 @@ func _User_UpdateUserProfileById_Handler(srv interface{}, ctx context.Context, d
 		FullMethod: "/model.User/UpdateUserProfileById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).UpdateUserProfileById(ctx, req.(*UserAccount))
+		return srv.(UserServer).UpdateUserProfileById(ctx, req.(*UserProfile))
 	}
 	return interceptor(ctx, in, info, handler)
 }
