@@ -56,8 +56,18 @@ Login & Register Service Api List
     }
 }
 
-USER API LIST
+=========== USER API LIST ==============
+
 /user/profile/detail (GET)
 
-MONTIR API LIST
+/user/profile/image/upload/{id} (UNTUK UPLOAD GAMBAR)
+
+/user/file/image/{filename} (UNTUK LOAD GAMBAR)
+
+=========== MONTIR API LIST ==============
+
 /montir/profile/detail (GET)
+
+/montir/profile/image/upload/{id} (UNTUK UPLOAD GAMBAR)
+
+/montir/file/image/{filename} (UNTUK LOAD GAMBAR)
