@@ -94,9 +94,6 @@ func (s MontirUsecase) UpdateMontirLocation(montirProfile *model.MontirProfile) 
 }
 
 func (c MontirUsecase) GetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error) {
-	mockLatitude := -6.174277
-	mockLongitude := 106.829723
-
 	result, err := c.MontirRepository.GetAllActiveMontirWithLocation("A")
 	if err != nil {
 		return nil, err
@@ -105,7 +102,7 @@ func (c MontirUsecase) GetAllActiveMontirWithLocation(userLocation *model.Reques
 	for _, value := range result {
 		montirLatitude := value.Location.Latitude
 		montirLongitude := value.Location.Longitude
-		value.Distance = int32(utils.CalculateDistance(mockLatitude, mockLongitude, montirLatitude, montirLongitude))
+		value.Distance = int32(utils.CalculateDistance(userLocation.Latitude, userLocation.Longitude, montirLatitude, montirLongitude))
 	}
 
 	sort.SliceStable(result, func(i, j int) bool {
