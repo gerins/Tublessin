@@ -16,6 +16,7 @@ type MontirUsecaseApiInterface interface {
 	HandleUpdateMontirProfilePicture(MontirId, fileName string) (*model.MontirResponeMessage, error)
 	HandleUpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	HandleUpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
+	HandleGetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error)
 }
 
 func NewMontirUsecaseApi(montirService model.MontirClient) MontirUsecaseApiInterface {
@@ -64,4 +65,14 @@ func (s MontirUsecaseApi) HandleUpdateMontirLocation(montirProfile *model.Montir
 	}
 
 	return MontirResponeMessage, nil
+}
+
+func (s MontirUsecaseApi) HandleGetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error) {
+	listActiveMontir, err := s.MontirService.GetAllActiveMontirWithLocation(context.Background(), userLocation)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return listActiveMontir, nil
 }

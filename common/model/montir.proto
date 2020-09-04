@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package model;
 
+
 service Montir {
     rpc RegisterNewMontir(MontirAccount) returns (MontirResponeMessage) {}
     rpc Login(MontirAccount) returns (MontirAccount) {}
@@ -9,6 +10,7 @@ service Montir {
     rpc UpdateMontirProfilePicture(MontirProfile) returns (MontirResponeMessage) {}
     rpc UpdateMontirLocation(MontirProfile) returns (MontirResponeMessage) {}
     rpc GetMontirProfileByID(MontirAccount) returns (MontirResponeMessage) {}
+    rpc GetAllActiveMontirWithLocation(RequestActiveMontir) returns (ListActiveMontirWithLocation) {}
 }
 
 message MontirResponeMessage {
@@ -64,3 +66,30 @@ message MontirStatus {
     string date_updated = 3;
 }
 
+message ListActiveMontirWithLocation {
+    string response = 1;
+    string code = 2;
+    string total_montir = 3;
+    repeated ActiveMontirWithLocation list = 4;
+}
+
+message ActiveMontirWithLocation {
+    int32 id = 1;
+    string firstname = 2;
+    string lastname = 3;
+    string imageUrl = 4;
+    int32 distance = 5;
+    AverageMontirRating rating = 6;
+    MontirLocation location = 7;
+    MontirStatus status = 8;
+}
+
+message AverageMontirRating {
+    string total_rating = 1;
+    string average_rating = 2;
+}
+
+message RequestActiveMontir {
+    double latitude = 1;
+    double longitude = 2;
+}

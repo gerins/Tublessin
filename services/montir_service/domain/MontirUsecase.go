@@ -3,7 +3,10 @@ package domain
 import (
 	"database/sql"
 	"errors"
+	"sort"
+	"strconv"
 	"tublessin/common/model"
+	"tublessin/services/montir_service/utils"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -19,6 +22,7 @@ type MontirUsecaseInterface interface {
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
+	GetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error)
 }
 
 func NewMontirUsecase(db *sql.DB) MontirUsecaseInterface {
@@ -87,4 +91,26 @@ func (s MontirUsecase) UpdateMontirLocation(montirProfile *model.MontirProfile) 
 		return nil, err
 	}
 	return montirResponeMessage, nil
+}
+
+func (c MontirUsecase) GetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error) {
+	mockLatitude := -6.174277
+	mockLongitude := 106.829723
+
+	result, err := c.MontirRepository.GetAllActiveMontirWithLocation("A")
+	if err != nil {
+		return nil, err
+	}
+
+	for _, value := range result {
+		montirLatitude := value.Location.Latitude
+		montirLongitude := value.Location.Longitude
+		value.Distance = int32(utils.CalculateDistance(mockLatitude, mockLongitude, montirLatitude, montirLongitude))
+	}
+
+	sort.SliceStable(result, func(i, j int) bool {
+		return result[i].Distance < result[j].Distance
+	})
+
+	return &model.ListActiveMontirWithLocation{Response: "Search Nearby Montir Success", Code: "200", TotalMontir: strconv.Itoa(len(result)), List: result}, nil
 }

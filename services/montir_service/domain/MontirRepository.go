@@ -18,6 +18,7 @@ type MontirRepositoryInterface interface {
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirProfileByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
+	GetAllActiveMontirWithLocation(statusOperational string) ([]*model.ActiveMontirWithLocation, error)
 }
 
 func NewMontirRepository(db *sql.DB) MontirRepositoryInterface {
@@ -197,4 +198,30 @@ func (r MontirRepository) UpdateMontirLocation(mp *model.MontirProfile) (*model.
 	return &model.MontirResponeMessage{Response: "Updating Montir Location Success", Code: "200", Result: &model.MontirAccount{
 		Profile: mp,
 	}}, nil
+}
+
+func (c MontirRepository) GetAllActiveMontirWithLocation(statusOperational string) ([]*model.ActiveMontirWithLocation, error) {
+	var listActiveMontirWithLocation []*model.ActiveMontirWithLocation
+
+	result, err := c.db.Query(`SELECT id, firstname, lastname, imageURL, status_operational, status, latitude, longitude, date_updated, total_rating, average_rating FROM montir_rating_location_view WHERE status_account = ? AND status_operational = ?`, "A", statusOperational)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	for result.Next() {
+		var m model.ActiveMontirWithLocation
+		var mStatus model.MontirStatus
+		var mLocation model.MontirLocation
+		var mRating model.AverageMontirRating
+
+		result.Scan(&m.Id, &m.Firstname, &m.Lastname, &m.ImageUrl, &mStatus.StatusOperational, &mStatus.StatusActivity, &mLocation.Latitude, &mLocation.Longitude, &mLocation.DateUpdated, &mRating.TotalRating, &mRating.AverageRating)
+
+		m.Status = &mStatus
+		m.Location = &mLocation
+		m.Rating = &mRating
+
+		listActiveMontirWithLocation = append(listActiveMontirWithLocation, &m)
+	}
+
+	return listActiveMontirWithLocation, nil
 }

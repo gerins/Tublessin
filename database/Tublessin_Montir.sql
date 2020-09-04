@@ -128,6 +128,29 @@ CREATE TABLE IF NOT EXISTS `tublessin_montir`.`montir_status` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+USE `tublessin_montir` ;
+
+-- -----------------------------------------------------
+-- Placeholder table for view `tublessin_montir`.`montir_rating_location_view`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tublessin_montir`.`montir_rating_location_view` (`id` INT, `status_account` INT, `firstname` INT, `lastname` INT, `imageURL` INT, `status_operational` INT, `status` INT, `latitude` INT, `longitude` INT, `date_updated` INT, `total_rating` INT, `average_rating` INT);
+
+-- -----------------------------------------------------
+-- View `tublessin_montir`.`montir_rating_location_view`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `tublessin_montir`.`montir_rating_location_view`;
+USE `tublessin_montir`;
+CREATE  OR REPLACE VIEW `montir_rating_location_view` AS
+SELECT ma.id, ma.status_account,mp.firstname, mp. lastname, mp.imageURL, ms.status_operational, msa.status, 
+ml.latitude, ml.longitude, ml.date_updated, mr.total_rating , mr.average_rating
+FROM montir_account ma 
+JOIN montir_status ms ON ma.id = ms.montir_account_id
+JOIN master_status_activity msa ON ms.status_activity_id = msa.id
+JOIN montir_location ml ON ma.id = ml.montir_account_id
+JOIN montir_profile mp ON ma.id = mp.montir_account_id
+JOIN (SELECT montir_account_id as id, count(montir_account_id) as total_rating, AVG(rating) average_rating FROM montir_rating 
+GROUP BY montir_account_id) mr
+ON mr.id = ma.id;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
@@ -135,9 +158,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO master_status_activity(status) VALUE('Standby'),('On Going'),('Working');
 
-INSERT INTO montir_account(username,password) VALUE
-('gerin','$2a$10$fmWS.ALzAB4RTi66KkyDTOxSmHZOODW11TRI6jnBKZ.aL/m.UsWV2'),
-('vio','$2a$10$fmWS.ALzAB4RTi66KkyDTOxSmHZOODW11TRI6jnBKZ.aL/m.UsWV2');
+INSERT INTO montir_account(username,password) VALUE('gerin','admin'),('vio','admin');
 
 INSERT INTO montir_profile(montir_account_id, firstname, lastname, born_date, gender, ktp, address, city, phone_number, email) VALUE
 (1,'Gerin','Prakoso','1990-01-24','L','123456789','Kec. Rawalumbu','Bekasi','08982279019','gerin@google.com'),
@@ -149,4 +170,3 @@ INSERT INTO montir_location(montir_account_id) VALUE (1),(2);
 INSERT INTO montir_rating(montir_account_id, rating, rater_id, review) VALUE
 (1, 5, 10, "Bagus Sekali"),(1, 4, 10, "Cakep Sekali"),(1, 3, 10, "Hehe Sekali"),
 (2, 5, 11, "Bagus Sekali"),(2, 4, 11, "Cakep Sekali"),(2, 3, 11, "Hehe Sekali");
-

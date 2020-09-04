@@ -78,8 +78,8 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 insert into user_account(username, password) value
-('reizdendy', '$2a$10$fmWS.ALzAB4RTi66KkyDTOxSmHZOODW11TRI6jnBKZ.aL/m.UsWV2'),
-('sandro', '$2a$10$fmWS.ALzAB4RTi66KkyDTOxSmHZOODW11TRI6jnBKZ.aL/m.UsWV2');
+('reizdendy', 'admin'),
+('sandro', 'admin');
 
 insert into user_profile(user_account_id, firstname, lastname, gender, phone_number, email) value
 (1, 'reizdendy', 'akbar', 'L', '08181818', 'reizdendy@gmail.com'),

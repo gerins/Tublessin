@@ -123,3 +123,25 @@ func (c MontirControllerApi) HandleUpdateMontirLocation() func(w http.ResponseWr
 		json.NewEncoder(w).Encode(result)
 	}
 }
+
+func (c MontirControllerApi) HandleGetAllActiveMontirWithLocation() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		var userLocation model.RequestActiveMontir
+		doubleLatitude, _ := strconv.Atoi(mux.Vars(r)["lat"])
+		doubleLongitude, _ := strconv.Atoi(mux.Vars(r)["long"])
+		userLocation.Latitude = float64(doubleLatitude)
+		userLocation.Longitude = float64(doubleLongitude)
+
+		result, err := c.MontirUsecaseApi.HandleGetAllActiveMontirWithLocation(&userLocation)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Search Nearby Montir Failed", Code: "400"})
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(result)
+	}
+}

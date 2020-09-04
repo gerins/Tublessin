@@ -71,3 +71,12 @@ func (c MontirServer) UpdateMontirLocation(ctx context.Context, param *model.Mon
 
 	return montirResponeMessage, nil
 }
+
+func (c MontirServer) GetAllActiveMontirWithLocation(ctx context.Context, param *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error) {
+	result, err := c.MontirUsecase.GetAllActiveMontirWithLocation(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}

@@ -17,6 +17,7 @@ func InitMontirRoute(mainRoute string, r *mux.Router) {
 	subRouter.HandleFunc("/profile/update/location/{id}", montirControllerApi.HandleUpdateMontirLocation()).Methods("POST")
 	subRouter.HandleFunc("/profile/image/upload/{id}", montirControllerApi.HandleUpdateMontirProfilePicture()).Methods("POST")
 	subRouter.HandleFunc("/file/image/{namaFile}", montirControllerApi.HandleServeMontirFile()).Methods("GET")
+	subRouter.HandleFunc("/find/nearby", montirControllerApi.HandleGetAllActiveMontirWithLocation()).Queries("lat", "{lat}", "long", "{long}").Methods("GET")
 }
 
 // Untuk Connect ke Service-Montir
