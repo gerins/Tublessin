@@ -129,10 +129,12 @@ func (c MontirControllerApi) HandleGetAllActiveMontirWithLocation() func(w http.
 		w.Header().Set("Content-Type", "application/json")
 
 		var userLocation model.RequestActiveMontir
-		doubleLatitude, _ := strconv.Atoi(mux.Vars(r)["lat"])
-		doubleLongitude, _ := strconv.Atoi(mux.Vars(r)["long"])
-		userLocation.Latitude = float64(doubleLatitude)
-		userLocation.Longitude = float64(doubleLongitude)
+
+		doubleLatitude, err := strconv.ParseFloat(mux.Vars(r)["lat"], 64)
+		doubleLongitude, err := strconv.ParseFloat(mux.Vars(r)["long"], 64)
+
+		userLocation.Latitude = doubleLatitude
+		userLocation.Longitude = doubleLongitude
 
 		result, err := c.MontirUsecaseApi.HandleGetAllActiveMontirWithLocation(&userLocation)
 		if err != nil {

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -28,9 +27,6 @@ func main() {
 	srv := grpc.NewServer()
 	montirServer := domain.NewMontirController(connectToDatabase())
 	model.RegisterMontirServer(srv, montirServer)
-
-	result, _ := montirServer.GetAllActiveMontirWithLocation(context.Background(), &model.RequestActiveMontir{})
-	fmt.Println(result)
 
 	log.Println("Starting Montir-Service server at port", config.SERVICE_MONTIR_PORT)
 	l, err := net.Listen("tcp", config.SERVICE_MONTIR_PORT)
