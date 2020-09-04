@@ -2,8 +2,6 @@ package domain
 
 import (
 	"database/sql"
-	"errors"
-	"log"
 	"tublessin/common/model"
 )
 
@@ -14,7 +12,7 @@ type UserRepository struct {
 type UserRepositoryInterface interface {
 	Login(username string) (*model.UserAccount, error)
 	RegisterNewUser(m *model.UserAccount) (*model.UserResponeMessage, error)
-	GetUserProfileById(userId string) (*model.UserResponeMessage, error)
+	GetUserProfileById(userId int32) (*model.UserResponeMessage, error)
 	UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 	UpdateUserProfileByID(mp *model.UserProfile) (*model.UserResponeMessage, error)
 	UpdateUserLocation(mp *model.UserProfile) (*model.UserResponeMessage, error)
@@ -31,7 +29,6 @@ func (r UserRepository) Login(username string) (*model.UserAccount, error) {
 
 	err := results.Scan(&userAccount.Id, &userAccount.Username, &userAccount.Password, &userAccount.DateCreated)
 	if err != nil {
-		log.Print(err.Error())
 		return nil, err
 	}
 
@@ -41,7 +38,6 @@ func (r UserRepository) Login(username string) (*model.UserAccount, error) {
 func (r UserRepository) RegisterNewUser(m *model.UserAccount) (*model.UserResponeMessage, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -51,20 +47,17 @@ func (r UserRepository) RegisterNewUser(m *model.UserAccount) (*model.UserRespon
 
 	result, err := stmnt1.Exec(m.Username, m.Password)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
 	lastInsertID, _ := result.LastInsertId()
 	_, err = stmnt2.Exec(lastInsertID, m.Profile.Firstname, m.Profile.Lastname, m.Profile.Gender, m.Profile.PhoneNumber, m.Profile.Email)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
 	_, err = stmnt3.Exec(lastInsertID)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
@@ -73,20 +66,20 @@ func (r UserRepository) RegisterNewUser(m *model.UserAccount) (*model.UserRespon
 	return &model.UserResponeMessage{Response: "Inserting New User Success", Code: "200", Result: m}, nil
 }
 
-func (r UserRepository) GetUserProfileById(userId string) (*model.UserResponeMessage, error) {
+func (r UserRepository) GetUserProfileById(userId int32) (*model.UserResponeMessage, error) {
 	var userAccount model.UserAccount
 
 	result := r.db.QueryRow("SELECT * FROM user_account WHERE id=?", userId)
 	err := result.Scan(&userAccount.Id, &userAccount.Username, &userAccount.Password, &userAccount.DateCreated)
 	if err != nil {
-		return nil, errors.New("user ID Not Found")
+		return nil, err
 	}
 
 	var mp model.UserProfile
 	result2 := r.db.QueryRow("SELECT * FROM user_profile WHERE user_account_id=?", userId)
 	err = result2.Scan(&mp.Id, &mp.Firstname, &mp.Lastname, &mp.Gender, &mp.PhoneNumber, &mp.Email, &mp.ImageURL, &mp.DateUpdated)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	userAccount.Profile = &mp
 
@@ -94,7 +87,7 @@ func (r UserRepository) GetUserProfileById(userId string) (*model.UserResponeMes
 	result3 := r.db.QueryRow("SELECT * FROM user_location WHERE user_account_id=? ", userId)
 	err = result3.Scan(&mp.Id, &ml.Latitude, &ml.Longitude, &ml.DateUpdated)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	userAccount.Profile.Location = &ml
 
@@ -104,14 +97,12 @@ func (r UserRepository) GetUserProfileById(userId string) (*model.UserResponeMes
 func (r UserRepository) UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	stmnt1, _ := tx.Prepare("UPDATE user_profile SET imageURL = ? WHERE user_account_id = ?")
 	_, err = stmnt1.Exec(userProfile.ImageURL, userProfile.Id)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
@@ -126,14 +117,12 @@ func (r UserRepository) UpdateUserProfilePicture(userProfile *model.UserProfile)
 func (r UserRepository) UpdateUserProfileByID(mp *model.UserProfile) (*model.UserResponeMessage, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	stmnt1, _ := tx.Prepare("UPDATE user_profile SET firstname=?,lastname=?,gender=?,phone_number=?,email=? WHERE user_account_id = ?")
 	_, err = stmnt1.Exec(mp.Firstname, mp.Lastname, mp.Gender, mp.PhoneNumber, mp.Email, mp.Id)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
@@ -148,14 +137,12 @@ func (r UserRepository) UpdateUserProfileByID(mp *model.UserProfile) (*model.Use
 func (r UserRepository) UpdateUserLocation(mp *model.UserProfile) (*model.UserResponeMessage, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	stmnt1, _ := tx.Prepare("UPDATE user_location SET latitude=?,longitude=? WHERE user_account_id = ?")
 	_, err = stmnt1.Exec(mp.Location.Latitude, mp.Location.Longitude, mp.Id)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}

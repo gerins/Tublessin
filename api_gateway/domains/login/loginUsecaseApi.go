@@ -50,6 +50,7 @@ func (s LoginUsecaseApi) HandleRegisterNewMontir(montirAccount *model.MontirAcco
 		log.Println(err.Error())
 		return nil, err
 	}
+
 	return result, nil
 }
 
@@ -59,5 +60,6 @@ func (s LoginUsecaseApi) HandleRegisterNewUser(userAccount *model.UserAccount) (
 		log.Println(err.Error())
 		return nil, err
 	}
+
 	return result, nil
 }

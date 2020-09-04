@@ -3,7 +3,6 @@ package domain
 import (
 	"context"
 	"database/sql"
-	"strconv"
 	"tublessin/common/model"
 )
 
@@ -36,8 +35,7 @@ func (c MontirServer) RegisterNewMontir(ctx context.Context, param *model.Montir
 
 // Ini adalah method yang dimiliki oleh Montir-Service untuk mendapatkan data Montir Secara lengkap
 func (c MontirServer) GetMontirProfileByID(ctx context.Context, param *model.MontirAccount) (*model.MontirResponeMessage, error) {
-	montirId := strconv.Itoa(int(param.Id))
-	montirResponeMessage, err := c.MontirUsecase.GetMontirProfileByID(montirId)
+	montirResponeMessage, err := c.MontirUsecase.GetMontirProfileByID(param.Id)
 	if err != nil {
 		return nil, err
 	}

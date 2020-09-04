@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"tublessin/api_gateway/utils"
 	"tublessin/common/model"
 
@@ -29,7 +28,7 @@ func (c MontirControllerApi) HandleGetMontirProfileByID() func(w http.ResponseWr
 		result, err := c.MontirUsecaseApi.HandleGetMontirProfileByID(montirId)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Montir Id Not Found", Code: "400"})
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
 			return
 		}
 
@@ -46,14 +45,14 @@ func (c MontirControllerApi) HandleUpdateMontirProfilePicture() func(w http.Resp
 		fileName, err := utils.SaveFileToStorage(r, getId, "montir")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Uploading Image Failed", Code: "500"})
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "500"})
 			return
 		}
 
 		result, err := c.MontirUsecaseApi.HandleUpdateMontirProfilePicture(getId, fileName)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Uploading Image Failed", Code: "500"})
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "500"})
 			return
 		}
 
@@ -83,15 +82,14 @@ func (c MontirControllerApi) HandleUpdateMontirProfileByID() func(w http.Respons
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
+		montirId := mux.Vars(r)["id"]
 		var montirProfile model.MontirProfile
 		json.NewDecoder(r.Body).Decode(&montirProfile)
-		convertId, _ := strconv.Atoi(mux.Vars(r)["id"])
-		montirProfile.Id = int32(convertId)
 
-		result, err := c.MontirUsecaseApi.HandleUpdateMontirProfileByID(&montirProfile)
+		result, err := c.MontirUsecaseApi.HandleUpdateMontirProfileByID(montirId, &montirProfile)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Updating Montir Profile Failed", Code: "400"})
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
 			return
 		}
 
@@ -104,18 +102,14 @@ func (c MontirControllerApi) HandleUpdateMontirLocation() func(w http.ResponseWr
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		var montirProfile model.MontirProfile
+		montirId := mux.Vars(r)["id"]
 		var montirLocation *model.MontirLocation
 		json.NewDecoder(r.Body).Decode(&montirLocation)
 
-		convertId, _ := strconv.Atoi(mux.Vars(r)["id"])
-		montirProfile.Id = int32(convertId)
-		montirProfile.Location = montirLocation
-
-		result, err := c.MontirUsecaseApi.HandleUpdateMontirLocation(&montirProfile)
+		result, err := c.MontirUsecaseApi.HandleUpdateMontirLocation(montirId, &model.MontirProfile{Location: montirLocation})
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Updating Montir Location Failed", Code: "400"})
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
 			return
 		}
 
@@ -128,18 +122,13 @@ func (c MontirControllerApi) HandleGetAllActiveMontirWithLocation() func(w http.
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		var userLocation model.RequestActiveMontir
+		getLatitude := mux.Vars(r)["lat"]
+		getLongitude := mux.Vars(r)["long"]
 
-		doubleLatitude, err := strconv.ParseFloat(mux.Vars(r)["lat"], 64)
-		doubleLongitude, err := strconv.ParseFloat(mux.Vars(r)["long"], 64)
-
-		userLocation.Latitude = doubleLatitude
-		userLocation.Longitude = doubleLongitude
-
-		result, err := c.MontirUsecaseApi.HandleGetAllActiveMontirWithLocation(&userLocation)
+		result, err := c.MontirUsecaseApi.HandleGetAllActiveMontirWithLocation(getLatitude, getLongitude)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Search Nearby Montir Failed", Code: "400"})
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
 			return
 		}
 

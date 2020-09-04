@@ -25,7 +25,7 @@ func (c LoginControllerApi) HandleLoginMontir() func(w http.ResponseWriter, r *h
 		var montirAccount model.MontirLoginForm
 		json.NewDecoder(r.Body).Decode(&montirAccount)
 
-		log.Print(`username -> `, montirAccount.Username, " Mencoba Login")
+		log.Print(`LOGIN -> `, montirAccount.Username)
 
 		result, err := c.LoginUsecaseApi.HandleLoginMontir(&montirAccount)
 		if err != nil {
@@ -38,7 +38,6 @@ func (c LoginControllerApi) HandleLoginMontir() func(w http.ResponseWriter, r *h
 			return
 		}
 
-		log.Print(`Success Login`)
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(result)
 	}
@@ -51,7 +50,7 @@ func (c LoginControllerApi) HandleLoginUser() func(w http.ResponseWriter, r *htt
 		var userAccount model.UserLoginForm
 		json.NewDecoder(r.Body).Decode(&userAccount)
 
-		log.Print(`username -> `, userAccount.Username, "Mencoba Login")
+		log.Print(`LOGIN -> `, userAccount.Username)
 
 		result, err := c.LoginUsecaseApi.HandleLoginUser(&userAccount)
 		if err != nil {
@@ -64,7 +63,6 @@ func (c LoginControllerApi) HandleLoginUser() func(w http.ResponseWriter, r *htt
 			return
 		}
 
-		log.Print(`Success Login`)
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(result)
 	}

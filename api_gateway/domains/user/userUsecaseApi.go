@@ -14,8 +14,8 @@ type UserUsecaseApi struct {
 type UserUsecaseApiInterface interface {
 	HandleGetUserProfileByID(UserId string) (*model.UserResponeMessage, error)
 	HandleUpdateUserProfilePicture(userId, fileName string) (*model.UserResponeMessage, error)
-	HandleUpdateUserProfileByID(UserProfile *model.UserProfile) (*model.UserResponeMessage, error)
-	HandleUpdateUserLocation(UserProfile *model.UserProfile) (*model.UserResponeMessage, error)
+	HandleUpdateUserProfileByID(userId string, UserProfile *model.UserProfile) (*model.UserResponeMessage, error)
+	HandleUpdateUserLocation(userId string, userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecaseApi(UserService model.UserClient) UserUsecaseApiInterface {
@@ -23,10 +23,13 @@ func NewUserUsecaseApi(UserService model.UserClient) UserUsecaseApiInterface {
 }
 
 func (s UserUsecaseApi) HandleGetUserProfileByID(userId string) (*model.UserResponeMessage, error) {
-	id, _ := strconv.Atoi(userId)
-	UserAccountWithId := &model.UserAccount{Id: int32(id)}
+	id, err := strconv.Atoi(userId)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
 
-	userResponeMessage, err := s.UserService.GetUserProfileById(context.Background(), UserAccountWithId)
+	userResponeMessage, err := s.UserService.GetUserProfileById(context.Background(), &model.UserAccount{Id: int32(id)})
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err
@@ -36,7 +39,12 @@ func (s UserUsecaseApi) HandleGetUserProfileByID(userId string) (*model.UserResp
 }
 
 func (s UserUsecaseApi) HandleUpdateUserProfilePicture(userId, fileName string) (*model.UserResponeMessage, error) {
-	convertIdToInt, _ := strconv.Atoi(userId)
+	convertIdToInt, err := strconv.Atoi(userId)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
 	userResponeMessage, err := s.UserService.UpdateUserProfilePicture(context.Background(), &model.UserProfile{Id: int32(convertIdToInt), ImageURL: fileName})
 	if err != nil {
 		log.Println(err.Error())
@@ -46,7 +54,14 @@ func (s UserUsecaseApi) HandleUpdateUserProfilePicture(userId, fileName string) 
 	return userResponeMessage, nil
 }
 
-func (s UserUsecaseApi) HandleUpdateUserProfileByID(UserProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+func (s UserUsecaseApi) HandleUpdateUserProfileByID(userId string, UserProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	Id, err := strconv.Atoi(userId)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	UserProfile.Id = int32(Id)
 	UserResponeMessage, err := s.UserService.UpdateUserProfileById(context.Background(), UserProfile)
 	if err != nil {
 		log.Println(err.Error())
@@ -56,8 +71,15 @@ func (s UserUsecaseApi) HandleUpdateUserProfileByID(UserProfile *model.UserProfi
 	return UserResponeMessage, nil
 }
 
-func (s UserUsecaseApi) HandleUpdateUserLocation(UserProfile *model.UserProfile) (*model.UserResponeMessage, error) {
-	UserResponeMessage, err := s.UserService.UpdateUserLocation(context.Background(), UserProfile)
+func (s UserUsecaseApi) HandleUpdateUserLocation(userId string, userProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	Id, err := strconv.Atoi(userId)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	userProfile.Id = int32(Id)
+	UserResponeMessage, err := s.UserService.UpdateUserLocation(context.Background(), userProfile)
 	if err != nil {
 		log.Println(err.Error())
 		return nil, err

@@ -2,7 +2,6 @@ package domain
 
 import (
 	"database/sql"
-	"errors"
 	"log"
 	"tublessin/common/model"
 )
@@ -14,7 +13,7 @@ type MontirRepository struct {
 type MontirRepositoryInterface interface {
 	Login(username, status string) (*model.MontirAccount, error)
 	RegisterNewMontir(m *model.MontirAccount) (*model.MontirResponeMessage, error)
-	GetMontirProfileByID(montirId, statusAccount string) (*model.MontirResponeMessage, error)
+	GetMontirProfileByID(montirId int32, statusAccount string) (*model.MontirResponeMessage, error)
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirProfileByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
@@ -32,7 +31,6 @@ func (r MontirRepository) Login(username, status string) (*model.MontirAccount, 
 
 	err := results.Scan(&montirAccount.Id, &montirAccount.Username, &montirAccount.Password, &montirAccount.StatusAccount)
 	if err != nil {
-		log.Print(err.Error())
 		return nil, err
 	}
 
@@ -42,7 +40,6 @@ func (r MontirRepository) Login(username, status string) (*model.MontirAccount, 
 func (r MontirRepository) RegisterNewMontir(m *model.MontirAccount) (*model.MontirResponeMessage, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -53,26 +50,22 @@ func (r MontirRepository) RegisterNewMontir(m *model.MontirAccount) (*model.Mont
 
 	result, err := stmnt1.Exec(m.Username, m.Password)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
 	lastInsertID, _ := result.LastInsertId()
 	_, err = stmnt2.Exec(lastInsertID, m.Profile.Firstname, m.Profile.Lastname, m.Profile.Gender, m.Profile.City, m.Profile.Email, m.Profile.PhoneNumber)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
 	_, err = stmnt3.Exec(lastInsertID)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
 	_, err = stmnt4.Exec(lastInsertID)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
@@ -81,20 +74,20 @@ func (r MontirRepository) RegisterNewMontir(m *model.MontirAccount) (*model.Mont
 	return &model.MontirResponeMessage{Response: "Inserting New Montir Success", Code: "200", Result: m}, nil
 }
 
-func (r MontirRepository) GetMontirProfileByID(montirId, statusAccount string) (*model.MontirResponeMessage, error) {
+func (r MontirRepository) GetMontirProfileByID(montirId int32, statusAccount string) (*model.MontirResponeMessage, error) {
 	var montirAccount model.MontirAccount
 
 	result := r.db.QueryRow("SELECT * FROM montir_account WHERE id=? AND status_account=?", montirId, statusAccount)
 	err := result.Scan(&montirAccount.Id, &montirAccount.Username, &montirAccount.Password, &montirAccount.StatusAccount)
 	if err != nil {
-		return nil, errors.New("Montir ID Not Found")
+		return nil, err
 	}
 
 	var mp model.MontirProfile
 	result2 := r.db.QueryRow("SELECT * FROM montir_profile WHERE montir_account_id=?", montirId)
 	err = result2.Scan(&mp.Id, &mp.Firstname, &mp.Lastname, &mp.BornDate, &mp.Gender, &mp.Ktp, &mp.Address, &mp.City, &mp.Email, &mp.PhoneNumber, &mp.ImageURL, &mp.VerifiedAccount, &mp.DateUpdated, &mp.DateCreated)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	montirAccount.Profile = &mp
 
@@ -102,7 +95,7 @@ func (r MontirRepository) GetMontirProfileByID(montirId, statusAccount string) (
 	result3 := r.db.QueryRow("SELECT * FROM montir_location WHERE montir_account_id=? ", montirId)
 	err = result3.Scan(&mp.Id, &ml.Latitude, &ml.Longitude, &ml.DateUpdated)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	montirAccount.Profile.Location = &ml
 
@@ -112,13 +105,13 @@ func (r MontirRepository) GetMontirProfileByID(montirId, statusAccount string) (
 	WHERE ms.montir_account_id = ?`, montirId)
 	err = result4.Scan(&ms.StatusOperational, &ms.StatusActivity, &ms.DateUpdated)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	montirAccount.Profile.Status = &ms
 
 	result5, err := r.db.Query("SELECT * FROM montir_rating WHERE montir_account_id=?", montirId)
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 
 	for result5.Next() {
@@ -137,14 +130,12 @@ func (r MontirRepository) GetMontirProfileByID(montirId, statusAccount string) (
 func (r MontirRepository) UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	stmnt1, _ := tx.Prepare("UPDATE montir_profile SET imageURL = ? WHERE montir_account_id = ?")
 	_, err = stmnt1.Exec(montirProfile.ImageURL, montirProfile.Id)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
@@ -159,14 +150,12 @@ func (r MontirRepository) UpdateMontirProfilePicture(montirProfile *model.Montir
 func (r MontirRepository) UpdateMontirProfileByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	stmnt1, _ := tx.Prepare("UPDATE montir_profile SET firstname=?,lastname=?,born_date=?,gender=?,ktp=?,address=?,city=?,email=?,phone_number=? WHERE montir_account_id = ?")
 	_, err = stmnt1.Exec(mp.Firstname, mp.Lastname, mp.BornDate, mp.Gender, mp.Ktp, mp.Address, mp.City, mp.Email, mp.PhoneNumber, mp.Id)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
@@ -181,14 +170,12 @@ func (r MontirRepository) UpdateMontirProfileByID(mp *model.MontirProfile) (*mod
 func (r MontirRepository) UpdateMontirLocation(mp *model.MontirProfile) (*model.MontirResponeMessage, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	stmnt1, _ := tx.Prepare("UPDATE montir_location SET latitude=?,longitude=? WHERE montir_account_id = ?")
 	_, err = stmnt1.Exec(mp.Location.Latitude, mp.Location.Longitude, mp.Id)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
 		return nil, err
 	}
@@ -205,7 +192,6 @@ func (c MontirRepository) GetAllActiveMontirWithLocation(statusOperational strin
 
 	result, err := c.db.Query(`SELECT id, firstname, lastname, imageURL, status_operational, status, latitude, longitude, date_updated, total_rating, average_rating FROM montir_rating_location_view WHERE status_account = ? AND status_operational = ?`, "A", statusOperational)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 	for result.Next() {

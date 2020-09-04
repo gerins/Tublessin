@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"strconv"
 	"tublessin/api_gateway/utils"
 	"tublessin/common/model"
 
@@ -29,7 +28,7 @@ func (c UserControllerApi) HandleGetUserProfileByID() func(w http.ResponseWriter
 		result, err := c.UserUsecaseApi.HandleGetUserProfileByID(userId)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "User Id Not Found", Code: "400"})
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: err.Error(), Code: "400"})
 			return
 		}
 
@@ -47,14 +46,14 @@ func (c UserControllerApi) HandleUpdateUserProfilePicture() func(w http.Response
 		fileName, err := utils.SaveFileToStorage(r, getId, "user")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "Uploading Image Failed", Code: "500"})
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: err.Error(), Code: "500"})
 			return
 		}
 
 		result, err := c.UserUsecaseApi.HandleUpdateUserProfilePicture(getId, fileName)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Uploading Image Failed", Code: "500"})
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "500"})
 			return
 		}
 
@@ -84,15 +83,14 @@ func (c UserControllerApi) HandleUpdateUserProfileByID() func(w http.ResponseWri
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
+		userId := mux.Vars(r)["id"]
 		var userProfile model.UserProfile
 		json.NewDecoder(r.Body).Decode(&userProfile)
-		convertId, _ := strconv.Atoi(mux.Vars(r)["id"])
-		userProfile.Id = int32(convertId)
 
-		result, err := c.UserUsecaseApi.HandleUpdateUserProfileByID(&userProfile)
+		result, err := c.UserUsecaseApi.HandleUpdateUserProfileByID(userId, &userProfile)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "Updating User Profile Failed", Code: "400"})
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: err.Error(), Code: "400"})
 			return
 		}
 
@@ -105,18 +103,14 @@ func (c UserControllerApi) HandleUpdateUserLocation() func(w http.ResponseWriter
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 
-		var userProfile model.UserProfile
+		userId := mux.Vars(r)["id"]
 		var userLocation *model.UserLocation
 		json.NewDecoder(r.Body).Decode(&userLocation)
 
-		convertId, _ := strconv.Atoi(mux.Vars(r)["id"])
-		userProfile.Id = int32(convertId)
-		userProfile.Location = userLocation
-
-		result, err := c.UserUsecaseApi.HandleUpdateUserLocation(&userProfile)
+		result, err := c.UserUsecaseApi.HandleUpdateUserLocation(userId, &model.UserProfile{Location: userLocation})
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "Updating User Location Failed", Code: "400"})
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: err.Error(), Code: "400"})
 			return
 		}
 

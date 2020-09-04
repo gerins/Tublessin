@@ -2,7 +2,7 @@ package domain
 
 import (
 	"database/sql"
-	"errors"
+	"log"
 	"sort"
 	"strconv"
 	"tublessin/common/model"
@@ -18,7 +18,7 @@ type MontirUsecase struct {
 type MontirUsecaseInterface interface {
 	Login(montirAccount *model.MontirAccount) (*model.MontirAccount, error)
 	RegisterNewMontir(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
-	GetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error)
+	GetMontirProfileByID(montirId int32) (*model.MontirResponeMessage, error)
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
@@ -33,6 +33,7 @@ func NewMontirUsecase(db *sql.DB) MontirUsecaseInterface {
 func (s MontirUsecase) Login(montirAccount *model.MontirAccount) (*model.MontirAccount, error) {
 	montirDetail, err := s.MontirRepository.Login(montirAccount.Username, "A")
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -40,62 +41,66 @@ func (s MontirUsecase) Login(montirAccount *model.MontirAccount) (*model.MontirA
 }
 
 func (s MontirUsecase) RegisterNewMontir(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error) {
-	if montirAccount == nil || montirAccount.Profile == nil {
-		return nil, errors.New("Body Cannot Empty")
-	}
-
 	hash, err := bcrypt.GenerateFromPassword([]byte(montirAccount.Password), bcrypt.DefaultCost)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 	montirAccount.Password = string(hash)
 
 	result, err := s.MontirRepository.RegisterNewMontir(montirAccount)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
+
 	return result, nil
 }
 
-func (s MontirUsecase) GetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error) {
+func (s MontirUsecase) GetMontirProfileByID(montirId int32) (*model.MontirResponeMessage, error) {
 	montirResponeMessage, err := s.MontirRepository.GetMontirProfileByID(montirId, "A")
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
+
 	return montirResponeMessage, nil
 }
 
 func (s MontirUsecase) UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
 	montirResponeMessage, err := s.MontirRepository.UpdateMontirProfilePicture(montirProfile)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
+
 	return montirResponeMessage, nil
 }
 
 func (s MontirUsecase) UpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
 	montirResponeMessage, err := s.MontirRepository.UpdateMontirProfileByID(montirProfile)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
+
 	return montirResponeMessage, nil
 }
 
 func (s MontirUsecase) UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
-	if montirProfile.Location == nil || montirProfile.Location.Latitude == 0 || montirProfile.Location.Longitude == 0 {
-		return nil, errors.New("Body cannot empty")
-	}
-
 	montirResponeMessage, err := s.MontirRepository.UpdateMontirLocation(montirProfile)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
+
 	return montirResponeMessage, nil
 }
 
 func (c MontirUsecase) GetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error) {
 	result, err := c.MontirRepository.GetAllActiveMontirWithLocation("A")
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 

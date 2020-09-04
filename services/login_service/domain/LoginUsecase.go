@@ -35,6 +35,7 @@ func (s LoginUsecase) MontirLogin(montirAccount *model.MontirAccount) (*model.Mo
 
 	err = bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(montirAccount.Password))
 	if err != nil {
+		log.Println(err.Error())
 		return nil, "", errors.New("Username atau Password salah")
 	}
 
@@ -51,6 +52,7 @@ func (s LoginUsecase) UserLogin(userAccount *model.UserAccount) (*model.UserAcco
 
 	err = bcrypt.CompareHashAndPassword([]byte(result.Password), []byte(userAccount.Password))
 	if err != nil {
+		log.Println(err.Error())
 		return nil, "", errors.New("Username atau Password salah")
 	}
 
