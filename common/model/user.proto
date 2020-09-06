@@ -10,12 +10,16 @@ service User {
     rpc UpdateUserLocation(UserProfile) returns (UserResponeMessage) {}
     rpc GetUserProfileById(UserAccount) returns (UserResponeMessage) {}
     rpc DeleteUserByID(UserAccount) returns (UserResponeMessage) {}
+    rpc GetAllUserSummary(UserPagination) returns (UserResponeMessage) {}
+
 }
 
 message UserResponeMessage {
     string response = 1;
     string code = 2;
     UserAccount result = 3;
+    string total_user = 4;
+    repeated UserAccount list = 5;
 }
 
 message UserAccount {
@@ -45,3 +49,11 @@ message UserLocation {
     string date_updated = 3;
 }
 
+message UserPagination{
+    string keyword = 1;
+    string page = 2; 
+    string limit = 3; 
+    string status = 4;
+    string orderBy = 5;
+    string sort = 6;
+}

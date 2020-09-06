@@ -3,6 +3,7 @@ package domain
 import (
 	"database/sql"
 	"log"
+	"strconv"
 	"tublessin/common/model"
 
 	"golang.org/x/crypto/bcrypt"
@@ -20,6 +21,7 @@ type UserUsecaseInterface interface {
 	UpdateUserProfileByID(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 	UpdateUserLocation(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 	DeleteUserByID(UserAccount *model.UserAccount) (*model.UserResponeMessage, error)
+	GetAllUserSummary(query *model.UserPagination) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecase(db *sql.DB) UserUsecaseInterface {
@@ -101,4 +103,14 @@ func (s UserUsecase) DeleteUserByID(UserAccount *model.UserAccount) (*model.User
 	}
 
 	return userResponeMessage, nil
+}
+
+func (s UserUsecase) GetAllUserSummary(query *model.UserPagination) (*model.UserResponeMessage, error) {
+	result, countItem, err := s.UserRepository.GetAllUserSummary(query)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return &model.UserResponeMessage{Response: "Success", Code: "200", TotalUser: strconv.Itoa(countItem), List: result}, nil
 }

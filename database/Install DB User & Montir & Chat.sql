@@ -15,9 +15,19 @@ CREATE SCHEMA IF NOT EXISTS `tublessin_montir` DEFAULT CHARACTER SET utf8 ;
 -- -----------------------------------------------------
 -- Schema tublessin_user
 -- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema tublessin_user
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `tublessin_user` ;
 -- -----------------------------------------------------
 -- Schema tublessin_chat
 -- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema tublessin_chat
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `tublessin_chat` ;
 USE `tublessin_montir` ;
 
 -- -----------------------------------------------------
@@ -128,12 +138,87 @@ CREATE TABLE IF NOT EXISTS `tublessin_montir`.`montir_status` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+USE `tublessin_user` ;
+
+-- -----------------------------------------------------
+-- Table `tublessin_user`.`user_account`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tublessin_user`.`user_account` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(15) NOT NULL DEFAULT '',
+  `password` VARCHAR(300) NOT NULL DEFAULT '',
+  `status_account` VARCHAR(1) NOT NULL DEFAULT 'A',
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tublessin_user`.`user_profile`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tublessin_user`.`user_profile` (
+  `user_account_id` INT NOT NULL,
+  `firstname` VARCHAR(45) NOT NULL DEFAULT '',
+  `lastname` VARCHAR(45) NOT NULL DEFAULT '',
+  `gender` VARCHAR(1) NOT NULL DEFAULT 'L',
+  `phone_number` VARCHAR(15) NOT NULL DEFAULT '',
+  `email` VARCHAR(45) NOT NULL DEFAULT '',
+  `imageURL` VARCHAR(45) NOT NULL DEFAULT 'default_profile.jpg',
+  `date_updated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE INDEX `phone_number_UNIQUE` (`phone_number` ASC) VISIBLE,
+  PRIMARY KEY (`user_account_id`),
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  CONSTRAINT `fk_user_profile_user_account1`
+    FOREIGN KEY (`user_account_id`)
+    REFERENCES `tublessin_user`.`user_account` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `tublessin_user`.`user_location`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tublessin_user`.`user_location` (
+  `user_account_id` INT NOT NULL,
+  `latitude` DOUBLE NOT NULL DEFAULT -6.175439,
+  `longitude` DOUBLE NOT NULL DEFAULT 106.827227,
+  `date_updated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_account_id`),
+  CONSTRAINT `fk_user_location_user_account`
+    FOREIGN KEY (`user_account_id`)
+    REFERENCES `tublessin_user`.`user_account` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+USE `tublessin_chat` ;
+
+-- -----------------------------------------------------
+-- Table `tublessin_chat`.`conversations`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tublessin_chat`.`conversations` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `sender_id` INT NOT NULL,
+  `receiver_id` INT NOT NULL,
+  `message` VARCHAR(300) NOT NULL,
+  `status` VARCHAR(1) NOT NULL DEFAULT 'A',
+  `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
 USE `tublessin_montir` ;
 
 -- -----------------------------------------------------
 -- Placeholder table for view `tublessin_montir`.`montir_rating_location_view`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tublessin_montir`.`montir_rating_location_view` (`id` INT, `status_account` INT, `firstname` INT, `lastname` INT, `imageURL` INT, `status_operational` INT, `status` INT, `latitude` INT, `longitude` INT, `date_updated` INT, `total_rating` INT, `average_rating` INT);
+
+-- -----------------------------------------------------
+-- Placeholder table for view `tublessin_montir`.`overview_montir_view`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tublessin_montir`.`overview_montir_view` (`id` INT, `firstname` INT, `lastname` INT, `imageURL` INT, `gender` INT, `phone_number` INT, `city` INT, `username` INT, `status_account` INT, `verified_account` INT, `status_operational` INT, `status` INT, `total_rating` INT, `average_rating` INT);
 
 -- -----------------------------------------------------
 -- View `tublessin_montir`.`montir_rating_location_view`
@@ -152,39 +237,38 @@ JOIN (SELECT montir_account_id as id, count(montir_account_id) as total_rating, 
 GROUP BY montir_account_id) mr
 ON mr.id = ma.id;
 
+-- -----------------------------------------------------
+-- View `tublessin_montir`.`overview_montir_view`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `tublessin_montir`.`overview_montir_view`;
+USE `tublessin_montir`;
+CREATE  OR REPLACE VIEW `overview_montir_view` AS
+SELECT ma.id,mp.firstname, mp. lastname, mp.imageURL,mp.gender,mp.phone_number,mp.city,ma.username,ma.status_account,mp.verified_account, ms.status_operational, msa.status, 
+ mr.total_rating , mr.average_rating
+FROM montir_account ma 
+JOIN montir_status ms ON ma.id = ms.montir_account_id
+JOIN master_status_activity msa ON ms.status_activity_id = msa.id
+JOIN montir_location ml ON ma.id = ml.montir_account_id
+JOIN montir_profile mp ON ma.id = mp.montir_account_id
+JOIN (SELECT montir_account_id as id, count(montir_account_id) as total_rating, AVG(rating) average_rating FROM montir_rating 
+GROUP BY montir_account_id) mr
+ON mr.id = ma.id;
+USE `tublessin_user` ;
+
+-- -----------------------------------------------------
+-- Placeholder table for view `tublessin_user`.`overview_user_view`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `tublessin_user`.`overview_user_view` (`id` INT, `firstname` INT, `lastname` INT, `gender` INT, `phone_number` INT, `email` INT, `imageURL` INT, `date_updated` INT, `date_created` INT, `username` INT, `status_account` INT);
+
+-- -----------------------------------------------------
+-- View `tublessin_user`.`overview_user_view`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `tublessin_user`.`overview_user_view`;
+USE `tublessin_user`;
+CREATE  OR REPLACE VIEW `overview_user_view` AS
+select ua.id,up.firstname, up.lastname,up.gender,up.phone_number,up.email,up.imageURL,up.date_updated,up.date_created, ua.username,ua.status_account from user_profile up JOIN
+user_account ua ON up.user_account_id = ua.id;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-INSERT INTO master_status_activity(status) VALUE('Standby'),('On Going'),('Working');
-
-INSERT INTO montir_account(username,password) VALUE
-('gerin','$2a$10$QMvlKdQhnpyoaXPLuCTynuifns4VUtgLS8Zo55Iha66RKVY7fEi8G'),
-('vio','$2a$10$QMvlKdQhnpyoaXPLuCTynuifns4VUtgLS8Zo55Iha66RKVY7fEi8G'),
-('bebek','$2a$10$QMvlKdQhnpyoaXPLuCTynuifns4VUtgLS8Zo55Iha66RKVY7fEi8G'),
-('burung','$2a$10$QMvlKdQhnpyoaXPLuCTynuifns4VUtgLS8Zo55Iha66RKVY7fEi8G'),
-('Kucing','$2a$10$QMvlKdQhnpyoaXPLuCTynuifns4VUtgLS8Zo55Iha66RKVY7fEi8G');
-
-INSERT INTO montir_profile(montir_account_id, firstname, lastname, born_date, gender, ktp, address, city, phone_number, email) VALUE
-(1,'Gerin','Prakoso','1990-01-24','L','123456789','Kec. Rawalumbu','Bekasi','08982279019','gerin@google.com'),
-(2,'Viontina','Dea','1995-01-25','P','123444444','Kec. Malang','Malang','08982272727','vio@google.com'),
-(3,'Bebek','Air','1992-01-23','P','58868334','Kec. Jakarta','Bogor','089846456','Bebek@google.com'),
-(4,'Burung','Terbang','1991-02-22','L','634544','Kec. Bekasi','Jakarta','089887676','Burung@google.com'),
-(5,'Kucing','Hitam','1990-02-22','L','632155534544','Kec. Depok','Depok','098323255','Kucing@google.com');
-
-INSERT INTO montir_status(montir_account_id,status_operational) VALUE 
-(1,"A"),(2,"A"),(3,"A"),(4,"A"),(5,"A");
-
-INSERT INTO montir_location(montir_account_id,latitude,longitude) VALUE 
-(1, -6.158658, 106.856724),
-(2, -6.153943, 106.829343),
-(3, -6.194667, 106.787583),
-(4, -6.194050, 106.828470),
-(5, -6.204413, 106.858610);
-
-INSERT INTO montir_rating(montir_account_id, rating, rater_id, review) VALUE
-(1, 1, 10, "Bagus Sekali"),(1, 4, 10, "Cakep Sekali"),(1, 3, 10, "Hehe Sekali"),
-(2, 5, 11, "Bagus Sekali"),(2, 2, 11, "Cakep Sekali"),(2, 3, 11, "Hehe Sekali"),
-(3, 5, 11, "Bagus Sekali"),(2, 2, 11, "Cakep Sekali"),(2, 5, 11, "Hehe Sekali"),
-(4, 3, 11, "Bagus Sekali"),(2, 2, 11, "Cakep Sekali"),(2, 3, 11, "Hehe Sekali"),
-(5, 3, 11, "Bagus Sekali"),(2, 2, 11, "Cakep Sekali"),(2, 3, 11, "Hehe Sekali");

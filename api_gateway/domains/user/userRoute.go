@@ -12,6 +12,7 @@ import (
 func InitUserRoute(mainRoute string, r *mux.Router) {
 	subRouter := r.PathPrefix(mainRoute).Subrouter()
 	userControllerApi := NewLoginControllerApi(connectToServiceUser())
+	subRouter.HandleFunc("/all", userControllerApi.HandleGetAllUserSummary()).Queries("keyword", "{keyword}", "page", "{page}", "limit", "{limit}", "status", "{status}", "orderBy", "{orderBy}", "sort", "{sort}").Methods("GET")
 	subRouter.HandleFunc("/profile/detail/{id}", userControllerApi.HandleGetUserProfileByID()).Methods("GET")
 	subRouter.HandleFunc("/profile/update/{id}", userControllerApi.HandleUpdateUserProfileByID()).Methods("POST")
 	subRouter.HandleFunc("/profile/delete/{id}", userControllerApi.HandleDeleteUserByID()).Methods("DELETE")

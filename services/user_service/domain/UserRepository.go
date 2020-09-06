@@ -2,6 +2,8 @@ package domain
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"tublessin/common/model"
 )
 
@@ -17,6 +19,7 @@ type UserRepositoryInterface interface {
 	UpdateUserProfileByID(mp *model.UserProfile) (*model.UserResponeMessage, error)
 	UpdateUserLocation(mp *model.UserProfile) (*model.UserResponeMessage, error)
 	DeleteUserByID(userAccount *model.UserAccount) (*model.UserResponeMessage, error)
+	GetAllUserSummary(query *model.UserPagination) ([]*model.UserAccount, int, error)
 }
 
 func NewUserRepository(db *sql.DB) UserRepositoryInterface {
@@ -171,4 +174,39 @@ func (r UserRepository) DeleteUserByID(userAccount *model.UserAccount) (*model.U
 	tx.Commit()
 
 	return &model.UserResponeMessage{Response: "Deactivated User Success", Code: "200"}, nil
+}
+
+func (c UserRepository) GetAllUserSummary(query *model.UserPagination) ([]*model.UserAccount, int, error) {
+	var listUserAccount []*model.UserAccount
+	var countItem int
+
+	queryInput := fmt.Sprintf("SELECT * FROM overview_user_view WHERE status_account=? AND (firstname LIKE ? OR lastname LIKE ?) ORDER BY %s %s LIMIT %s,%s", query.OrderBy, query.Sort, query.Page, query.Limit)
+	result, err := c.db.Query(queryInput, query.Status, "%"+query.Keyword+"%", "%"+query.Keyword+"%")
+	if err != nil {
+		return nil, 0, err
+	}
+
+	for result.Next() {
+		var uAccount model.UserAccount
+		var uProfile model.UserProfile
+
+		err := result.Scan(&uAccount.Id, &uProfile.Firstname, &uProfile.Lastname, &uProfile.Gender, &uProfile.PhoneNumber, &uProfile.Email, &uProfile.ImageURL, &uProfile.DateUpdated, &uProfile.DateCreated, &uAccount.Username, &uAccount.StatusAccount)
+		if err != nil {
+			return nil, 0, err
+		}
+		uAccount.Profile = &uProfile
+
+		listUserAccount = append(listUserAccount, &uAccount)
+	}
+
+	resultTotalItem := c.db.QueryRow(`SELECT count(id) FROM overview_user_view WHERE status_account=? AND (firstname LIKE ? OR lastname LIKE ?)`, query.Status, "%"+query.Keyword+"%", "%"+query.Keyword+"%")
+	if err != nil {
+		return nil, 0, err
+	}
+	err = resultTotalItem.Scan(&countItem)
+	if err != nil {
+		return nil, 0, errors.New("Counting All Menu Failed")
+	}
+
+	return listUserAccount, countItem, nil
 }

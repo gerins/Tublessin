@@ -135,3 +135,26 @@ func (c UserControllerApi) HandleDeleteUserByID() func(w http.ResponseWriter, r 
 		json.NewEncoder(w).Encode(result)
 	}
 }
+
+func (c UserControllerApi) HandleGetAllUserSummary() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		keyword := mux.Vars(r)["keyword"]
+		page := mux.Vars(r)["page"]
+		limit := mux.Vars(r)["limit"]
+		status := mux.Vars(r)["status"]
+		orderBy := mux.Vars(r)["orderBy"]
+		sort := mux.Vars(r)["sort"]
+
+		result, err := c.UserUsecaseApi.HandleGetAllUserSummary(&model.UserPagination{Keyword: keyword, Page: page, Limit: limit, Status: status, OrderBy: orderBy, Sort: sort})
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: err.Error(), Code: "400"})
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(result)
+	}
+}

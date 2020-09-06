@@ -77,3 +77,12 @@ func (c UserServer) DeleteUserByID(ctx context.Context, param *model.UserAccount
 
 	return userResponeMessage, nil
 }
+
+func (c UserServer) GetAllUserSummary(ctx context.Context, param *model.UserPagination) (*model.UserResponeMessage, error) {
+	result, err := c.UserUsecase.GetAllUserSummary(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}

@@ -17,6 +17,7 @@ type UserUsecaseApiInterface interface {
 	HandleUpdateUserProfileByID(userId string, UserProfile *model.UserProfile) (*model.UserResponeMessage, error)
 	HandleUpdateUserLocation(userId string, userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 	HandleDeleteUserByID(userId string) (*model.UserResponeMessage, error)
+	HandleGetAllUserSummary(query *model.UserPagination) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecaseApi(UserService model.UserClient) UserUsecaseApiInterface {
@@ -103,4 +104,28 @@ func (s UserUsecaseApi) HandleDeleteUserByID(userId string) (*model.UserResponeM
 	}
 
 	return userResponeMessage, nil
+}
+
+func (s UserUsecaseApi) HandleGetAllUserSummary(query *model.UserPagination) (*model.UserResponeMessage, error) {
+	page, err := strconv.Atoi(query.Page)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	limit, err := strconv.Atoi(query.Limit)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	query.Page = strconv.Itoa((page * limit) - limit)
+
+	result, err := s.UserService.GetAllUserSummary(context.Background(), query)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return result, nil
 }
