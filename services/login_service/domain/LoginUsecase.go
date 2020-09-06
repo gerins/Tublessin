@@ -6,7 +6,7 @@ import (
 	"log"
 	"strconv"
 	"tublessin/common/model"
-	"tublessin/services/login_service/token"
+	"tublessin/services/login_service/utils/token"
 
 	"golang.org/x/crypto/bcrypt"
 )

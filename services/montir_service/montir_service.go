@@ -5,40 +5,31 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"tublessin/common/config"
 	"tublessin/common/model"
+	"tublessin/services/montir_service/config"
 	"tublessin/services/montir_service/domain"
 
 	_ "github.com/go-sql-driver/mysql"
 	"google.golang.org/grpc"
 )
 
-// Ini gaboleh di hardcode, nanti diganti jadi environment variabel kalo semua udah siap
-const (
-	dbDriver = "mysql"
-	dbUser   = "root"
-	dbPass   = "admin"
-	dbName   = "tublessin_montir"
-	dbHost   = "localhost"
-	dbPort   = "3306"
-)
-
 func main() {
+	config.SetEnvironmentVariables()
 	srv := grpc.NewServer()
 	montirServer := domain.NewMontirController(connectToDatabase())
 	model.RegisterMontirServer(srv, montirServer)
 
-	log.Println("Starting Montir-Service server at port", config.SERVICE_MONTIR_PORT)
-	l, err := net.Listen("tcp", config.SERVICE_MONTIR_PORT)
+	log.Println("Starting Montir-Service server at port", config.GRPC_SERVICE_MONTIR_PORT)
+	l, err := net.Listen(config.GRPC_SERVICE_MONTIR_HOST, ":"+config.GRPC_SERVICE_MONTIR_PORT)
 	if err != nil {
-		log.Fatalf("could not listen to %s: %v", config.SERVICE_MONTIR_PORT, err)
+		log.Fatalf("could not listen to %s: %v", config.GRPC_SERVICE_MONTIR_PORT, err)
 	}
 
 	log.Fatal(srv.Serve(l))
 }
 
 func connectToDatabase() *sql.DB {
-	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbHost+":"+dbPort+")/"+dbName)
+	db, err := sql.Open(config.DbDriver, config.DbUser+":"+config.DbPass+"@tcp("+config.DbHost+":"+config.DbPort+")/"+config.DbName)
 	if err != nil {
 		log.Fatal(err)
 	}

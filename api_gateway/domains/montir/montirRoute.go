@@ -2,7 +2,7 @@ package montir
 
 import (
 	"log"
-	"tublessin/common/config"
+	"tublessin/api_gateway/config"
 	"tublessin/common/model"
 
 	"github.com/gorilla/mux"
@@ -24,8 +24,9 @@ func InitMontirRoute(mainRoute string, r *mux.Router) {
 
 // Untuk Connect ke Service-Montir
 func connectToServiceMontir() model.MontirClient {
+	host := config.SERVICE_MONTIR_HOST
 	port := config.SERVICE_MONTIR_PORT
-	conn, err := grpc.Dial(port, grpc.WithInsecure())
+	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
 	if err != nil {
 		log.Fatal("Could not Connect to Montir-Service", port, err)
 	}

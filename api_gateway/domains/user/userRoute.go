@@ -2,7 +2,7 @@ package user
 
 import (
 	"log"
-	"tublessin/common/config"
+	"tublessin/api_gateway/config"
 	"tublessin/common/model"
 
 	"github.com/gorilla/mux"
@@ -23,8 +23,9 @@ func InitUserRoute(mainRoute string, r *mux.Router) {
 
 // Untuk Connect ke Service-User
 func connectToServiceUser() model.UserClient {
+	host := config.SERVICE_LOGIN_HOST
 	port := config.SERVICE_USER_PORT
-	conn, err := grpc.Dial(port, grpc.WithInsecure())
+	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
 	if err != nil {
 		log.Fatal("Could not Connect to User-Service", port, err)
 	}

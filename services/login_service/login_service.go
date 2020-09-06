@@ -3,31 +3,32 @@ package main
 import (
 	"log"
 	"net"
-	"tublessin/common/config"
 	"tublessin/common/model"
+	"tublessin/services/login_service/config"
 	"tublessin/services/login_service/domain"
 
 	"google.golang.org/grpc"
 )
 
 func main() {
+	config.SetEnvironmentVariables()
 	srv := grpc.NewServer()
-
 	loginServer := domain.NewLoginController(connectToServiceMontir(), connectToServiceUser())
 	model.RegisterLoginServer(srv, loginServer)
 
-	log.Println("Starting Login-Service server at port", config.SERVICE_LOGIN_PORT)
-	l, err := net.Listen("tcp", config.SERVICE_LOGIN_PORT)
+	log.Println("Starting Login-Service server at port", config.GRPC_SERVICE_LOGIN_PORT)
+	l, err := net.Listen(config.GRPC_SERVICE_LOGIN_HOST, ":"+config.GRPC_SERVICE_LOGIN_PORT)
 	if err != nil {
-		log.Fatalf("could not listen to %s: %v", config.SERVICE_LOGIN_PORT, err)
+		log.Fatalf("could not listen to %s: %v", config.GRPC_SERVICE_LOGIN_PORT, err)
 	}
 
 	log.Fatal(srv.Serve(l))
 }
 
 func connectToServiceMontir() model.MontirClient {
+	host := config.SERVICE_MONTIR_HOST
 	port := config.SERVICE_MONTIR_PORT
-	conn, err := grpc.Dial(port, grpc.WithInsecure())
+	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
 	if err != nil {
 		log.Fatal("Could not Connect to Montir-Service", port, err)
 	}
@@ -36,8 +37,9 @@ func connectToServiceMontir() model.MontirClient {
 }
 
 func connectToServiceUser() model.UserClient {
+	host := config.SERVICE_USER_HOST
 	port := config.SERVICE_USER_PORT
-	conn, err := grpc.Dial(port, grpc.WithInsecure())
+	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
 	if err != nil {
 		log.Fatal("Could not Connect to User-Service", port, err)
 	}
