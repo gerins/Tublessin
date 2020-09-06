@@ -19,6 +19,7 @@ type UserUsecaseInterface interface {
 	UpdateUserProfilePicture(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 	UpdateUserProfileByID(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
 	UpdateUserLocation(userProfile *model.UserProfile) (*model.UserResponeMessage, error)
+	DeleteUserByID(UserAccount *model.UserAccount) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecase(db *sql.DB) UserUsecaseInterface {
@@ -27,7 +28,7 @@ func NewUserUsecase(db *sql.DB) UserUsecaseInterface {
 
 // Ini Adalah Layer Service dari User-Service, untuk menangani bussiness logic
 func (s UserUsecase) Login(UserAccount *model.UserAccount) (*model.UserAccount, error) {
-	userDetail, err := s.UserRepository.Login(UserAccount.Username)
+	userDetail, err := s.UserRepository.Login(UserAccount.Username, "A")
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -90,4 +91,14 @@ func (s UserUsecase) UpdateUserLocation(userProfile *model.UserProfile) (*model.
 	}
 
 	return UserResponeMessage, nil
+}
+
+func (s UserUsecase) DeleteUserByID(UserAccount *model.UserAccount) (*model.UserResponeMessage, error) {
+	userResponeMessage, err := s.UserRepository.DeleteUserByID(UserAccount)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return userResponeMessage, nil
 }

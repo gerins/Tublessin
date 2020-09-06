@@ -14,6 +14,7 @@ func InitUserRoute(mainRoute string, r *mux.Router) {
 	userControllerApi := NewLoginControllerApi(connectToServiceUser())
 	subRouter.HandleFunc("/profile/detail/{id}", userControllerApi.HandleGetUserProfileByID()).Methods("GET")
 	subRouter.HandleFunc("/profile/update/{id}", userControllerApi.HandleUpdateUserProfileByID()).Methods("POST")
+	subRouter.HandleFunc("/profile/delete/{id}", userControllerApi.HandleDeleteUserByID()).Methods("DELETE")
 	subRouter.HandleFunc("/profile/update/location/{id}", userControllerApi.HandleUpdateUserLocation()).Methods("POST")
 	subRouter.HandleFunc("/profile/image/upload/{id}", userControllerApi.HandleUpdateUserProfilePicture()).Methods("POST")
 	subRouter.HandleFunc("/file/image/{namaFile}", userControllerApi.HandleServeUserFile()).Methods("GET")

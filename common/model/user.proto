@@ -9,6 +9,7 @@ service User {
     rpc UpdateUserProfilePicture(UserProfile) returns (UserResponeMessage){}
     rpc UpdateUserLocation(UserProfile) returns (UserResponeMessage) {}
     rpc GetUserProfileById(UserAccount) returns (UserResponeMessage) {}
+    rpc DeleteUserByID(UserAccount) returns (UserResponeMessage) {}
 }
 
 message UserResponeMessage {
@@ -21,7 +22,7 @@ message UserAccount {
     int32 id = 1;
     string username = 2;
     string password = 3;
-    string date_created = 4;
+    string status_account = 4;
     UserProfile profile = 5;
 }
 
@@ -34,7 +35,8 @@ message UserProfile {
     string email = 6;
     string imageURL = 7;
     string date_updated = 8;
-    UserLocation location = 9;
+    string date_created = 9;
+    UserLocation location = 10;
 }
 
 message UserLocation {

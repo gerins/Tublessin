@@ -49,7 +49,7 @@ func (c LoginServer) UserLogin(ctx context.Context, param *model.UserLoginForm) 
 			Id:            result.Id,
 			Username:      result.Username,
 			Password:      result.Password,
-			StatusAccount: result.DateCreated,
+			StatusAccount: result.StatusAccount,
 		},
 	}, nil
 }

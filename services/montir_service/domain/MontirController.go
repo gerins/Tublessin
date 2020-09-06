@@ -78,3 +78,12 @@ func (c MontirServer) GetAllActiveMontirWithLocation(ctx context.Context, param 
 
 	return result, nil
 }
+
+func (c MontirServer) DeleteMontirByID(ctx context.Context, param *model.MontirAccount) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := c.MontirUsecase.DeleteMontirByID(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
+}

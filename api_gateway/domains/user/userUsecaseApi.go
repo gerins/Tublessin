@@ -16,6 +16,7 @@ type UserUsecaseApiInterface interface {
 	HandleUpdateUserProfilePicture(userId, fileName string) (*model.UserResponeMessage, error)
 	HandleUpdateUserProfileByID(userId string, UserProfile *model.UserProfile) (*model.UserResponeMessage, error)
 	HandleUpdateUserLocation(userId string, userProfile *model.UserProfile) (*model.UserResponeMessage, error)
+	HandleDeleteUserByID(userId string) (*model.UserResponeMessage, error)
 }
 
 func NewUserUsecaseApi(UserService model.UserClient) UserUsecaseApiInterface {
@@ -86,4 +87,20 @@ func (s UserUsecaseApi) HandleUpdateUserLocation(userId string, userProfile *mod
 	}
 
 	return UserResponeMessage, nil
+}
+
+func (s UserUsecaseApi) HandleDeleteUserByID(userId string) (*model.UserResponeMessage, error) {
+	Id, err := strconv.Atoi(userId)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	userResponeMessage, err := s.UserService.DeleteUserByID(context.Background(), &model.UserAccount{Id: int32(Id)})
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return userResponeMessage, nil
 }

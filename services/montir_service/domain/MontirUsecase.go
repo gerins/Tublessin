@@ -23,6 +23,7 @@ type MontirUsecaseInterface interface {
 	UpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	GetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error)
+	DeleteMontirByID(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirUsecase(db *sql.DB) MontirUsecaseInterface {
@@ -115,4 +116,14 @@ func (c MontirUsecase) GetAllActiveMontirWithLocation(userLocation *model.Reques
 	})
 
 	return &model.ListActiveMontirWithLocation{Response: "Search Nearby Montir Success", Code: "200", TotalMontir: strconv.Itoa(len(result)), List: result}, nil
+}
+
+func (s MontirUsecase) DeleteMontirByID(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := s.MontirRepository.DeleteMontirByID(montirAccount)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
 }

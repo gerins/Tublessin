@@ -68,3 +68,12 @@ func (c UserServer) UpdateUserLocation(ctx context.Context, param *model.UserPro
 
 	return userResponeMessage, nil
 }
+
+func (c UserServer) DeleteUserByID(ctx context.Context, param *model.UserAccount) (*model.UserResponeMessage, error) {
+	userResponeMessage, err := c.UserUsecase.DeleteUserByID(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return userResponeMessage, nil
+}

@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `tublessin_user`.`user_account` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(15) NOT NULL DEFAULT '',
   `password` VARCHAR(300) NOT NULL DEFAULT '',
-  `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status_account` VARCHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `tublessin_user`.`user_profile` (
   `email` VARCHAR(45) NOT NULL DEFAULT '',
   `imageURL` VARCHAR(45) NOT NULL DEFAULT 'default_profile.jpg',
   `date_updated` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_created` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE INDEX `phone_number_UNIQUE` (`phone_number` ASC) VISIBLE,
   PRIMARY KEY (`user_account_id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,

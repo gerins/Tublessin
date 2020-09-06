@@ -18,6 +18,7 @@ type MontirRepositoryInterface interface {
 	UpdateMontirProfileByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	GetAllActiveMontirWithLocation(statusOperational string) ([]*model.ActiveMontirWithLocation, error)
+	DeleteMontirByID(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirRepository(db *sql.DB) MontirRepositoryInterface {
@@ -210,4 +211,22 @@ func (c MontirRepository) GetAllActiveMontirWithLocation(statusOperational strin
 	}
 
 	return listActiveMontirWithLocation, nil
+}
+
+func (c MontirRepository) DeleteMontirByID(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error) {
+	tx, err := c.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+
+	stmnt1, _ := tx.Prepare("UPDATE montir_account SET status_account = ? WHERE id = ?")
+	_, err = stmnt1.Exec("N", montirAccount.Id)
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return &model.MontirResponeMessage{Response: "Deactivated Montir Success", Code: "200"}, nil
 }
