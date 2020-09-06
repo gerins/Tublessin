@@ -2,6 +2,8 @@ package domain
 
 import (
 	"database/sql"
+	"errors"
+	"fmt"
 	"log"
 	"tublessin/common/model"
 )
@@ -13,12 +15,13 @@ type MontirRepository struct {
 type MontirRepositoryInterface interface {
 	Login(username, status string) (*model.MontirAccount, error)
 	RegisterNewMontir(m *model.MontirAccount) (*model.MontirResponeMessage, error)
-	GetMontirProfileByID(montirId int32, statusAccount string) (*model.MontirResponeMessage, error)
+	GetMontirProfileByID(montirId int32) (*model.MontirResponeMessage, error)
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirProfileByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	GetAllActiveMontirWithLocation(statusOperational string) ([]*model.ActiveMontirWithLocation, error)
 	DeleteMontirByID(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
+	GetAllMontirSummary(query *model.MontirPagination) ([]*model.ActiveMontirWithLocation, int, error)
 }
 
 func NewMontirRepository(db *sql.DB) MontirRepositoryInterface {
@@ -75,10 +78,10 @@ func (r MontirRepository) RegisterNewMontir(m *model.MontirAccount) (*model.Mont
 	return &model.MontirResponeMessage{Response: "Inserting New Montir Success", Code: "200", Result: m}, nil
 }
 
-func (r MontirRepository) GetMontirProfileByID(montirId int32, statusAccount string) (*model.MontirResponeMessage, error) {
+func (r MontirRepository) GetMontirProfileByID(montirId int32) (*model.MontirResponeMessage, error) {
 	var montirAccount model.MontirAccount
 
-	result := r.db.QueryRow("SELECT * FROM montir_account WHERE id=? AND status_account=?", montirId, statusAccount)
+	result := r.db.QueryRow("SELECT * FROM montir_account WHERE id=? ", montirId)
 	err := result.Scan(&montirAccount.Id, &montirAccount.Username, &montirAccount.Password, &montirAccount.StatusAccount)
 	if err != nil {
 		return nil, err
@@ -229,4 +232,41 @@ func (c MontirRepository) DeleteMontirByID(montirAccount *model.MontirAccount) (
 	tx.Commit()
 
 	return &model.MontirResponeMessage{Response: "Deactivated Montir Success", Code: "200"}, nil
+}
+
+func (c MontirRepository) GetAllMontirSummary(query *model.MontirPagination) ([]*model.ActiveMontirWithLocation, int, error) {
+	var ListActiveMontirWithLocation []*model.ActiveMontirWithLocation
+	var countItem int
+
+	queryInput := fmt.Sprintf("SELECT * FROM overview_montir_view WHERE status_account=? AND city LIKE ? ORDER BY %s %s LIMIT %s,%s", query.OrderBy, query.Sort, query.Page, query.Limit)
+	result, err := c.db.Query(queryInput, query.Status, "%"+query.Keyword+"%")
+	if err != nil {
+		return nil, 0, err
+	}
+
+	for result.Next() {
+		var m model.ActiveMontirWithLocation
+		var mStatus model.MontirStatus
+		var mRating model.AverageMontirRating
+
+		err := result.Scan(&m.Id, &m.Firstname, &m.Lastname, &m.ImageUrl, &m.Gender, &m.PhoneNumber, &m.City, &m.Username, &m.StatusAccount, &m.VerifiedAccount, &mStatus.StatusOperational, &mStatus.StatusActivity, &mRating.TotalRating, &mRating.AverageRating)
+		if err != nil {
+			return nil, 0, err
+		}
+		m.Status = &mStatus
+		m.Rating = &mRating
+
+		ListActiveMontirWithLocation = append(ListActiveMontirWithLocation, &m)
+	}
+
+	resultTotalItem := c.db.QueryRow(`SELECT count(id) FROM overview_montir_view WHERE status_account=? AND city LIKE ?`, query.Status, "%"+query.Keyword+"%")
+	if err != nil {
+		return nil, 0, err
+	}
+	err = resultTotalItem.Scan(&countItem)
+	if err != nil {
+		return nil, 0, errors.New("Counting All Menu Failed")
+	}
+
+	return ListActiveMontirWithLocation, countItem, nil
 }

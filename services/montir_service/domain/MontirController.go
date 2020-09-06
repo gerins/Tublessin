@@ -87,3 +87,12 @@ func (c MontirServer) DeleteMontirByID(ctx context.Context, param *model.MontirA
 
 	return montirResponeMessage, nil
 }
+
+func (c MontirServer) GetAllMontirSummary(ctx context.Context, param *model.MontirPagination) (*model.ListActiveMontirWithLocation, error) {
+	result, err := c.MontirUsecase.GetAllMontirSummary(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}

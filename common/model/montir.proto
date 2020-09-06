@@ -12,6 +12,7 @@ service Montir {
     rpc GetMontirProfileByID(MontirAccount) returns (MontirResponeMessage) {}
     rpc GetAllActiveMontirWithLocation(RequestActiveMontir) returns (ListActiveMontirWithLocation) {}
     rpc DeleteMontirByID(MontirAccount) returns (MontirResponeMessage) {}
+    rpc GetAllMontirSummary(MontirPagination) returns (ListActiveMontirWithLocation) {}
 }
 
 message MontirResponeMessage {
@@ -79,10 +80,16 @@ message ActiveMontirWithLocation {
     string firstname = 2;
     string lastname = 3;
     string imageUrl = 4;
-    int32 distance = 5;
-    AverageMontirRating rating = 6;
-    MontirLocation location = 7;
-    MontirStatus status = 8;
+    string gender = 5;
+    string phone_number = 6;
+    string city = 7;
+    string username = 8;
+    string status_account = 9;
+    string verified_account = 10;
+    int32 distance = 11;
+    AverageMontirRating rating = 12;
+    MontirLocation location = 13;
+    MontirStatus status = 14;
 }
 
 message AverageMontirRating {
@@ -93,4 +100,13 @@ message AverageMontirRating {
 message RequestActiveMontir {
     double latitude = 1;
     double longitude = 2;
+}
+
+message MontirPagination{
+    string keyword = 1;
+    string page = 2; 
+    string limit = 3; 
+    string status = 4;
+    string orderBy = 5;
+    string sort = 6;
 }

@@ -18,6 +18,7 @@ type MontirUsecaseApiInterface interface {
 	HandleUpdateMontirLocation(montirId string, montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	HandleGetAllActiveMontirWithLocation(latitude, longitude string) (*model.ListActiveMontirWithLocation, error)
 	HandleDeleteMontirByID(montirId string) (*model.MontirResponeMessage, error)
+	HandleGetAllMontirSummary(query *model.MontirPagination) (*model.ListActiveMontirWithLocation, error)
 }
 
 func NewMontirUsecaseApi(montirService model.MontirClient) MontirUsecaseApiInterface {
@@ -131,4 +132,28 @@ func (s MontirUsecaseApi) HandleDeleteMontirByID(montirId string) (*model.Montir
 	}
 
 	return MontirResponeMessage, nil
+}
+
+func (s MontirUsecaseApi) HandleGetAllMontirSummary(query *model.MontirPagination) (*model.ListActiveMontirWithLocation, error) {
+	page, err := strconv.Atoi(query.Page)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	limit, err := strconv.Atoi(query.Limit)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	query.Page = strconv.Itoa((page * limit) - limit)
+
+	result, err := s.MontirService.GetAllMontirSummary(context.Background(), query)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return result, nil
 }
