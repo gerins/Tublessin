@@ -80,13 +80,23 @@ func (s MontirUsecase) UpdateMontirProfilePicture(montirProfile *model.MontirPro
 }
 
 func (s MontirUsecase) UpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
-	montirResponeMessage, err := s.MontirRepository.UpdateMontirProfileByID(montirProfile)
-	if err != nil {
-		log.Println(err)
-		return nil, err
-	}
+	if montirProfile.VerifiedAccount != "" {
+		result, err := s.MontirRepository.VerifiedMontirAccountByID(montirProfile)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
 
-	return montirResponeMessage, nil
+		return result, nil
+	} else {
+		result, err := s.MontirRepository.UpdateMontirProfileByID(montirProfile)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+
+		return result, nil
+	}
 }
 
 func (s MontirUsecase) UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
