@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package model;
+
+
+service Transaction{
+    rpc GetAllTransactionHistory(TransactionHistory) returns (ListTransactionHistory) {}
+    rpc PostNewTransaction(TransactionHistory) returns (TransactionHistory) {}
+    rpc UpdateTransactionByID(TransactionHistory) returns (TransactionHistory) {}
+}
+
+message TransactionHistory{
+    string id = 1;
+    string id_montir = 2;
+    string id_user = 3;
+    string montir_firstname = 4;
+    string user_firstname = 5;
+    TransactionLocation location = 6;
+    string status = 7;
+    string date_created = 8;
+}
+
+message TransactionLocation {
+    double latitude = 1;
+    double longitude = 2;
+}
+
+message ListTransactionHistory{
+    repeated TransactionHistory results = 1;
+}

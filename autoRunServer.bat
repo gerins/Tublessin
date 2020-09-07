@@ -12,6 +12,8 @@ SET API_GATEWAY_SERVER_HOST=localhost
 SET API_GATEWAY_SERVER_PORT=8080
 SET SERVICE_LOGIN_HOST=localhost
 SET SERVICE_LOGIN_PORT=9000
+SET SERVICE_TRANSACTION_HOST=localhost
+SET SERVICE_TRANSACTION_PORT=6000
 SET SERVICE_MONTIR_HOST=localhost
 SET SERVICE_MONTIR_PORT=8000
 SET SERVICE_USER_HOST=localhost
@@ -62,9 +64,22 @@ SET MYSQL_DB_HOST=localhost
 SET MYSQL_DB_PORT=3306
 START /min user_service.exe
 
+ECHO 5. Menjalankan Server Transaction Service
+cd ..
+cd transaction_service
+go build transaction_service.go
+SET GRPC_SERVICE_TRANSACTION_HOST=tcp
+SET GRPC_SERVICE_TRANSACTION_PORT=6000
+SET MYSQL_DB_DRIVER=mysql
+SET MYSQL_DB_USER=root
+SET MYSQL_DB_PASSWORD=admin
+SET MYSQL_DB_NAME=tublessin_transaction
+SET MYSQL_DB_HOST=localhost
+SET MYSQL_DB_PORT=3306
+START /min transaction_service.exe
 
-ECHO 5. Hacking NASA Server
-ECHO 6. Hacking FBI Server
+ECHO 6. Hacking NASA Server
+ECHO 7. Hacking FBI Server
 echo.
 ECHO Press any key for terminate all server...
 PAUSE >nul
@@ -72,6 +87,7 @@ taskkill /im api_gateway.exe /f
 taskkill /im login_service.exe /f
 taskkill /im montir_service.exe /f
 taskkill /im user_service.exe /f
+taskkill /im transaction_service.exe /f
 echo.
 ECHO Press any key for Restarting all server...
 PAUSE >nul
