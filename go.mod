@@ -4,7 +4,8 @@ go 1.14
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/go-sql-driver/mysql v1.5.0 // indirect
+	github.com/go-redis/redis/v8 v8.0.0-beta.10
+	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang/protobuf v1.4.2
 	github.com/google/go-cmp v0.5.2 // indirect
 	github.com/gorilla/mux v1.8.0
