@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"tublessin/api_gateway/utils"
+	"tublessin/api_gateway/utils/storage"
 	"tublessin/common/model"
 
 	"github.com/gorilla/mux"
@@ -42,7 +42,7 @@ func (c MontirControllerApi) HandleUpdateMontirProfilePicture() func(w http.Resp
 		w.Header().Set("Content-Type", "application/json")
 
 		getId := mux.Vars(r)["id"]
-		fileName, err := utils.SaveFileToStorage(r, getId, "montir")
+		fileName, err := storage.SaveFileToStorage(r, getId, "montir")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "500"})

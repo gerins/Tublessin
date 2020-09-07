@@ -3,6 +3,7 @@ package montir
 import (
 	"log"
 	"tublessin/api_gateway/config"
+	"tublessin/api_gateway/middleware"
 	"tublessin/common/model"
 
 	"github.com/gorilla/mux"
@@ -11,6 +12,7 @@ import (
 
 func InitMontirRoute(mainRoute string, r *mux.Router) {
 	subRouter := r.PathPrefix(mainRoute).Subrouter()
+	subRouter.Use(middleware.TokenValidation)
 	montirControllerApi := NewMontirControllerApi(connectToServiceMontir())
 	subRouter.HandleFunc("/all", montirControllerApi.HandleGetAllMontirSummary()).Queries("keyword", "{keyword}", "page", "{page}", "limit", "{limit}", "status", "{status}", "orderBy", "{orderBy}", "sort", "{sort}").Methods("GET")
 	subRouter.HandleFunc("/profile/detail/{id}", montirControllerApi.HandleGetMontirProfileByID()).Methods("GET")

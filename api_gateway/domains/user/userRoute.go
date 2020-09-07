@@ -3,6 +3,7 @@ package user
 import (
 	"log"
 	"tublessin/api_gateway/config"
+	"tublessin/api_gateway/middleware"
 	"tublessin/common/model"
 
 	"github.com/gorilla/mux"
@@ -11,6 +12,7 @@ import (
 
 func InitUserRoute(mainRoute string, r *mux.Router) {
 	subRouter := r.PathPrefix(mainRoute).Subrouter()
+	subRouter.Use(middleware.TokenValidation)
 	userControllerApi := NewLoginControllerApi(connectToServiceUser())
 	subRouter.HandleFunc("/all", userControllerApi.HandleGetAllUserSummary()).Queries("keyword", "{keyword}", "page", "{page}", "limit", "{limit}", "status", "{status}", "orderBy", "{orderBy}", "sort", "{sort}").Methods("GET")
 	subRouter.HandleFunc("/profile/detail/{id}", userControllerApi.HandleGetUserProfileByID()).Methods("GET")

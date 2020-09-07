@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
-	"tublessin/api_gateway/utils"
+	"tublessin/api_gateway/utils/storage"
 	"tublessin/common/model"
 
 	"github.com/gorilla/mux"
@@ -43,7 +43,7 @@ func (c UserControllerApi) HandleUpdateUserProfilePicture() func(w http.Response
 
 		getId := mux.Vars(r)["id"]
 
-		fileName, err := utils.SaveFileToStorage(r, getId, "user")
+		fileName, err := storage.SaveFileToStorage(r, getId, "user")
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: err.Error(), Code: "500"})
