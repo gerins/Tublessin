@@ -21,6 +21,7 @@ type MontirUsecaseInterface interface {
 	GetMontirProfileByID(montirId int32) (*model.MontirResponeMessage, error)
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirProfileByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
+	UpdateMontirStatusByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	GetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error)
 	DeleteMontirByID(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
@@ -97,6 +98,16 @@ func (s MontirUsecase) UpdateMontirProfileByID(montirProfile *model.MontirProfil
 
 		return result, nil
 	}
+}
+
+func (s MontirUsecase) UpdateMontirStatusByID(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := s.MontirRepository.UpdateMontirStatusByID(montirProfile)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
 }
 
 func (s MontirUsecase) UpdateMontirLocation(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {

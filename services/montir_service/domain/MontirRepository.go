@@ -18,6 +18,7 @@ type MontirRepositoryInterface interface {
 	GetMontirProfileByID(montirId int32) (*model.MontirResponeMessage, error)
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirProfileByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
+	UpdateMontirStatusByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	VerifiedMontirAccountByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	UpdateMontirLocation(mp *model.MontirProfile) (*model.MontirResponeMessage, error)
 	GetAllActiveMontirWithLocation(statusOperational string) ([]*model.ActiveMontirWithLocation, error)
@@ -188,6 +189,26 @@ func (r MontirRepository) VerifiedMontirAccountByID(mp *model.MontirProfile) (*m
 	tx.Commit()
 
 	return &model.MontirResponeMessage{Response: "Updating Montir Profile Success", Code: "200", Result: &model.MontirAccount{
+		Profile: mp,
+	}}, nil
+}
+
+func (r MontirRepository) UpdateMontirStatusByID(mp *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+
+	stmnt1, _ := tx.Prepare("UPDATE montir_status SET status_operational=?,status_activity_id=? WHERE montir_account_id = ?")
+	_, err = stmnt1.Exec(mp.Status.StatusOperational, mp.Status.StatusActivity, mp.Id)
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return &model.MontirResponeMessage{Response: "Updating Montir Status Success", Code: "200", Result: &model.MontirAccount{
 		Profile: mp,
 	}}, nil
 }

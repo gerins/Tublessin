@@ -9,6 +9,7 @@ service Montir {
     rpc UpdateMontirProfileByID(MontirProfile) returns (MontirResponeMessage) {}
     rpc UpdateMontirProfilePicture(MontirProfile) returns (MontirResponeMessage) {}
     rpc UpdateMontirLocation(MontirProfile) returns (MontirResponeMessage) {}
+    rpc UpdateMontirStatusByID(MontirProfile) returns (MontirResponeMessage) {}
     rpc GetMontirProfileByID(MontirAccount) returns (MontirResponeMessage) {}
     rpc GetAllActiveMontirWithLocation(RequestActiveMontir) returns (ListActiveMontirWithLocation) {}
     rpc DeleteMontirByID(MontirAccount) returns (MontirResponeMessage) {}

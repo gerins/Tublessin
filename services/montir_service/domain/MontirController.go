@@ -61,6 +61,15 @@ func (c MontirServer) UpdateMontirProfileByID(ctx context.Context, param *model.
 	return montirResponeMessage, nil
 }
 
+func (c MontirServer) UpdateMontirStatusByID(ctx context.Context, param *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := c.MontirUsecase.UpdateMontirStatusByID(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
+}
+
 func (c MontirServer) UpdateMontirLocation(ctx context.Context, param *model.MontirProfile) (*model.MontirResponeMessage, error) {
 	montirResponeMessage, err := c.MontirUsecase.UpdateMontirLocation(param)
 	if err != nil {
