@@ -12,6 +12,7 @@ type MontirUsecaseApi struct {
 }
 
 type MontirUsecaseApiInterface interface {
+	HandleGetMontirLocation(montirId string) (*model.MontirLocation, error)
 	HandleGetMontirProfileByID(montirId string) (*model.MontirResponeMessage, error)
 	HandleUpdateMontirProfilePicture(MontirId, fileName string) (*model.MontirResponeMessage, error)
 	HandleUpdateMontirProfileByID(montirId string, profile *model.MontirProfile) (*model.MontirResponeMessage, error)
@@ -41,6 +42,25 @@ func (s MontirUsecaseApi) HandleGetMontirProfileByID(montirId string) (*model.Mo
 	}
 
 	return montirResponeMessage, nil
+}
+
+func (s MontirUsecaseApi) HandleGetMontirLocation(montirId string) (*model.MontirLocation, error) {
+	id, err := strconv.Atoi(montirId)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	montirAccountWithId := &model.MontirAccount{Id: int32(id)}
+	result, err := s.MontirService.GetMontirProfileByID(context.Background(), montirAccountWithId)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	montirLocation := &model.MontirLocation{Latitude: result.Result.Profile.Location.Latitude, Longitude: result.Result.Profile.Location.Longitude, DateUpdated: result.Result.Profile.Location.DateUpdated}
+
+	return montirLocation, nil
 }
 
 func (s MontirUsecaseApi) HandleUpdateMontirProfilePicture(MontirId, fileName string) (*model.MontirResponeMessage, error) {

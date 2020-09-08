@@ -16,6 +16,7 @@ func InitMontirRoute(mainRoute string, r *mux.Router) {
 	montirControllerApi := NewMontirControllerApi(connectToServiceMontir())
 	subRouter.HandleFunc("/all", montirControllerApi.HandleGetAllMontirSummary()).Queries("keyword", "{keyword}", "page", "{page}", "limit", "{limit}", "status", "{status}", "orderBy", "{orderBy}", "sort", "{sort}").Methods("GET")
 	subRouter.HandleFunc("/profile/detail/{id}", montirControllerApi.HandleGetMontirProfileByID()).Methods("GET")
+	subRouter.HandleFunc("/location/{id}", montirControllerApi.HandleGetMontirLocation()).Methods("GET")
 	subRouter.HandleFunc("/profile/update/{id}", montirControllerApi.HandleUpdateMontirProfileByID()).Methods("POST")
 	subRouter.HandleFunc("/profile/update/status/{id}", montirControllerApi.HandleUpdateMontirStatusByID()).Methods("POST")
 	subRouter.HandleFunc("/profile/update/location/{id}", montirControllerApi.HandleUpdateMontirLocation()).Methods("POST")

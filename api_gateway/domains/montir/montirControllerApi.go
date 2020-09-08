@@ -37,6 +37,23 @@ func (c MontirControllerApi) HandleGetMontirProfileByID() func(w http.ResponseWr
 	}
 }
 
+func (c MontirControllerApi) HandleGetMontirLocation() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		montirId := mux.Vars(r)["id"]
+		result, err := c.MontirUsecaseApi.HandleGetMontirLocation(montirId)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(result)
+	}
+}
+
 func (c MontirControllerApi) HandleUpdateMontirProfilePicture() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
