@@ -21,6 +21,7 @@ type MontirUsecaseApiInterface interface {
 	HandleGetAllActiveMontirWithLocation(latitude, longitude string) (*model.ListActiveMontirWithLocation, error)
 	HandleDeleteMontirByID(montirId string) (*model.MontirResponeMessage, error)
 	HandleGetAllMontirSummary(query *model.MontirPagination) (*model.ListActiveMontirWithLocation, error)
+	HandleInsertNewMontirRating(montirId string, montirRating *model.MontirRating) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirUsecaseApi(montirService model.MontirClient) MontirUsecaseApiInterface {
@@ -197,4 +198,24 @@ func (s MontirUsecaseApi) HandleGetAllMontirSummary(query *model.MontirPaginatio
 	}
 
 	return result, nil
+}
+
+func (s MontirUsecaseApi) HandleInsertNewMontirRating(montirId string, montirRating *model.MontirRating) (*model.MontirResponeMessage, error) {
+	Id, err := strconv.Atoi(montirId)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	var montirProfile model.MontirProfile
+	montirProfile.RatingList = append(montirProfile.RatingList, montirRating)
+	montirProfile.Id = int32(Id)
+
+	MontirResponeMessage, err := s.MontirService.InsertNewMontirRating(context.Background(), &montirProfile)
+	if err != nil {
+		log.Println(err.Error())
+		return nil, err
+	}
+
+	return MontirResponeMessage, nil
 }

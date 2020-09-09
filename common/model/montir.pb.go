@@ -1105,7 +1105,7 @@ var file_montir_proto_rawDesc = []byte{
 	0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x18,
 	0x0a, 0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52,
 	0x07, 0x6f, 0x72, 0x64, 0x65, 0x72, 0x42, 0x79, 0x12, 0x12, 0x0a, 0x04, 0x73, 0x6f, 0x72, 0x74,
-	0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x73, 0x6f, 0x72, 0x74, 0x32, 0x9a, 0x06, 0x0a,
+	0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x73, 0x6f, 0x72, 0x74, 0x32, 0xe8, 0x06, 0x0a,
 	0x06, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x12, 0x48, 0x0a, 0x11, 0x52, 0x65, 0x67, 0x69, 0x73,
 	0x74, 0x65, 0x72, 0x4e, 0x65, 0x77, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x12, 0x14, 0x2e, 0x6d,
 	0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x41, 0x63, 0x63, 0x6f, 0x75,
@@ -1155,8 +1155,12 @@ var file_montir_proto_rawDesc = []byte{
 	0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x50, 0x61, 0x67, 0x69, 0x6e, 0x61, 0x74, 0x69,
 	0x6f, 0x6e, 0x1a, 0x23, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x41,
 	0x63, 0x74, 0x69, 0x76, 0x65, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x57, 0x69, 0x74, 0x68, 0x4c,
-	0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x33,
+	0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x22, 0x00, 0x12, 0x4c, 0x0a, 0x15, 0x49, 0x6e, 0x73,
+	0x65, 0x72, 0x74, 0x4e, 0x65, 0x77, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x52, 0x61, 0x74, 0x69,
+	0x6e, 0x67, 0x12, 0x14, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c, 0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69,
+	0x72, 0x50, 0x72, 0x6f, 0x66, 0x69, 0x6c, 0x65, 0x1a, 0x1b, 0x2e, 0x6d, 0x6f, 0x64, 0x65, 0x6c,
+	0x2e, 0x4d, 0x6f, 0x6e, 0x74, 0x69, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x65, 0x4d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x22, 0x00, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1205,18 +1209,20 @@ var file_montir_proto_depIdxs = []int32{
 	9,  // 16: model.Montir.GetAllActiveMontirWithLocation:input_type -> model.RequestActiveMontir
 	1,  // 17: model.Montir.DeleteMontirByID:input_type -> model.MontirAccount
 	10, // 18: model.Montir.GetAllMontirSummary:input_type -> model.MontirPagination
-	0,  // 19: model.Montir.RegisterNewMontir:output_type -> model.MontirResponeMessage
-	1,  // 20: model.Montir.Login:output_type -> model.MontirAccount
-	0,  // 21: model.Montir.UpdateMontirProfileByID:output_type -> model.MontirResponeMessage
-	0,  // 22: model.Montir.UpdateMontirProfilePicture:output_type -> model.MontirResponeMessage
-	0,  // 23: model.Montir.UpdateMontirLocation:output_type -> model.MontirResponeMessage
-	0,  // 24: model.Montir.UpdateMontirStatusByID:output_type -> model.MontirResponeMessage
-	0,  // 25: model.Montir.GetMontirProfileByID:output_type -> model.MontirResponeMessage
-	6,  // 26: model.Montir.GetAllActiveMontirWithLocation:output_type -> model.ListActiveMontirWithLocation
-	0,  // 27: model.Montir.DeleteMontirByID:output_type -> model.MontirResponeMessage
-	6,  // 28: model.Montir.GetAllMontirSummary:output_type -> model.ListActiveMontirWithLocation
-	19, // [19:29] is the sub-list for method output_type
-	9,  // [9:19] is the sub-list for method input_type
+	2,  // 19: model.Montir.InsertNewMontirRating:input_type -> model.MontirProfile
+	0,  // 20: model.Montir.RegisterNewMontir:output_type -> model.MontirResponeMessage
+	1,  // 21: model.Montir.Login:output_type -> model.MontirAccount
+	0,  // 22: model.Montir.UpdateMontirProfileByID:output_type -> model.MontirResponeMessage
+	0,  // 23: model.Montir.UpdateMontirProfilePicture:output_type -> model.MontirResponeMessage
+	0,  // 24: model.Montir.UpdateMontirLocation:output_type -> model.MontirResponeMessage
+	0,  // 25: model.Montir.UpdateMontirStatusByID:output_type -> model.MontirResponeMessage
+	0,  // 26: model.Montir.GetMontirProfileByID:output_type -> model.MontirResponeMessage
+	6,  // 27: model.Montir.GetAllActiveMontirWithLocation:output_type -> model.ListActiveMontirWithLocation
+	0,  // 28: model.Montir.DeleteMontirByID:output_type -> model.MontirResponeMessage
+	6,  // 29: model.Montir.GetAllMontirSummary:output_type -> model.ListActiveMontirWithLocation
+	0,  // 30: model.Montir.InsertNewMontirRating:output_type -> model.MontirResponeMessage
+	20, // [20:31] is the sub-list for method output_type
+	9,  // [9:20] is the sub-list for method input_type
 	9,  // [9:9] is the sub-list for extension type_name
 	9,  // [9:9] is the sub-list for extension extendee
 	0,  // [0:9] is the sub-list for field type_name
@@ -1403,6 +1409,7 @@ type MontirClient interface {
 	GetAllActiveMontirWithLocation(ctx context.Context, in *RequestActiveMontir, opts ...grpc.CallOption) (*ListActiveMontirWithLocation, error)
 	DeleteMontirByID(ctx context.Context, in *MontirAccount, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 	GetAllMontirSummary(ctx context.Context, in *MontirPagination, opts ...grpc.CallOption) (*ListActiveMontirWithLocation, error)
+	InsertNewMontirRating(ctx context.Context, in *MontirProfile, opts ...grpc.CallOption) (*MontirResponeMessage, error)
 }
 
 type montirClient struct {
@@ -1503,6 +1510,15 @@ func (c *montirClient) GetAllMontirSummary(ctx context.Context, in *MontirPagina
 	return out, nil
 }
 
+func (c *montirClient) InsertNewMontirRating(ctx context.Context, in *MontirProfile, opts ...grpc.CallOption) (*MontirResponeMessage, error) {
+	out := new(MontirResponeMessage)
+	err := c.cc.Invoke(ctx, "/model.Montir/InsertNewMontirRating", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MontirServer is the server API for Montir service.
 type MontirServer interface {
 	RegisterNewMontir(context.Context, *MontirAccount) (*MontirResponeMessage, error)
@@ -1515,6 +1531,7 @@ type MontirServer interface {
 	GetAllActiveMontirWithLocation(context.Context, *RequestActiveMontir) (*ListActiveMontirWithLocation, error)
 	DeleteMontirByID(context.Context, *MontirAccount) (*MontirResponeMessage, error)
 	GetAllMontirSummary(context.Context, *MontirPagination) (*ListActiveMontirWithLocation, error)
+	InsertNewMontirRating(context.Context, *MontirProfile) (*MontirResponeMessage, error)
 }
 
 // UnimplementedMontirServer can be embedded to have forward compatible implementations.
@@ -1550,6 +1567,9 @@ func (*UnimplementedMontirServer) DeleteMontirByID(context.Context, *MontirAccou
 }
 func (*UnimplementedMontirServer) GetAllMontirSummary(context.Context, *MontirPagination) (*ListActiveMontirWithLocation, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllMontirSummary not implemented")
+}
+func (*UnimplementedMontirServer) InsertNewMontirRating(context.Context, *MontirProfile) (*MontirResponeMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method InsertNewMontirRating not implemented")
 }
 
 func RegisterMontirServer(s *grpc.Server, srv MontirServer) {
@@ -1736,6 +1756,24 @@ func _Montir_GetAllMontirSummary_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Montir_InsertNewMontirRating_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MontirProfile)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MontirServer).InsertNewMontirRating(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/model.Montir/InsertNewMontirRating",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MontirServer).InsertNewMontirRating(ctx, req.(*MontirProfile))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Montir_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "model.Montir",
 	HandlerType: (*MontirServer)(nil),
@@ -1779,6 +1817,10 @@ var _Montir_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllMontirSummary",
 			Handler:    _Montir_GetAllMontirSummary_Handler,
+		},
+		{
+			MethodName: "InsertNewMontirRating",
+			Handler:    _Montir_InsertNewMontirRating_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -14,6 +14,7 @@ service Montir {
     rpc GetAllActiveMontirWithLocation(RequestActiveMontir) returns (ListActiveMontirWithLocation) {}
     rpc DeleteMontirByID(MontirAccount) returns (MontirResponeMessage) {}
     rpc GetAllMontirSummary(MontirPagination) returns (ListActiveMontirWithLocation) {}
+    rpc InsertNewMontirRating(MontirProfile) returns (MontirResponeMessage) {}
 }
 
 message MontirResponeMessage {

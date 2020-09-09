@@ -105,3 +105,12 @@ func (c MontirServer) GetAllMontirSummary(ctx context.Context, param *model.Mont
 
 	return result, nil
 }
+
+func (c MontirServer) InsertNewMontirRating(ctx context.Context, param *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := c.MontirUsecase.InsertNewMontirRating(param)
+	if err != nil {
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
+}

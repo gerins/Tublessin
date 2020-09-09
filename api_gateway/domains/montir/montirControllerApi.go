@@ -213,3 +213,28 @@ func (c MontirControllerApi) HandleGetAllMontirSummary() func(w http.ResponseWri
 		json.NewEncoder(w).Encode(result)
 	}
 }
+
+func (c MontirControllerApi) HandleInsertNewMontirRating() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		montirId := mux.Vars(r)["id"]
+		var montirRating *model.MontirRating
+		err := json.NewDecoder(r.Body).Decode(&montirRating)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
+			return
+		}
+
+		result, err := c.MontirUsecaseApi.HandleInsertNewMontirRating(montirId, montirRating)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(result)
+	}
+}

@@ -19,8 +19,8 @@ func TokenValidation(next http.Handler) http.Handler {
 			return
 		}
 
-		validity, userName, _ := token.VerifyToken(getToken.Value)
-		log.Println(userName + " accessing " + r.RequestURI)
+		validity, userName, id, _ := token.VerifyToken(getToken.Value)
+		log.Println(id, userName+" accessing "+r.RequestURI)
 		if validity == true && userName == getUser.Value {
 			next.ServeHTTP(w, r)
 		} else {

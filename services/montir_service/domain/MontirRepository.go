@@ -24,6 +24,7 @@ type MontirRepositoryInterface interface {
 	GetAllActiveMontirWithLocation(statusOperational string) ([]*model.ActiveMontirWithLocation, error)
 	DeleteMontirByID(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
 	GetAllMontirSummary(query *model.MontirPagination) ([]*model.ActiveMontirWithLocation, int, error)
+	InsertNewMontirRating(profile *model.MontirProfile) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirRepository(db *sql.DB) MontirRepositoryInterface {
@@ -311,4 +312,24 @@ func (c MontirRepository) GetAllMontirSummary(query *model.MontirPagination) ([]
 	}
 
 	return ListActiveMontirWithLocation, countItem, nil
+}
+
+func (r MontirRepository) InsertNewMontirRating(profile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+
+	stmnt1, _ := tx.Prepare("INSERT INTO montir_rating(montir_account_id, rating, rater_id, review) VALUE (?,?,?,?)")
+	_, err = stmnt1.Exec(profile.Id, profile.RatingList[0].Rating, profile.RatingList[0].RaterId, profile.RatingList[0].Review)
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	tx.Commit()
+
+	return &model.MontirResponeMessage{Response: "Inserting Montir Rating Success", Code: "200", Result: &model.MontirAccount{
+		Profile: profile,
+	}}, nil
 }

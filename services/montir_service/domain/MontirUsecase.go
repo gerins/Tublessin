@@ -26,6 +26,7 @@ type MontirUsecaseInterface interface {
 	GetAllActiveMontirWithLocation(userLocation *model.RequestActiveMontir) (*model.ListActiveMontirWithLocation, error)
 	DeleteMontirByID(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error)
 	GetAllMontirSummary(query *model.MontirPagination) (*model.ListActiveMontirWithLocation, error)
+	InsertNewMontirRating(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 }
 
 func NewMontirUsecase(db *sql.DB) MontirUsecaseInterface {
@@ -158,4 +159,14 @@ func (s MontirUsecase) GetAllMontirSummary(query *model.MontirPagination) (*mode
 	}
 
 	return &model.ListActiveMontirWithLocation{Response: "Success", Code: "200", TotalMontir: strconv.Itoa(countItem), List: result}, nil
+}
+
+func (s MontirUsecase) InsertNewMontirRating(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	montirResponeMessage, err := s.MontirRepository.InsertNewMontirRating(montirProfile)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return montirResponeMessage, nil
 }

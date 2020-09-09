@@ -25,7 +25,7 @@ func GenerateToken(username, userId string, duration int64) string {
 	}
 
 	rdb := config.NewRedisConnection()
-	err = rdb.Set(context.Background(), userId, tokenKey, 24*time.Hour).Err()
+	err = rdb.Set(context.Background(), userId+"-"+username, tokenKey, 24*time.Hour).Err()
 	if err != nil {
 		log.Println("Failed inserting data to Redis", err)
 	}
