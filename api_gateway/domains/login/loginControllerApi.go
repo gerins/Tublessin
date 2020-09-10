@@ -73,11 +73,15 @@ func (c LoginControllerApi) HandleRegisterNewMontir() func(w http.ResponseWriter
 		w.Header().Set("Content-Type", "application/json")
 
 		var montirAccount model.MontirAccount
-		json.NewDecoder(r.Body).Decode(&montirAccount)
+		err := json.NewDecoder(r.Body).Decode(&montirAccount)
+		if err != nil {
+			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
+			return
+		}
 
 		result, err := c.LoginUsecaseApi.HandleRegisterNewMontir(&montirAccount)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
+			w.WriteHeader(http.StatusOK)
 			if strings.Contains(err.Error(), "username_UNIQUE") {
 				json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Username Sudah Digunakan", Code: "900"})
 				return
@@ -102,22 +106,26 @@ func (c LoginControllerApi) HandleRegisterNewUser() func(w http.ResponseWriter, 
 		w.Header().Set("Content-Type", "application/json")
 
 		var userAccount model.UserAccount
-		json.NewDecoder(r.Body).Decode(&userAccount)
+		err := json.NewDecoder(r.Body).Decode(&userAccount)
+		if err != nil {
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: err.Error(), Code: "400"})
+			return
+		}
 
 		result, err := c.LoginUsecaseApi.HandleRegisterNewUser(&userAccount)
 		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
+			w.WriteHeader(http.StatusOK)
 			if strings.Contains(err.Error(), "username_UNIQUE") {
-				json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Username Sudah Digunakan", Code: "900"})
+				json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "Username Sudah Digunakan", Code: "900"})
 				return
 			} else if strings.Contains(err.Error(), "phone_number_UNIQUE") {
-				json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Nomor Telefon Sudah Digunakan", Code: "800"})
+				json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "Nomor Telefon Sudah Digunakan", Code: "800"})
 				return
 			} else if strings.Contains(err.Error(), "email_UNIQUE") {
-				json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: "Email Sudah Digunakan", Code: "700"})
+				json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: "Email Sudah Digunakan", Code: "700"})
 				return
 			}
-			json.NewEncoder(w).Encode(&model.MontirResponeMessage{Response: err.Error(), Code: "400"})
+			json.NewEncoder(w).Encode(&model.UserResponeMessage{Response: err.Error(), Code: "400"})
 			return
 		}
 

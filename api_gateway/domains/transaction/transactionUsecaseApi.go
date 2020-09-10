@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"context"
+	"errors"
 	"log"
 	"tublessin/common/model"
 )
@@ -21,6 +22,15 @@ func NewTransactionUsecaseApi(TransactionService model.TransactionClient) Transa
 }
 
 func (s TransactionUsecaseApi) HandlePostNewTransaction(trans *model.TransactionHistory) (*model.TransactionHistory, error) {
+	if trans.IdMontir == "" ||
+		trans.IdUser == "" ||
+		trans.MontirFirstname == "" ||
+		trans.UserFirstname == "" ||
+		trans.Location.Latitude == 0 ||
+		trans.Location.Longitude == 0 {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	result, err := s.TransactionService.PostNewTransaction(context.Background(), trans)
 	if err != nil {
 		log.Println(err.Error())
@@ -31,6 +41,10 @@ func (s TransactionUsecaseApi) HandlePostNewTransaction(trans *model.Transaction
 }
 
 func (s TransactionUsecaseApi) HandleUpdateTransactionByID(trans *model.TransactionHistory) (*model.TransactionHistory, error) {
+	if trans.Status == "" {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	result, err := s.TransactionService.UpdateTransactionByID(context.Background(), trans)
 	if err != nil {
 		log.Println(err.Error())

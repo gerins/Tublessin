@@ -2,6 +2,7 @@ package montir
 
 import (
 	"context"
+	"errors"
 	"log"
 	"strconv"
 	"tublessin/common/model"
@@ -81,6 +82,18 @@ func (s MontirUsecaseApi) HandleUpdateMontirProfilePicture(MontirId, fileName st
 }
 
 func (s MontirUsecaseApi) HandleUpdateMontirProfileByID(montirId string, profile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	if profile.Firstname == "" ||
+		profile.Lastname == "" ||
+		profile.BornDate == "" ||
+		profile.Gender == "" ||
+		profile.Ktp == "" ||
+		profile.Address == "" ||
+		profile.City == "" ||
+		profile.Email == "" ||
+		profile.PhoneNumber == "" {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	Id, err := strconv.Atoi(montirId)
 	if err != nil {
 		log.Println(err.Error())
@@ -98,6 +111,10 @@ func (s MontirUsecaseApi) HandleUpdateMontirProfileByID(montirId string, profile
 }
 
 func (s MontirUsecaseApi) HandleUpdateMontirStatusByID(montirId string, montirStatus *model.MontirStatus) (*model.MontirResponeMessage, error) {
+	if montirStatus.StatusOperational == "" || montirStatus.StatusActivity == "" {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	Id, err := strconv.Atoi(montirId)
 	if err != nil {
 		log.Println(err.Error())
@@ -118,6 +135,10 @@ func (s MontirUsecaseApi) HandleUpdateMontirStatusByID(montirId string, montirSt
 }
 
 func (s MontirUsecaseApi) HandleUpdateMontirLocation(montirId string, montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error) {
+	if montirProfile.Location.Latitude == 0 || montirProfile.Location.Longitude == 0 {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	Id, err := strconv.Atoi(montirId)
 	if err != nil {
 		log.Println(err.Error())
@@ -201,6 +222,10 @@ func (s MontirUsecaseApi) HandleGetAllMontirSummary(query *model.MontirPaginatio
 }
 
 func (s MontirUsecaseApi) HandleInsertNewMontirRating(montirId string, montirRating *model.MontirRating) (*model.MontirResponeMessage, error) {
+	if montirRating.Rating == 0 || montirRating.RaterId == "" || montirRating.Review == "" {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	Id, err := strconv.Atoi(montirId)
 	if err != nil {
 		log.Println(err.Error())

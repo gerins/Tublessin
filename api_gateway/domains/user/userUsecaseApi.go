@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"errors"
 	"log"
 	"strconv"
 	"tublessin/common/model"
@@ -57,6 +58,14 @@ func (s UserUsecaseApi) HandleUpdateUserProfilePicture(userId, fileName string) 
 }
 
 func (s UserUsecaseApi) HandleUpdateUserProfileByID(userId string, UserProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	if UserProfile.Firstname == "" ||
+		UserProfile.Lastname == "" ||
+		UserProfile.Gender == "" ||
+		UserProfile.Email == "" ||
+		UserProfile.PhoneNumber == "" {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	Id, err := strconv.Atoi(userId)
 	if err != nil {
 		log.Println(err.Error())
@@ -74,6 +83,10 @@ func (s UserUsecaseApi) HandleUpdateUserProfileByID(userId string, UserProfile *
 }
 
 func (s UserUsecaseApi) HandleUpdateUserLocation(userId string, userProfile *model.UserProfile) (*model.UserResponeMessage, error) {
+	if userProfile.Location.Latitude == 0 || userProfile.Location.Longitude == 0 {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	Id, err := strconv.Atoi(userId)
 	if err != nil {
 		log.Println(err.Error())

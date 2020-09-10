@@ -2,6 +2,7 @@ package login
 
 import (
 	"context"
+	"errors"
 	"log"
 	"tublessin/common/model"
 )
@@ -25,6 +26,10 @@ func NewLoginUsecaseApi(loginService model.LoginClient, montirService model.Mont
 
 // Dioper ke Login-Service untuk ditangani ada di folder services/login_services/domain/LoginController.go
 func (s LoginUsecaseApi) HandleLoginMontir(montirAccount *model.MontirLoginForm) (*model.LoginResponeMessage, error) {
+	if montirAccount.Username == "" || montirAccount.Password == "" {
+		return nil, errors.New("Username atau password cannot empty")
+	}
+
 	result, err := s.LoginService.MontirLogin(context.Background(), montirAccount)
 	if err != nil {
 		log.Println(err.Error())
@@ -35,6 +40,10 @@ func (s LoginUsecaseApi) HandleLoginMontir(montirAccount *model.MontirLoginForm)
 }
 
 func (s LoginUsecaseApi) HandleLoginUser(userAccount *model.UserLoginForm) (*model.LoginResponeMessage, error) {
+	if userAccount.Username == "" || userAccount.Password == "" {
+		return nil, errors.New("Username atau password cannot empty")
+	}
+
 	result, err := s.LoginService.UserLogin(context.Background(), userAccount)
 	if err != nil {
 		log.Println(err.Error())
@@ -45,6 +54,17 @@ func (s LoginUsecaseApi) HandleLoginUser(userAccount *model.UserLoginForm) (*mod
 }
 
 func (s LoginUsecaseApi) HandleRegisterNewMontir(montirAccount *model.MontirAccount) (*model.MontirResponeMessage, error) {
+	if montirAccount.Username == "" ||
+		montirAccount.Password == "" ||
+		montirAccount.Profile.Firstname == "" ||
+		montirAccount.Profile.Lastname == "" ||
+		montirAccount.Profile.Gender == "" ||
+		montirAccount.Profile.City == "" ||
+		montirAccount.Profile.Email == "" ||
+		montirAccount.Profile.PhoneNumber == "" {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	result, err := s.MontirService.RegisterNewMontir(context.Background(), montirAccount)
 	if err != nil {
 		log.Println(err.Error())
@@ -55,6 +75,16 @@ func (s LoginUsecaseApi) HandleRegisterNewMontir(montirAccount *model.MontirAcco
 }
 
 func (s LoginUsecaseApi) HandleRegisterNewUser(userAccount *model.UserAccount) (*model.UserResponeMessage, error) {
+	if userAccount.Username == "" ||
+		userAccount.Password == "" ||
+		userAccount.Profile.Firstname == "" ||
+		userAccount.Profile.Lastname == "" ||
+		userAccount.Profile.Gender == "" ||
+		userAccount.Profile.Email == "" ||
+		userAccount.Profile.PhoneNumber == "" {
+		return nil, errors.New("Form Body Cannot empty")
+	}
+
 	result, err := s.UserService.RegisterNewUser(context.Background(), userAccount)
 	if err != nil {
 		log.Println(err.Error())

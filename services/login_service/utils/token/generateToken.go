@@ -1,10 +1,8 @@
 package token
 
 import (
-	"context"
 	"log"
 	"time"
-	"tublessin/services/login_service/config"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -24,11 +22,11 @@ func GenerateToken(username, userId string, duration int64) string {
 		log.Println(err)
 	}
 
-	rdb := config.NewRedisConnection()
-	err = rdb.Set(context.Background(), userId+"-"+username, tokenKey, 24*time.Hour).Err()
-	if err != nil {
-		log.Println("Failed inserting data to Redis", err)
-	}
+	// rdb := config.NewRedisConnection()
+	// err = rdb.Set(context.Background(), userId+"-"+username, tokenKey, 24*time.Hour).Err()
+	// if err != nil {
+	// 	log.Println("Failed inserting data to Redis", err)
+	// }
 
 	return tokenKey
 }
