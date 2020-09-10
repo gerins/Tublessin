@@ -3,3 +3,8 @@ services/montir_service/montir_service.exe
 services/user_service/user_service.exe
 services/transaction_service/transaction_service.exe
 api_gateway/api_gateway.exe
+services/user_service/dataLog.log
+services/transaction_service/dataLog.log
+services/montir_service/dataLog.log
+services/login_service/dataLog.log
+api_gateway/dataLog.log
