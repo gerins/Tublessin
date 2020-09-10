@@ -3,8 +3,9 @@ package transaction
 import (
 	"context"
 	"errors"
-	"log"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type TransactionUsecaseApi struct {

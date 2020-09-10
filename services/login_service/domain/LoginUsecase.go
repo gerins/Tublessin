@@ -3,10 +3,11 @@ package domain
 import (
 	"context"
 	"errors"
-	"log"
 	"strconv"
 	"tublessin/common/model"
 	"tublessin/services/login_service/utils/token"
+
+	log "github.com/sirupsen/logrus"
 
 	"golang.org/x/crypto/bcrypt"
 )

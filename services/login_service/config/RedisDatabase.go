@@ -2,7 +2,8 @@ package config
 
 import (
 	"context"
-	"log"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/go-redis/redis/v8"
 )

@@ -2,13 +2,14 @@ package storage
 
 import (
 	"io"
-	"log"
 	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func SaveFileToStorage(r *http.Request, fileNamePrefix, folderName string) (string, error) {

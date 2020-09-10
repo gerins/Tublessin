@@ -3,17 +3,20 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"net"
 	"tublessin/common/model"
 	"tublessin/services/transaction_service/config"
 	"tublessin/services/transaction_service/domain"
+	"tublessin/services/transaction_service/utils/logging"
+
+	log "github.com/sirupsen/logrus"
 
 	_ "github.com/go-sql-driver/mysql"
 	"google.golang.org/grpc"
 )
 
 func main() {
+	logging.LoggingToFile()
 	config.SetEnvironmentVariables()
 	srv := grpc.NewServer()
 	transactionServer := domain.NewTransactionController(connectToDatabase())

@@ -2,10 +2,11 @@ package login
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strings"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type LoginControllerApi struct {

@@ -2,12 +2,13 @@ package montir
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"tublessin/api_gateway/utils/storage"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 )

@@ -4,8 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type MontirRepository struct {

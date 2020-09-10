@@ -1,9 +1,10 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
 	"tublessin/api_gateway/utils/token"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // Validate Token from cookies

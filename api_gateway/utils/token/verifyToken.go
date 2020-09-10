@@ -1,7 +1,7 @@
 package token
 
 import (
-	"log"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/dgrijalva/jwt-go"
 )

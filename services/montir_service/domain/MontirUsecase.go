@@ -2,11 +2,12 @@ package domain
 
 import (
 	"database/sql"
-	"log"
 	"sort"
 	"strconv"
 	"tublessin/common/model"
 	"tublessin/services/montir_service/utils"
+
+	log "github.com/sirupsen/logrus"
 
 	"golang.org/x/crypto/bcrypt"
 )

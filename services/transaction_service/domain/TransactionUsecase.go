@@ -2,8 +2,9 @@ package domain
 
 import (
 	"database/sql"
-	"log"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type TransactionUsecase struct {

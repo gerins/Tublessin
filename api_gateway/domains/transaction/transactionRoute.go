@@ -1,10 +1,11 @@
 package transaction
 
 import (
-	"log"
 	"tublessin/api_gateway/config"
 	"tublessin/api_gateway/middleware"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 	"google.golang.org/grpc"

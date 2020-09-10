@@ -1,9 +1,10 @@
 package login
 
 import (
-	"log"
 	"tublessin/api_gateway/config"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 	"google.golang.org/grpc"

@@ -2,9 +2,10 @@ package domain
 
 import (
 	"database/sql"
-	"log"
 	"strconv"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 
 	"golang.org/x/crypto/bcrypt"
 )

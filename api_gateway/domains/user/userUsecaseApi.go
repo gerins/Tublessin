@@ -3,9 +3,10 @@ package user
 import (
 	"context"
 	"errors"
-	"log"
 	"strconv"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type UserUsecaseApi struct {

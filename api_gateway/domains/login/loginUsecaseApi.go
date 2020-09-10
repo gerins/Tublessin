@@ -3,8 +3,9 @@ package login
 import (
 	"context"
 	"errors"
-	"log"
 	"tublessin/common/model"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type LoginUsecaseApi struct {

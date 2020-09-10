@@ -1,9 +1,10 @@
 package router
 
 import (
-	"log"
 	"net/http"
 	"tublessin/api_gateway/config"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gorilla/mux"
 )
