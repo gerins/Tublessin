@@ -1,12 +1,16 @@
 package domain
 
 import (
+	"context"
 	"database/sql"
+	"encoding/json"
 	"sort"
 	"strconv"
+	"time"
 	"tublessin/common/model"
 	"tublessin/services/montir_service/utils"
 
+	"github.com/go-redis/redis/v8"
 	log "github.com/sirupsen/logrus"
 
 	"golang.org/x/crypto/bcrypt"
@@ -14,6 +18,7 @@ import (
 
 type MontirUsecase struct {
 	MontirRepository MontirRepositoryInterface
+	RedisDatabase    *redis.Client
 }
 
 type MontirUsecaseInterface interface {
@@ -30,8 +35,8 @@ type MontirUsecaseInterface interface {
 	InsertNewMontirRating(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
 }
 
-func NewMontirUsecase(db *sql.DB) MontirUsecaseInterface {
-	return &MontirUsecase{NewMontirRepository(db)}
+func NewMontirUsecase(db *sql.DB, rdb *redis.Client) MontirUsecaseInterface {
+	return &MontirUsecase{MontirRepository: NewMontirRepository(db), RedisDatabase: rdb}
 }
 
 // Ini Adalah Layer Service dari Montir-Service, untuk menangani bussiness logic
@@ -63,10 +68,28 @@ func (s MontirUsecase) RegisterNewMontir(montirAccount *model.MontirAccount) (*m
 }
 
 func (s MontirUsecase) GetMontirProfileByID(montirId int32) (*model.MontirResponeMessage, error) {
+	value, err := s.RedisDatabase.Get(context.Background(), strconv.Itoa(int(montirId))).Result()
+	if err == nil {
+		var montirRespone model.MontirResponeMessage
+		json.Unmarshal([]byte(value), &montirRespone)
+		if err != nil {
+			log.Println("Something wrong when Unmarshal data to Montir Profile", err)
+		}
+		return &montirRespone, nil
+	} else if err != nil && err != redis.Nil {
+		log.Println("Something wrong when read data from Redis", err)
+	}
+
 	montirResponeMessage, err := s.MontirRepository.GetMontirProfileByID(montirId)
 	if err != nil {
 		log.Println(err)
 		return nil, err
+	}
+
+	result, err := json.Marshal(montirResponeMessage)
+	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirId)), result, 30*time.Second).Err()
+	if err != nil {
+		log.Println("Cannot save montir profile to Redis", err)
 	}
 
 	return montirResponeMessage, nil

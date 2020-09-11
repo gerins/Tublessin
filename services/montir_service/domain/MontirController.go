@@ -4,14 +4,16 @@ import (
 	"context"
 	"database/sql"
 	"tublessin/common/model"
+
+	"github.com/go-redis/redis/v8"
 )
 
 type MontirServer struct {
 	MontirUsecase MontirUsecaseInterface
 }
 
-func NewMontirController(db *sql.DB) *MontirServer {
-	return &MontirServer{NewMontirUsecase(db)}
+func NewMontirController(db *sql.DB, rdb *redis.Client) *MontirServer {
+	return &MontirServer{NewMontirUsecase(db, rdb)}
 }
 
 // Disini adalah pusat Method2 dari Montir-Service

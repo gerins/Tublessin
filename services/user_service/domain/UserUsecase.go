@@ -1,10 +1,14 @@
 package domain
 
 import (
+	"context"
 	"database/sql"
+	"encoding/json"
 	"strconv"
+	"time"
 	"tublessin/common/model"
 
+	"github.com/go-redis/redis/v8"
 	log "github.com/sirupsen/logrus"
 
 	"golang.org/x/crypto/bcrypt"
@@ -12,6 +16,7 @@ import (
 
 type UserUsecase struct {
 	UserRepository UserRepositoryInterface
+	RedisDatabase  *redis.Client
 }
 
 type UserUsecaseInterface interface {
@@ -25,8 +30,8 @@ type UserUsecaseInterface interface {
 	GetAllUserSummary(query *model.UserPagination) (*model.UserResponeMessage, error)
 }
 
-func NewUserUsecase(db *sql.DB) UserUsecaseInterface {
-	return &UserUsecase{NewUserRepository(db)}
+func NewUserUsecase(db *sql.DB, rdb *redis.Client) UserUsecaseInterface {
+	return &UserUsecase{UserRepository: NewUserRepository(db), RedisDatabase: rdb}
 }
 
 // Ini Adalah Layer Service dari User-Service, untuk menangani bussiness logic
@@ -58,10 +63,28 @@ func (s UserUsecase) RegisterNewUser(UserAccount *model.UserAccount) (*model.Use
 }
 
 func (s UserUsecase) GetUserProfileById(userId int32) (*model.UserResponeMessage, error) {
+	value, err := s.RedisDatabase.Get(context.Background(), strconv.Itoa(int(userId))).Result()
+	if err == nil {
+		var userRespone model.UserResponeMessage
+		json.Unmarshal([]byte(value), &userRespone)
+		if err != nil {
+			log.Println("Something wrong when Unmarshal data to User Profile", err)
+		}
+		return &userRespone, nil
+	} else if err != nil && err != redis.Nil {
+		log.Println("Something wrong when read data from Redis", err)
+	}
+
 	userResponeMessage, err := s.UserRepository.GetUserProfileById(userId)
 	if err != nil {
 		log.Println(err)
 		return nil, err
+	}
+
+	result, err := json.Marshal(userResponeMessage)
+	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(userId)), result, 30*time.Second).Err()
+	if err != nil {
+		log.Println("Cannot save User profile to Redis", err)
 	}
 
 	return userResponeMessage, nil

@@ -4,14 +4,16 @@ import (
 	"context"
 	"database/sql"
 	"tublessin/common/model"
+
+	"github.com/go-redis/redis/v8"
 )
 
 type UserServer struct {
 	UserUsecase UserUsecaseInterface
 }
 
-func NewUserController(db *sql.DB) *UserServer {
-	return &UserServer{NewUserUsecase(db)}
+func NewUserController(db *sql.DB, rdb *redis.Client) *UserServer {
+	return &UserServer{UserUsecase: NewUserUsecase(db, rdb)}
 }
 
 // Disini adalah pusat Method2 dari User-Service

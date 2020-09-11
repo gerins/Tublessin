@@ -56,9 +56,15 @@ services:
       - tublessin_network
     depends_on:
       - tublessin_db
+      - tublessin_redis
     environment:
       - GRPC_SERVICE_MONTIR_HOST=tcp
       - GRPC_SERVICE_MONTIR_PORT=8000
+      - REDIS_DATABASE_HOST=tublessin_redis
+      - REDIS_DATABASE_PORT=6379
+      - REDIS_DATABASE_USERNAME=admin
+      - REDIS_DATABASE_PASSWORD=redisadmin
+      - REDIS_DATABASE_SELECT=1
       - MYSQL_DB_DRIVER=mysql
       - MYSQL_DB_USER=root
       - MYSQL_DB_PASSWORD=admin
@@ -75,9 +81,15 @@ services:
       - tublessin_network
     depends_on:
       - tublessin_db
+      - tublessin_redis
     environment:
       - GRPC_SERVICE_USER_HOST=tcp
       - GRPC_SERVICE_USER_PORT=7000
+      - REDIS_DATABASE_HOST=tublessin_redis
+      - REDIS_DATABASE_PORT=6379
+      - REDIS_DATABASE_USERNAME=admin
+      - REDIS_DATABASE_PASSWORD=redisadmin
+      - REDIS_DATABASE_SELECT=2
       - MYSQL_DB_DRIVER=mysql
       - MYSQL_DB_USER=root
       - MYSQL_DB_PASSWORD=admin
@@ -94,6 +106,7 @@ services:
       - tublessin_network
     depends_on:
       - tublessin_db
+      - tublessin_redis
     environment:
       - GRPC_SERVICE_TRANSACTION_HOST=tcp
       - GRPC_SERVICE_TRANSACTION_PORT=6000
@@ -113,6 +126,14 @@ services:
       - tublessin_network
     environment:
       - MYSQL_ROOT_PASSWORD=admin
+
+  tublessin_redis:
+    container_name: tublessin_redis
+    image: gerins/tublessin-redis
+    ports:
+      - 6379:6379
+    networks:
+      - tublessin_network
 
 networks:
   tublessin_network:

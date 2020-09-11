@@ -1,0 +1,11 @@
+############################## MEMORY MANAGEMENT ################################
+maxmemory 2gb
+maxmemory-policy allkeys-lfu 
+
+################################## SECURITY ###################################
+user default on +@connection 
+user admin on +@all ~* >redisadmin // nambahin akun akses
+
+################################## NETWORK #####################################
+# bind 127.0.0.1 // dicommend, biar bisa di akses dari host lain
+protected-mode yes // biar harus masukin username password kalo akses
