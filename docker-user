@@ -1,0 +1,13 @@
+FROM golang:alpine
+
+RUN apk update && apk add --no-cache git
+
+WORKDIR /app
+
+COPY . .
+
+WORKDIR /app/services/user_service
+
+RUN go build -o binary
+
+ENTRYPOINT ["/app/services/user_service/binary"]

@@ -10,7 +10,8 @@ func main() {
 	logging.LoggingToFile()
 	config.SetEnvironmentVariables()
 	muxRouter := router.CreateRouter()
-	// muxRouter.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/")))
+	muxRouter.StrictSlash(true)
+	// muxRouter.Handle("/", http.FileServer(http.Dir("./frontend/")))
 	router.NewAppRouter(muxRouter).InitRouter()
 	router.StartServer(muxRouter)
 }

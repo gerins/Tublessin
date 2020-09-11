@@ -1,0 +1,153 @@
+version: "3.8"
+
+services:
+  tublessin_gateway:
+    container_name: tublessin_gateway
+    build:
+      context: .
+      dockerfile: docker-gateway
+    image: t-gateway:1
+    ports:
+      - 8080:8080
+    networks:
+      - tublessin_network
+    depends_on:
+      - tublessin_login
+      - tublessin_montir
+      - tublessin_user
+      - tublessin_transaction
+    environment:
+      - API_GATEWAY_SERVER_HOST=
+      - API_GATEWAY_SERVER_PORT=8080
+
+      - SERVICE_LOGIN_HOST=tublessin_login
+      - SERVICE_LOGIN_PORT=9000
+
+      - SERVICE_TRANSACTION_HOST=tublessin_transaction
+      - SERVICE_TRANSACTION_PORT=6000
+
+      - SERVICE_MONTIR_HOST=tublessin_montir
+      - SERVICE_MONTIR_PORT=8000
+
+      - SERVICE_USER_HOST=tublessin_user
+      - SERVICE_USER_PORT=7000
+
+  tublessin_login:
+    container_name: tublessin_login
+    build:
+      context: .
+      dockerfile: docker-login
+    image: t-login:1
+    ports:
+      - 9000:9000
+    networks:
+      - tublessin_network
+    depends_on:
+      - tublessin_montir
+      - tublessin_user
+    environment:
+      - GRPC_SERVICE_LOGIN_HOST=tcp
+      - GRPC_SERVICE_LOGIN_PORT=9000
+      - SERVICE_MONTIR_HOST=tublessin_montir
+      - SERVICE_MONTIR_PORT=8000
+      - SERVICE_USER_HOST=tublessin_user
+      - SERVICE_USER_PORT=7000
+
+  tublessin_montir:
+    container_name: tublessin_montir
+    build:
+      context: .
+      dockerfile: docker-montir
+    image: t-montir:1
+    ports:
+      - 8000:8000
+    networks:
+      - tublessin_network
+    depends_on:
+      - tublessin_db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 15s
+    environment:
+      - GRPC_SERVICE_MONTIR_HOST=tcp
+      - GRPC_SERVICE_MONTIR_PORT=8000
+      - MYSQL_DB_DRIVER=mysql
+      - MYSQL_DB_USER=root
+      - MYSQL_DB_PASSWORD=admin
+      - MYSQL_DB_NAME=tublessin_montir
+      - MYSQL_DB_HOST=tublessin_db
+      - MYSQL_DB_PORT=3306
+
+  tublessin_user:
+    container_name: tublessin_user
+    build:
+      context: .
+      dockerfile: docker-user
+    image: t-user:1
+    ports:
+      - 7000:7000
+    networks:
+      - tublessin_network
+    depends_on:
+      - tublessin_db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 15s
+    environment:
+      - GRPC_SERVICE_USER_HOST=tcp
+      - GRPC_SERVICE_USER_PORT=7000
+      - MYSQL_DB_DRIVER=mysql
+      - MYSQL_DB_USER=root
+      - MYSQL_DB_PASSWORD=admin
+      - MYSQL_DB_NAME=tublessin_user
+      - MYSQL_DB_HOST=tublessin_db
+      - MYSQL_DB_PORT=3306
+
+  tublessin_transaction:
+    container_name: tublessin_transaction
+    build:
+      context: .
+      dockerfile: docker-transaction
+    image: t-transaction:1
+    ports:
+      - 6000:6000
+    networks:
+      - tublessin_network
+    depends_on:
+      - tublessin_db
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 15s
+    environment:
+      - GRPC_SERVICE_TRANSACTION_HOST=tcp
+      - GRPC_SERVICE_TRANSACTION_PORT=6000
+      - MYSQL_DB_DRIVER=mysql
+      - MYSQL_DB_USER=root
+      - MYSQL_DB_PASSWORD=admin
+      - MYSQL_DB_NAME=tublessin_transaction
+      - MYSQL_DB_HOST=tublessin_db
+      - MYSQL_DB_PORT=3306
+
+  tublessin_db:
+    container_name: tublessin_db
+    build: ./database/docker
+    image: t-db:1
+    ports:
+      - 3306:3306
+    networks:
+      - tublessin_network
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+
+networks:
+  tublessin_network:
+    name: tublessin_network
