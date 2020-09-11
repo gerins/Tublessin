@@ -88,6 +88,20 @@ taskkill /im login_service.exe /f
 taskkill /im montir_service.exe /f
 taskkill /im user_service.exe /f
 taskkill /im transaction_service.exe /f
+del transaction_service.exe /q
+cd ..
+cd user_service
+del user_service.exe /q
+cd ..
+cd montir_service
+del montir_service.exe /q
+cd ..
+cd login_service
+del login_service.exe /q
+cd ..
+cd ..
+cd api_gateway
+del api_gateway.exe /q
 echo.
 ECHO Press any key for Restarting all server...
 PAUSE >nul

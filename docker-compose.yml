@@ -3,12 +3,9 @@ version: "3.8"
 services:
   tublessin_gateway:
     container_name: tublessin_gateway
-    build:
-      context: .
-      dockerfile: docker-gateway
-    image: t-gateway:1
+    image: gerins/tublessin-gateway
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
     networks:
       - tublessin_network
     depends_on:
@@ -34,10 +31,7 @@ services:
 
   tublessin_login:
     container_name: tublessin_login
-    build:
-      context: .
-      dockerfile: docker-login
-    image: t-login:1
+    image: gerins/tublessin-login
     ports:
       - 9000:9000
     networks:
@@ -55,22 +49,13 @@ services:
 
   tublessin_montir:
     container_name: tublessin_montir
-    build:
-      context: .
-      dockerfile: docker-montir
-    image: t-montir:1
+    image: gerins/tublessin-montir
     ports:
       - 8000:8000
     networks:
       - tublessin_network
     depends_on:
       - tublessin_db
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 10
-        window: 15s
     environment:
       - GRPC_SERVICE_MONTIR_HOST=tcp
       - GRPC_SERVICE_MONTIR_PORT=8000
@@ -83,22 +68,13 @@ services:
 
   tublessin_user:
     container_name: tublessin_user
-    build:
-      context: .
-      dockerfile: docker-user
-    image: t-user:1
+    image: gerins/tublessin-user
     ports:
       - 7000:7000
     networks:
       - tublessin_network
     depends_on:
       - tublessin_db
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 10
-        window: 15s
     environment:
       - GRPC_SERVICE_USER_HOST=tcp
       - GRPC_SERVICE_USER_PORT=7000
@@ -111,22 +87,13 @@ services:
 
   tublessin_transaction:
     container_name: tublessin_transaction
-    build:
-      context: .
-      dockerfile: docker-transaction
-    image: t-transaction:1
+    image: gerins/tublessin-transaction
     ports:
       - 6000:6000
     networks:
       - tublessin_network
     depends_on:
       - tublessin_db
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 10
-        window: 15s
     environment:
       - GRPC_SERVICE_TRANSACTION_HOST=tcp
       - GRPC_SERVICE_TRANSACTION_PORT=6000
@@ -139,8 +106,7 @@ services:
 
   tublessin_db:
     container_name: tublessin_db
-    build: ./database/docker
-    image: t-db:1
+    image: gerins/tublessin-db
     ports:
       - 3306:3306
     networks:
