@@ -26,7 +26,7 @@ func InitUserRoute(mainRoute string, r *mux.Router) {
 
 // Untuk Connect ke Service-User
 func connectToServiceUser() model.UserClient {
-	host := config.SERVICE_LOGIN_HOST
+	host := config.SERVICE_USER_HOST
 	port := config.SERVICE_USER_PORT
 	conn, err := grpc.Dial(host+":"+port, grpc.WithInsecure())
 	if err != nil {
