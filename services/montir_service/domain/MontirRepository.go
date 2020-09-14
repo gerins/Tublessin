@@ -14,7 +14,7 @@ type MontirRepository struct {
 }
 
 type MontirRepositoryInterface interface {
-	Login(username, status string) (*model.MontirAccount, error)
+	Login(username, status, statusAdmin string) (*model.MontirAccount, error)
 	RegisterNewMontir(m *model.MontirAccount) (*model.MontirResponeMessage, error)
 	GetMontirProfileByID(montirId int32) (*model.MontirResponeMessage, error)
 	UpdateMontirProfilePicture(montirProfile *model.MontirProfile) (*model.MontirResponeMessage, error)
@@ -33,8 +33,8 @@ func NewMontirRepository(db *sql.DB) MontirRepositoryInterface {
 }
 
 // Disini adalah layer Repository dari Montir-Service, untuk berkomunikasi dengan database
-func (r MontirRepository) Login(username, status string) (*model.MontirAccount, error) {
-	results := r.db.QueryRow("SELECT * FROM montir_account WHERE username=? AND status_account=?", username, status)
+func (r MontirRepository) Login(username, status, statusAdmin string) (*model.MontirAccount, error) {
+	results := r.db.QueryRow("SELECT * FROM montir_account WHERE username=? AND(status_account=? OR status_account=?)", username, status, statusAdmin)
 	var montirAccount model.MontirAccount
 
 	err := results.Scan(&montirAccount.Id, &montirAccount.Username, &montirAccount.Password, &montirAccount.StatusAccount)

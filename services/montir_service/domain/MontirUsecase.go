@@ -41,7 +41,7 @@ func NewMontirUsecase(db *sql.DB, rdb *redis.Client) MontirUsecaseInterface {
 
 // Ini Adalah Layer Service dari Montir-Service, untuk menangani bussiness logic
 func (s MontirUsecase) Login(montirAccount *model.MontirAccount) (*model.MontirAccount, error) {
-	montirDetail, err := s.MontirRepository.Login(montirAccount.Username, "A")
+	montirDetail, err := s.MontirRepository.Login(montirAccount.Username, "A", "S")
 	if err != nil {
 		log.Println(err)
 		return nil, err

@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"strings"
 	"tublessin/api_gateway/utils/token"
 
 	log "github.com/sirupsen/logrus"
@@ -10,19 +11,24 @@ import (
 // Validate Token from cookies
 func TokenValidation(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		next.ServeHTTP(w, r)
-		return // Token Checking tidak di aktifkan dulu, masih tahap development
-
-		getUser, _ := r.Cookie("user")
-		getToken, err := r.Cookie("token")
-		if err != nil {
+		reqToken := r.Header.Get("Authorization")
+		splitToken := strings.Split(reqToken, "Bearer ")
+		if len(splitToken) <= 1 {
 			http.Error(w, "Token Expired", http.StatusUnauthorized)
 			return
 		}
+		reqToken = splitToken[1]
 
-		validity, userName, id, _ := token.VerifyToken(getToken.Value)
+		// getUser, _ := r.Cookie("user")
+		// getToken, err := r.Cookie("token")
+		// if err != nil {
+		// 	http.Error(w, "Token Expired", http.StatusUnauthorized)
+		// 	return
+		// }
+
+		validity, userName, id, _ := token.VerifyToken(reqToken)
 		log.Println(id, userName+" accessing "+r.RequestURI)
-		if validity == true && userName == getUser.Value {
+		if validity == true {
 			next.ServeHTTP(w, r)
 		} else {
 			http.Error(w, "Invalid Sessions", http.StatusUnauthorized)

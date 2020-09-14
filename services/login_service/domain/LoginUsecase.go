@@ -40,7 +40,7 @@ func (s LoginUsecase) MontirLogin(montirAccount *model.MontirAccount) (*model.Mo
 		return nil, "", errors.New("Username atau Password salah")
 	}
 
-	generatedToken := token.GenerateToken(montirAccount.Username, strconv.Itoa(int(result.Id)), 3600*24)
+	generatedToken := token.GenerateToken(montirAccount.Username, strconv.Itoa(int(result.Id)), 3600*24*30)
 	return result, generatedToken, nil
 }
 
@@ -57,6 +57,6 @@ func (s LoginUsecase) UserLogin(userAccount *model.UserAccount) (*model.UserAcco
 		return nil, "", errors.New("Username atau Password salah")
 	}
 
-	generatedToken := token.GenerateToken(userAccount.Username, strconv.Itoa(int(result.Id)), 3600*24)
+	generatedToken := token.GenerateToken(userAccount.Username, strconv.Itoa(int(result.Id)), 3600*24*30)
 	return result, generatedToken, nil
 }
