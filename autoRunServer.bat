@@ -8,7 +8,7 @@ ECHO =============================
 ECHO 1. Menjalankan Server Api Gateway
 cd api_gateway
 go build api_gateway.go
-SET API_GATEWAY_SERVER_HOST=192.168.43.46
+SET API_GATEWAY_SERVER_HOST=localhost
 SET API_GATEWAY_SERVER_PORT=8080
 SET SERVICE_LOGIN_HOST=localhost
 SET SERVICE_LOGIN_PORT=9000
@@ -74,6 +74,7 @@ SET MYSQL_DB_HOST=localhost
 SET MYSQL_DB_PORT=3306
 START /min user_service.exe
 
+
 ECHO 5. Menjalankan Server Transaction Service
 cd ..
 cd transaction_service
@@ -87,6 +88,7 @@ SET MYSQL_DB_NAME=tublessin_transaction
 SET MYSQL_DB_HOST=localhost
 SET MYSQL_DB_PORT=3306
 START /min transaction_service.exe
+
 
 ECHO 6. Hacking NASA Server
 ECHO 7. Hacking FBI Server
