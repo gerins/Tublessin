@@ -102,7 +102,7 @@ func (s MontirUsecase) UpdateMontirProfilePicture(montirProfile *model.MontirPro
 		return nil, err
 	}
 
-	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), montirResponeMessage, 1*time.Second).Err()
+	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), "", 1*time.Second).Err()
 	if err != nil {
 		log.Println("Cannot Remove Montir profile From Redis", err)
 	}
@@ -126,7 +126,7 @@ func (s MontirUsecase) UpdateMontirProfileByID(montirProfile *model.MontirProfil
 			return nil, err
 		}
 
-		err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), result, 1*time.Second).Err()
+		err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), "", 1*time.Second).Err()
 		if err != nil {
 			log.Println("Cannot Remove Montir profile From Redis", err)
 		}
@@ -142,7 +142,7 @@ func (s MontirUsecase) UpdateMontirStatusByID(montirProfile *model.MontirProfile
 		return nil, err
 	}
 
-	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), montirResponeMessage, 1*time.Second).Err()
+	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), "", 1*time.Second).Err()
 	if err != nil {
 		log.Println("Cannot Remove Montir profile From Redis", err)
 	}

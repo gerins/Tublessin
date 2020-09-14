@@ -97,7 +97,7 @@ func (s UserUsecase) UpdateUserProfilePicture(userProfile *model.UserProfile) (*
 		return nil, err
 	}
 
-	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(userProfile.Id)), UserResponeMessage, 1*time.Second).Err()
+	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(userProfile.Id)), "", 1*time.Second).Err()
 	if err != nil {
 		log.Println("Cannot Remove User profile From Redis", err)
 	}
@@ -112,7 +112,7 @@ func (s UserUsecase) UpdateUserProfileByID(userProfile *model.UserProfile) (*mod
 		return nil, err
 	}
 
-	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(userProfile.Id)), UserResponeMessage, 1*time.Second).Err()
+	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(userProfile.Id)), "", 1*time.Second).Err()
 	if err != nil {
 		log.Println("Cannot Remove User profile From Redis", err)
 	}
