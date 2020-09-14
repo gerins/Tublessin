@@ -27,4 +27,5 @@ message TransactionLocation {
 
 message ListTransactionHistory{
     repeated TransactionHistory results = 1;
+    TransactionHistory result = 2;
 }

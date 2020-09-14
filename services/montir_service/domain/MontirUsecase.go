@@ -102,6 +102,11 @@ func (s MontirUsecase) UpdateMontirProfilePicture(montirProfile *model.MontirPro
 		return nil, err
 	}
 
+	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), montirResponeMessage, 1*time.Second).Err()
+	if err != nil {
+		log.Println("Cannot Remove Montir profile From Redis", err)
+	}
+
 	return montirResponeMessage, nil
 }
 
@@ -121,6 +126,11 @@ func (s MontirUsecase) UpdateMontirProfileByID(montirProfile *model.MontirProfil
 			return nil, err
 		}
 
+		err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), result, 1*time.Second).Err()
+		if err != nil {
+			log.Println("Cannot Remove Montir profile From Redis", err)
+		}
+
 		return result, nil
 	}
 }
@@ -130,6 +140,11 @@ func (s MontirUsecase) UpdateMontirStatusByID(montirProfile *model.MontirProfile
 	if err != nil {
 		log.Println(err)
 		return nil, err
+	}
+
+	err = s.RedisDatabase.Set(context.Background(), strconv.Itoa(int(montirProfile.Id)), montirResponeMessage, 1*time.Second).Err()
+	if err != nil {
+		log.Println("Cannot Remove Montir profile From Redis", err)
 	}
 
 	return montirResponeMessage, nil
@@ -161,6 +176,10 @@ func (c MontirUsecase) GetAllActiveMontirWithLocation(userLocation *model.Reques
 	sort.SliceStable(result, func(i, j int) bool {
 		return result[i].Distance < result[j].Distance
 	})
+
+	if len(result) >= 6 {
+		result = result[:6]
+	}
 
 	return &model.ListActiveMontirWithLocation{Response: "Search Nearby Montir Success", Code: "200", TotalMontir: strconv.Itoa(len(result)), List: result}, nil
 }

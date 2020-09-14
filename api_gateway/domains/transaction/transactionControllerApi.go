@@ -51,7 +51,7 @@ func (c TransactionControllerApi) HandlePostNewTransaction() func(w http.Respons
 		}
 
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(message.Respone("Post Transaction Success", http.StatusOK, result))
+		json.NewEncoder(w).Encode(message.Respone("Update Transaction Success", http.StatusOK, &model.ListTransactionHistory{Result: result}))
 	}
 }
 
@@ -72,6 +72,6 @@ func (c TransactionControllerApi) HandleUpdateTransactionByID() func(w http.Resp
 		}
 
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(message.Respone("Update Transaction Success", http.StatusOK, result))
+		json.NewEncoder(w).Encode(message.Respone("Update Transaction Success", http.StatusOK, &model.ListTransactionHistory{Result: result}))
 	}
 }

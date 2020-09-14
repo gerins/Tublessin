@@ -289,7 +289,7 @@ JOIN montir_status ms ON ma.id = ms.montir_account_id
 JOIN master_status_activity msa ON ms.status_activity_id = msa.id
 JOIN montir_location ml ON ma.id = ml.montir_account_id
 JOIN montir_profile mp ON ma.id = mp.montir_account_id
-JOIN (SELECT montir_account_id as id, count(montir_account_id) as total_rating, AVG(rating) average_rating FROM montir_rating 
+LEFT JOIN (SELECT montir_account_id as id, count(montir_account_id) as total_rating, AVG(rating) average_rating FROM montir_rating 
 GROUP BY montir_account_id) mr
 ON mr.id = ma.id;
 
@@ -306,7 +306,7 @@ JOIN montir_status ms ON ma.id = ms.montir_account_id
 JOIN master_status_activity msa ON ms.status_activity_id = msa.id
 JOIN montir_location ml ON ma.id = ml.montir_account_id
 JOIN montir_profile mp ON ma.id = mp.montir_account_id
-JOIN (SELECT montir_account_id as id, count(montir_account_id) as total_rating, AVG(rating) average_rating FROM montir_rating 
+LEFT JOIN (SELECT montir_account_id as id, count(montir_account_id) as total_rating, AVG(rating) average_rating FROM montir_rating 
 GROUP BY montir_account_id) mr
 ON mr.id = ma.id;
 USE `tublessin_user` ;
@@ -345,6 +345,8 @@ th.id = tl.transaction_history_id;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
 
 USE `tublessin_transaction`;
 INSERT INTO master_status_transaction(status) VALUE ('On Process'),('Success'),('Canceled');

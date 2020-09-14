@@ -8,7 +8,7 @@ ECHO =============================
 ECHO 1. Menjalankan Server Api Gateway
 cd api_gateway
 go build api_gateway.go
-SET API_GATEWAY_SERVER_HOST=localhost
+SET API_GATEWAY_SERVER_HOST=192.168.43.46
 SET API_GATEWAY_SERVER_PORT=8080
 SET SERVICE_LOGIN_HOST=localhost
 SET SERVICE_LOGIN_PORT=9000

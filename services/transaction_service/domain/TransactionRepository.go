@@ -12,12 +12,62 @@ type TransactionRepository struct {
 
 type TransactionRepositoryInterface interface {
 	GetAllTransactionHistory(trans *model.TransactionHistory) (*model.ListTransactionHistory, error)
+	GetAllTransactionHistoryUser(trans *model.TransactionHistory) (*model.ListTransactionHistory, error)
+	GetAllTransactionHistoryMontir(trans *model.TransactionHistory) (*model.ListTransactionHistory, error)
 	PostNewTransaction(trans *model.TransactionHistory) (*model.TransactionHistory, error)
 	UpdateTransactionByID(trans *model.TransactionHistory) (*model.TransactionHistory, error)
 }
 
 func NewTransactionRepository(db *sql.DB) TransactionRepositoryInterface {
 	return &TransactionRepository{db}
+}
+
+func (t TransactionRepository) GetAllTransactionHistoryMontir(trans *model.TransactionHistory) (*model.ListTransactionHistory, error) {
+	var listTransaction model.ListTransactionHistory
+
+	result, err := t.db.Query(`SELECT * FROM transaction_history_view WHERE id_montir = ?  ORDER BY date_created DESC`, trans.IdMontir)
+	if err != nil {
+		return nil, err
+	}
+
+	for result.Next() {
+		var t model.TransactionHistory
+		var location model.TransactionLocation
+
+		err := result.Scan(&t.Id, &t.IdMontir, &t.IdUser, &t.MontirFirstname, &t.UserFirstname, &t.Status, &t.DateCreated, &location.Latitude, &location.Longitude)
+		if err != nil {
+			return nil, err
+		}
+		t.Location = &location
+
+		listTransaction.Results = append(listTransaction.Results, &t)
+	}
+
+	return &listTransaction, nil
+}
+
+func (t TransactionRepository) GetAllTransactionHistoryUser(trans *model.TransactionHistory) (*model.ListTransactionHistory, error) {
+	var listTransaction model.ListTransactionHistory
+
+	result, err := t.db.Query(`SELECT * FROM transaction_history_view WHERE id_user = ?  ORDER BY date_created DESC`, trans.IdUser)
+	if err != nil {
+		return nil, err
+	}
+
+	for result.Next() {
+		var t model.TransactionHistory
+		var location model.TransactionLocation
+
+		err := result.Scan(&t.Id, &t.IdMontir, &t.IdUser, &t.MontirFirstname, &t.UserFirstname, &t.Status, &t.DateCreated, &location.Latitude, &location.Longitude)
+		if err != nil {
+			return nil, err
+		}
+		t.Location = &location
+
+		listTransaction.Results = append(listTransaction.Results, &t)
+	}
+
+	return &listTransaction, nil
 }
 
 func (t TransactionRepository) GetAllTransactionHistory(trans *model.TransactionHistory) (*model.ListTransactionHistory, error) {

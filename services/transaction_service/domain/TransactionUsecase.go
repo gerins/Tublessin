@@ -22,6 +22,24 @@ func NewTransactionUsecase(db *sql.DB) TransactionUsecaseInterface {
 }
 
 func (t TransactionUsecase) GetAllTransactionHistory(trans *model.TransactionHistory) (*model.ListTransactionHistory, error) {
+	if trans.IdMontir == "" && trans.IdUser != "" {
+		result, err := t.TransactionRepository.GetAllTransactionHistoryUser(trans)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		return result, nil
+	}
+
+	if trans.IdMontir != "" && trans.IdUser == "" {
+		result, err := t.TransactionRepository.GetAllTransactionHistoryMontir(trans)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		return result, nil
+	}
+
 	result, err := t.TransactionRepository.GetAllTransactionHistory(trans)
 	if err != nil {
 		log.Println(err)
