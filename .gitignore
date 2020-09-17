@@ -9,3 +9,4 @@ services/login_service/bin
 services/montir_service/bin
 services/transaction_service/bin
 services/user_service/bin
+services/chat_service/bin

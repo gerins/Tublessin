@@ -20,7 +20,10 @@ var API_GATEWAY_SERVER_HOST,
 	SERVICE_MONTIR_PORT,
 
 	SERVICE_USER_HOST,
-	SERVICE_USER_PORT string
+	SERVICE_USER_PORT,
+
+	SERVICE_CHAT_HOST,
+	SERVICE_CHAT_PORT string
 
 // Config server Host and Port
 func SetEnvironmentVariables() {
@@ -38,6 +41,9 @@ func SetEnvironmentVariables() {
 
 	SERVICE_USER_HOST = os.Getenv("SERVICE_USER_HOST")
 	SERVICE_USER_PORT = os.Getenv("SERVICE_USER_PORT")
+
+	SERVICE_CHAT_HOST = os.Getenv("SERVICE_CHAT_HOST")
+	SERVICE_CHAT_PORT = os.Getenv("SERVICE_CHAT_PORT")
 
 	log.Print(`ENVIRONMENT VARIABLE`)
 	fmt.Println()
@@ -60,5 +66,9 @@ func SetEnvironmentVariables() {
 
 	log.Println(`SERVICE_USER_HOST=`, SERVICE_USER_HOST)
 	log.Println(`SERVICE_USER_PORT=`, SERVICE_USER_PORT)
+	fmt.Println()
+
+	log.Println(`SERVICE_CHAT_HOST=`, SERVICE_CHAT_HOST)
+	log.Println(`SERVICE_CHAT_PORT=`, SERVICE_CHAT_PORT)
 	fmt.Println()
 }

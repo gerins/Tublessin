@@ -18,6 +18,8 @@ SET SERVICE_MONTIR_HOST=localhost
 SET SERVICE_MONTIR_PORT=8000
 SET SERVICE_USER_HOST=localhost
 SET SERVICE_USER_PORT=7000
+SET SERVICE_CHAT_HOST=localhost
+SET SERVICE_CHAT_PORT=5000
 START /min api_gateway.exe
 
 
@@ -74,8 +76,27 @@ SET MYSQL_DB_HOST=localhost
 SET MYSQL_DB_PORT=3306
 START /min user_service.exe
 
+ECHO 5. Menjalankan Server Chat Service
+cd ..
+cd chat_service
+go build chat_service.go
+SET GRPC_SERVICE_CHAT_HOST=tcp
+SET GRPC_SERVICE_CHAT_PORT=5000
+SET REDIS_DATABASE_HOST=127.0.0.1
+SET REDIS_DATABASE_PORT=6379
+SET REDIS_DATABASE_USERNAME=admin
+SET REDIS_DATABASE_PASSWORD=redisadmin
+SET REDIS_DATABASE_SELECT=3
+SET MYSQL_DB_DRIVER=mysql
+SET MYSQL_DB_USER=root
+SET MYSQL_DB_PASSWORD=admin
+SET MYSQL_DB_NAME=tublessin_chat
+SET MYSQL_DB_HOST=localhost
+SET MYSQL_DB_PORT=3306
+START /min chat_service.exe
 
-ECHO 5. Menjalankan Server Transaction Service
+
+ECHO 6. Menjalankan Server Transaction Service
 cd ..
 cd transaction_service
 go build transaction_service.go
@@ -90,8 +111,6 @@ SET MYSQL_DB_PORT=3306
 START /min transaction_service.exe
 
 
-ECHO 6. Hacking NASA Server
-ECHO 7. Hacking FBI Server
 echo.
 ECHO Press any key for terminate all server...
 PAUSE >nul
@@ -100,7 +119,11 @@ taskkill /im login_service.exe /f
 taskkill /im montir_service.exe /f
 taskkill /im user_service.exe /f
 taskkill /im transaction_service.exe /f
+taskkill /im chat_service.exe /f
 del transaction_service.exe /q
+cd ..
+cd chat_service
+del chat_service.exe /q
 cd ..
 cd user_service
 del user_service.exe /q

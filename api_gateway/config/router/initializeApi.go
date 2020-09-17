@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"net/http"
+	Chat "tublessin/api_gateway/domains/chat"
 	"tublessin/api_gateway/domains/login"
 	"tublessin/api_gateway/domains/montir"
 	"tublessin/api_gateway/domains/transaction"
@@ -21,6 +22,7 @@ func (ar *ConfigRouter) InitRouter() {
 	montir.InitMontirRoute(MONTIR_MAIN_ROUTE, ar.Router)
 	user.InitUserRoute(USER_MAIN_ROUTE, ar.Router)
 	transaction.InitTransactionRoute(TRANSACTION_MAIN_ROUTE, ar.Router)
+	Chat.InitChatRoute(CHAT_MAIN_ROUTE, ar.Router)
 	ar.Router.NotFoundHandler = http.HandlerFunc(notFound)
 }
 

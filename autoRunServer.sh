@@ -57,6 +57,23 @@ export MYSQL_DB_PORT=3306
 nohup ./tublessin-user &
 
 cd ..
+cd chat_service
+export GRPC_SERVICE_CHAT_HOST=tcp
+export GRPC_SERVICE_CHAT_PORT=5000
+export REDIS_DATABASE_HOST=127.0.0.1
+export REDIS_DATABASE_PORT=6379
+export REDIS_DATABASE_USERNAME=admin
+export REDIS_DATABASE_PASSWORD=redisadmin
+export REDIS_DATABASE_SELECT=3
+export MYSQL_DB_DRIVER=mysql
+export MYSQL_DB_USER=squad4
+export MYSQL_DB_PASSWORD=
+export MYSQL_DB_NAME=squad4
+export MYSQL_DB_HOST=34.101.198.49
+export MYSQL_DB_PORT=3306
+nohup ./tublessin-chat &
+
+cd ..
 cd transaction_service
 export GRPC_SERVICE_TRANSACTION_HOST=tcp
 export GRPC_SERVICE_TRANSACTION_PORT=6000
