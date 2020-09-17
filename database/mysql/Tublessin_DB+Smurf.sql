@@ -36,6 +36,9 @@ CREATE SCHEMA IF NOT EXISTS `tublessin_chat` ;
 -- Schema tublessin_transaction
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `tublessin_transaction` ;
+-- -----------------------------------------------------
+-- Schema squad4
+-- -----------------------------------------------------
 USE `tublessin_montir` ;
 
 -- -----------------------------------------------------
@@ -43,7 +46,7 @@ USE `tublessin_montir` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tublessin_montir`.`montir_account` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(15) NOT NULL DEFAULT '',
+  `username` VARCHAR(150) NOT NULL DEFAULT '',
   `password` VARCHAR(300) NOT NULL DEFAULT '',
   `status_account` VARCHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (`id`),
@@ -153,7 +156,7 @@ USE `tublessin_user` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tublessin_user`.`user_account` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(15) NOT NULL DEFAULT '',
+  `username` VARCHAR(150) NOT NULL DEFAULT '',
   `password` VARCHAR(300) NOT NULL DEFAULT '',
   `status_account` VARCHAR(1) NOT NULL DEFAULT 'A',
   PRIMARY KEY (`id`),
@@ -207,7 +210,7 @@ USE `tublessin_chat` ;
 -- Table `tublessin_chat`.`conversations`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `tublessin_chat`.`conversations` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `sender_id` INT NOT NULL,
   `receiver_id` INT NOT NULL,
   `message` VARCHAR(300) NOT NULL,
@@ -345,6 +348,7 @@ th.id = tl.transaction_history_id;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 
 
