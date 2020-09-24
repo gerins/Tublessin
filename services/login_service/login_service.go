@@ -5,7 +5,6 @@ import (
 	"tublessin/common/model"
 	"tublessin/services/login_service/config"
 	"tublessin/services/login_service/domain"
-	"tublessin/services/login_service/utils/logging"
 
 	log "github.com/sirupsen/logrus"
 
@@ -13,7 +12,7 @@ import (
 )
 
 func main() {
-	logging.LoggingToFile()
+	// logging.LoggingToFile()
 	config.SetEnvironmentVariables()
 	srv := grpc.NewServer()
 	loginServer := domain.NewLoginController(connectToServiceMontir(), connectToServiceUser())

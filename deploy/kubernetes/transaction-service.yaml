@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tublessin-transaction
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: tublessin-transaction
+  template:
+    metadata:
+      name: tublessin-transaction
+      labels:
+        name: tublessin-transaction
+    spec:
+      containers:
+        - name: tublessin-transaction
+          image: gerins/tublessin-transaction
+          ports:
+            - containerPort: 6000
+          resources:
+            limits:
+              cpu: 70m
+              memory: 100Mi
+          envFrom:
+            - configMapRef:
+                name: configmap-transaction
+            - secretRef:
+                name: secret-transaction
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transaction-service
+spec:
+  selector:
+    name: tublessin-transaction
+  ports:
+    - port: 6000
+      targetPort: 6000
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-transaction
+data:
+  GRPC_SERVICE_TRANSACTION_HOST: tcp
+  GRPC_SERVICE_TRANSACTION_PORT: "6000"
+
+  MYSQL_DB_DRIVER: mysql
+  MYSQL_DB_NAME: tublessin_transaction
+  MYSQL_DB_HOST: db-service.default.svc.cluster.local
+  MYSQL_DB_PORT: "3306"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-transaction
+stringData:
+  MYSQL_DB_USER: root
+  MYSQL_DB_PASSWORD: admin

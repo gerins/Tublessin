@@ -7,7 +7,6 @@ import (
 	"tublessin/common/model"
 	"tublessin/services/transaction_service/config"
 	"tublessin/services/transaction_service/domain"
-	"tublessin/services/transaction_service/utils/logging"
 
 	log "github.com/sirupsen/logrus"
 
@@ -16,7 +15,7 @@ import (
 )
 
 func main() {
-	logging.LoggingToFile()
+	// logging.LoggingToFile()
 	config.SetEnvironmentVariables()
 	srv := grpc.NewServer()
 	transactionServer := domain.NewTransactionController(connectToDatabase())

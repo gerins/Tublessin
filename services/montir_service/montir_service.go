@@ -7,7 +7,6 @@ import (
 	"tublessin/services/montir_service/config/mysql"
 	"tublessin/services/montir_service/config/redis"
 	"tublessin/services/montir_service/domain"
-	"tublessin/services/montir_service/utils/logging"
 
 	log "github.com/sirupsen/logrus"
 
@@ -15,7 +14,7 @@ import (
 )
 
 func main() {
-	logging.LoggingToFile()
+	// logging.LoggingToFile()
 	config.SetEnvironmentVariables()
 
 	srv := grpc.NewServer()

@@ -7,7 +7,6 @@ import (
 	"tublessin/services/user_service/config/mysql"
 	"tublessin/services/user_service/config/redis"
 	"tublessin/services/user_service/domain"
-	"tublessin/services/user_service/utils/logging"
 
 	log "github.com/sirupsen/logrus"
 
@@ -15,7 +14,7 @@ import (
 )
 
 func main() {
-	logging.LoggingToFile()
+	// logging.LoggingToFile()
 	config.SetEnvironmentVariables()
 	srv := grpc.NewServer()
 	userServer := domain.NewUserController(mysql.ConnectToDatabase(), redis.NewRedisConnection())

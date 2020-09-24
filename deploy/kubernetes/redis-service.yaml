@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tublessin-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: tublessin-redis
+  template:
+    metadata:
+      name: tublessin-redis
+      labels:
+        name: tublessin-redis
+    spec:
+      containers:
+        - name: tublessin-redis
+          image: gerins/tublessin-redis
+          ports:
+            - containerPort: 6379
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+spec:
+  selector:
+    name: tublessin-redis
+  ports:
+    - port: 6379
+      targetPort: 6379

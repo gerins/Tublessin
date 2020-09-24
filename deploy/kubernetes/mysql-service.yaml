@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tublessin-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: tublessin-db
+  template:
+    metadata:
+      name: tublessin-db
+      labels:
+        name: tublessin-db
+    spec:
+      containers:
+        - name: tublessin-db
+          image: gerins/tublessin-db
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: admin
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  selector:
+    name: tublessin-db
+  ports:
+    - port: 3306
+      targetPort: 3306

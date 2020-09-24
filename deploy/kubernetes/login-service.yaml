@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tublessin-login
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: tublessin-login
+  template:
+    metadata:
+      name: tublessin-login
+      labels:
+        name: tublessin-login
+    spec:
+      containers:
+        - name: tublessin-login
+          image: gerins/tublessin-login
+          ports:
+            - containerPort: 9000
+          resources:
+            requests:
+              cpu: 40m
+              memory: 40Mi
+            limits:
+              cpu: 50m
+              memory: 50Mi
+          env:
+            - name: GRPC_SERVICE_LOGIN_HOST
+              value: tcp
+            - name: GRPC_SERVICE_LOGIN_PORT
+              value: "9000"
+            - name: SERVICE_MONTIR_HOST
+              value: montir-service.default.svc.cluster.local
+            - name: SERVICE_MONTIR_PORT
+              value: "8000"
+            - name: SERVICE_USER_HOST
+              value: user-service.default.svc.cluster.local
+            - name: SERVICE_USER_PORT
+              value: "7000"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: login-service
+spec:
+  selector:
+    name: tublessin-login
+  ports:
+    - port: 9000
+      targetPort: 9000
