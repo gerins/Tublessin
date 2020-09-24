@@ -15,6 +15,9 @@ Cara Menjalankan Backend
 2. Jalankan Api Gateway
 - go run api_gateway.go
 
+
+Atau kalo punya docker ketika aja docker-compose up -d di terminal
+
 API List
 
 POST MAN -> Import -> Link -> 
