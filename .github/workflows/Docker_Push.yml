@@ -25,15 +25,9 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
-    - name: Compiling Golang App
+    - name: Compiling api_gateway -> Build Image -> Push Image 
       run: |
         cd api_gateway
         go build -o tublessin-gateway
-
-    - name: Docker Build
-      run: | 
-        cd api_gateway
         docker build -t gerins/tublessin-gateway .
-      
-    - name: Push to Docker Hub
-      run: docker push gerins/tublessin-gateway
+        docker push gerins/tublessin-gateway
