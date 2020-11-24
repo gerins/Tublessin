@@ -46,3 +46,23 @@ jobs:
         docker build -t gerins/tublessin-chat .
         docker push gerins/tublessin-chat
 
+    - name: Compiling montir_service -> Build Image -> Push Image 
+      run: |
+        cd services/montir_service
+        go build -o tublessin-montir
+        docker build -t gerins/tublessin-montir .
+        docker push gerins/tublessin-montir
+
+    - name: Compiling user_service -> Build Image -> Push Image 
+      run: |
+        cd services/user_service
+        go build -o tublessin-user
+        docker build -t gerins/tublessin-user .
+        docker push gerins/tublessin-user
+
+    - name: Compiling transaction_service -> Build Image -> Push Image 
+      run: |
+        cd services/transaction_service
+        go build -o tublessin-transaction
+        docker build -t gerins/tublessin-transaction .
+        docker push gerins/tublessin-transaction
