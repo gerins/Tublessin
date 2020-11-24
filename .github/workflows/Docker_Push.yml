@@ -31,7 +31,9 @@ jobs:
         go build -o tublessin-gateway
 
     - name: Docker Build
-      run: docker build -t gerins/tublessin-gateway .
+      run: | 
+        cd api_gateway
+        docker build -t gerins/tublessin-gateway .
       
     - name: Push to Docker Hub
       run: docker push gerins/tublessin-gateway
