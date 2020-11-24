@@ -31,3 +31,18 @@ jobs:
         go build -o tublessin-gateway
         docker build -t gerins/tublessin-gateway .
         docker push gerins/tublessin-gateway
+
+    - name: Compiling login_service -> Build Image -> Push Image 
+      run: |
+        cd services/login_service
+        go build -o tublessin-login
+        docker build -t gerins/tublessin-login .
+        docker push gerins/tublessin-login
+
+    - name: Compiling chat_service -> Build Image -> Push Image 
+      run: |
+        cd services/chat_service
+        go build -o tublessin-chat
+        docker build -t gerins/tublessin-chat .
+        docker push gerins/tublessin-chat
+
